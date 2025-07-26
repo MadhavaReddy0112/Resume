@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhava Reddy Arimanda - Finance Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter (matching the clean sans-serif look) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light Slate 50 */
+            color: #334155; /* Slate 700 */
+        }
+        /* Custom scroll-behavior for smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        .section-padding {
+            padding: 4rem 1rem; /* py-16 px-4 */
+        }
+        @media (min-width: 768px) {
+            .section-padding {
+                padding: 6rem 2rem; /* md:py-24 md:px-8 */
+            }
+        }
+        @media (min-width: 1024px) {
+            .section-padding {
+                padding: 8rem 4rem; /* lg:py-32 lg:px-16 */
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header/Navigation -->
+    <header class="bg-white shadow-md py-4 fixed w-full z-10">
+        <nav class="container mx-auto px-4 flex justify-between items-center">
+            <!-- Updated logo/name styling to match example's simplicity -->
+            <a href="#" class="text-2xl font-extrabold text-gray-800 rounded-md p-2 hover:text-indigo-600 transition-colors">Madhava Reddy Arimanda</a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#about" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">About</a>
+                <a href="#skills" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Skills</a>
+                <a href="#experience" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Experience</a>
+                <a href="#education" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Education</a>
+                <a href="#contact" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors p-2 rounded-md hover:bg-gray-100">Contact</a>
+            </div>
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-indigo-600 focus:outline-none p-2 rounded-md hover:bg-gray-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white bg-opacity-95 z-20 flex flex-col items-center justify-center space-y-6">
+            <button id="close-mobile-menu" class="absolute top-4 right-4 text-gray-600 hover:text-indigo-600 focus:outline-none p-2 rounded-md hover:bg-gray-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <a href="#about" class="text-3xl text-gray-800 hover:text-indigo-600 font-semibold transition-colors" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About</a>
+            <a href="#skills" class="text-3xl text-gray-800 hover:text-indigo-600 font-semibold transition-colors" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Skills</a>
+            <a href="#experience" class="text-3xl text-gray-800 hover:text-indigo-600 font-semibold transition-colors" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Experience</a>
+            <a href="#education" class="text-3xl text-gray-800 hover:text-indigo-600 font-semibold transition-colors" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Education</a>
+            <a href="#contact" class="text-3xl text-gray-800 hover:text-indigo-600 font-semibold transition-colors" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact</a>
+        </div>
+    </header>
+
+    <main class="pt-16"> <!-- Padding to account for fixed header -->
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative bg-gradient-to-br from-indigo-700 to-indigo-900 text-white section-padding text-center overflow-hidden">
+            <div class="container mx-auto px-4 relative z-10">
+                <!-- Placeholder for Madhava's profile picture -->
+                <img src="https://placehold.co/180x180/ffffff/000000?text=Madhava" alt="Madhava Reddy Arimanda Profile Picture" class="rounded-full w-44 h-44 mx-auto mb-8 border-4 border-white shadow-xl transform transition-transform duration-300 hover:scale-105">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">Hi, I'm <span class="text-indigo-200">Madhava Reddy Arimanda</span>.</h1>
+                <p class="text-xl md:text-3xl font-light mb-10 max-w-2xl mx-auto">A dedicated business management professional focused on <span class="font-medium text-indigo-100">Financial Analysis & Investment Strategies</span>.</p>
+                <a href="#contact" class="inline-block bg-white text-indigo-700 hover:bg-indigo-100 font-semibold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">Get in Touch</a>
+            </div>
+            <!-- Subtle background shapes for visual interest, similar to example -->
+            <div class="absolute inset-0 opacity-10">
+                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+                    <circle cx="20" cy="20" r="15" fill="currentColor" class="text-indigo-500"></circle>
+                    <circle cx="80" cy="40" r="20" fill="currentColor" class="text-indigo-600"></circle>
+                    <circle cx="50" cy="80" r="10" fill="currentColor" class="text-indigo-500"></circle>
+                    <rect x="10" y="60" width="10" height="10" fill="currentColor" class="text-indigo-400"></rect>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="bg-white section-padding">
+            <div class="container mx-auto px-4 max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-indigo-700">About Me</h2>
+                <div class="text-lg leading-relaxed space-y-6 text-gray-700">
+                    <p>
+                        I am a dedicated business management professional with hands-on experience in financial modeling, data segregation, financial spreading, and in-depth financial statement and loan agreement analysis. I am also interested in exploring innovative approaches to address industry challenges efficiently.
+                    </p>
+                    <p>
+                        Currently, I am working as an **Analyst at Deloitte** since June 2024, applying my skills in a dynamic professional environment.
+                    </p>
+                    <p>
+                        I am also proud to be working as the Vice-President of AIKYA, The HR & Communications club of GITAM School of Business, and have bagged 3rd place in district-level chess competitions.
+                    </p>
+                    <p>
+                        I am always eager to learn and apply new concepts, and I am proficient in various financial software and tools.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="bg-gray-50 section-padding">
+            <div class="container mx-auto px-4 max-w-5xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-indigo-700">My Skills</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Finance Skills -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Financial Modeling</h3>
+                        </div>
+                        <p class="text-gray-600">Hands-on experience in financial modeling, data segregation, and financial spreading.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V4m0 12v4m-6-2h12"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Financial Analysis</h3>
+                        </div>
+                        <p class="text-gray-600">In-depth financial statement and loan agreement analysis.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M18 14v4a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h4m6 0L14 2m0 0l2 2m-2-2h2"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Data Analysis & Tools</h3>
+                        </div>
+                        <p class="text-gray-600">Proficient in SPSS, Tableau, Daxtra, and Boolean Strings.</p>
+                    </div>
+                    <!-- Software & Presentation Skills -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Microsoft Office Suite</h3>
+                        </div>
+                        <p class="text-gray-600">Skilled in Word, Excel, PPT, and Outlook.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Canva & Presentation</h3>
+                        </div>
+                        <p class="text-gray-600">Proficient in Canva and effective presentation skills.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-10 h-10 text-indigo-600 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0015.586 3H7a2 2 0 00-2 2v11m0 5l4-4m4 4l-4-4"></path></svg>
+                            <h3 class="text-xl font-semibold text-gray-800">Certifications</h3>
+                        </div>
+                        <p class="text-gray-600">Microsoft 365 Fundamentals and SAP Professional Fundamentals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="bg-white section-padding">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-indigo-700">Experience</h2>
+                <div class="space-y-12">
+                    <!-- Experience Item 1: Deloitte -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=Deloitte" alt="Deloitte Logo" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">Analyst - Deloitte</h3>
+                            <p class="text-gray-500 text-sm mb-3">June 2024 - Present</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li>Currently contributing to [mention specific responsibilities or projects at Deloitte, e.g., financial advisory, risk analysis, data insights].</li>
+                                <li>Applying analytical skills to solve complex business problems for clients.</li>
+                                <li>Collaborating with cross-functional teams to deliver impactful solutions.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience Item 2: Oxane Partners -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=Oxane" alt="Oxane Partners Logo" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">Portfolio Management Intern - Oxane Partners, Hyderabad</h3>
+                            <p class="text-gray-500 text-sm mb-3">Jun 2023 - Jul 2023</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li>Conducted analysis of financial statements to identify trends and utilized financial spreading techniques to assess the creditworthiness of potential borrowers.</li>
+                                <li>Developed complex financial models using Microsoft Excel to assess the performance of various investment opportunities and assisted in covenant calculation.</li>
+                                <li>Analyzed loan agreements to ensure a clear understanding of terms and conditions for effective portfolio management.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Experience Item 3: SSi People -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=SSi" alt="SSi People Logo" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">Talent Acquisition Specialist - SSi People, Bangalore</h3>
+                            <p class="text-gray-500 text-sm mb-3">Jan 2022 - Aug 2022</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li>Managed the financial risks associated with the onboarding of candidates and worked with clients at pre-determined rates.</li>
+                                <li>Analyzed a huge internal and external database for any potential matches and identified, eliminating fraudulent candidates.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="bg-gray-50 section-padding">
+            <div class="container mx-auto px-4 max-w-4xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-indigo-700">Education</h2>
+                <div class="space-y-8">
+                    <!-- Education Item 1: MBA -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=MBA" alt="MBA Icon" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">Masters of Business Administration - Finance & Marketing</h3>
+                            <p class="text-gray-500 text-sm mb-3">Aug 2022 - May 2024</p>
+                            <p class="text-gray-700">GITAM School of Business, Visakhapatnam, Andhra Pradesh.</p>
+                            <p class="text-gray-700">CGPA - 8.46 (1st Year)</p>
+                        </div>
+                    </div>
+
+                    <!-- Education Item 2: BBA -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=BBA" alt="BBA Icon" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">Bachelor of Business Administration - Finance</h3>
+                            <p class="text-gray-500 text-sm mb-3">May 2018 - Aug 2021</p>
+                            <p class="text-gray-700">Dayananda Sagar Institutions, Bangalore, Karnataka.</p>
+                            <p class="text-gray-700">CGPA - 9.0 (A+ Grade)</p>
+                        </div>
+                    </div>
+
+                    <!-- Education Item 3: 12th Class -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=12th" alt="12th Class Icon" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">12th Class</h3>
+                            <p class="text-gray-500 text-sm mb-3">Mar 2016 - Apr 2018</p>
+                            <p class="text-gray-700">Sri Chaitanya College, Guntur, Andhra Pradesh.</p>
+                            <p class="text-gray-700">90.5% (A Grade)</p>
+                        </div>
+                    </div>
+
+                    <!-- Education Item 4: 10th Class -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col md:flex-row items-start md:space-x-6">
+                        <div class="flex-shrink-0 mb-4 md:mb-0">
+                            <img src="https://placehold.co/100x100/e0f2fe/334155?text=10th" alt="10th Class Icon" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-indigo-600 mb-2">10th Class</h3>
+                            <p class="text-gray-500 text-sm mb-3">Mar 2015 - Apr 2016</p>
+                            <p class="text-gray-700">Dr K.L.P Public School, Guntur, Andhra Pradesh.</p>
+                            <p class="text-gray-700">CGPA - 10.0 (A1 Grade)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="bg-indigo-700 text-white section-padding">
+            <div class="container mx-auto px-4 max-w-xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10">Get in Touch</h2>
+                <p class="text-lg mb-8">
+                    I'm actively seeking opportunities in finance and would love to connect. Feel free to reach out!
+                </p>
+                <div class="space-y-4">
+                    <p class="flex items-center justify-center text-lg">
+                        <svg class="w-6 h-6 mr-3 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 4v6a2 2 0 01-2 2H7a2 2 0 01-2-2v-6"></path></svg>
+                        <a href="mailto:marimand@gitam.in" class="hover:underline">marimand@gitam.in</a>
+                    </p>
+                    <p class="flex items-center justify-center text-lg">
+                        <svg class="w-6 h-6 mr-3 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        <a href="tel:+919491898934" class="hover:underline">+919491898934</a>
+                    </p>
+                    <p class="flex items-center justify-center text-lg">
+                        <svg class="w-6 h-6 mr-3 text-indigo-200" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        <a href="https://linkedin.com/in/madhavareddyarimanda" target="_blank" rel="noopener noreferrer" class="hover:underline">linkedin.com/in/madhavareddyarimanda</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-8 text-center text-sm">
+        <div class="container mx-auto px-4">
+            <p>&copy; 2025 Madhava Reddy Arimanda. All rights reserved.</p>
+            <p class="mt-2">Built with ❤️ and Tailwind CSS.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Close mobile menu when a link is clicked (delegated to parent)
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
