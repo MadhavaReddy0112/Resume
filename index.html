@@ -386,13 +386,15 @@
                 degree: 'Masters of Business Administration',
                 school: 'GITAM School of Business, Visakhapatnam',
                 date: 'Aug 2022 - May 2024',
-                details: 'CGPA: 8.46 (1st Year)'
+                details: 'CGPA: 8.46 (1st Year)',
+                logoUrl: 'https://i.imgur.com/x0262oP.png'
             },
             {
                 degree: 'Bachelor of Business Administration',
                 school: 'Dayananda Sagar Institutions, Bangalore',
                 date: 'May 2018 - Aug 2021',
-                details: 'CGPA: 9.0 (A+ Grade)'
+                details: 'CGPA: 9.0 (A+ Grade)',
+                logoUrl: 'https://i.imgur.com/Y1jH0aB.png'
             }
         ];
 
@@ -422,8 +424,9 @@
 
         educations.forEach(edu => {
              const item = document.createElement('div');
-             item.className = 'p-6 rounded-lg glass-effect';
+             item.className = 'p-8 rounded-lg glass-effect text-center';
              item.innerHTML = `
+                <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="h-20 mx-auto mb-6 object-contain">
                 <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
                 <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
                 <p class="text-gray-400">${edu.date}</p>
