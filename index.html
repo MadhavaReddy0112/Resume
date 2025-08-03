@@ -91,7 +91,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* New Apple-like glass menu styles */
+        /* Apple-like glass menu styles */
         .nav-container {
             display: inline-block;
             background: rgba(30, 30, 30, 0.5);
@@ -130,9 +130,9 @@
             <div class="nav-container">
                 <nav class="flex items-center space-x-2">
                     <a onclick="showPage('home')" class="nav-link active">Home</a>
-                    <a onclick="showPage('experience')" class="nav-link">Experience</a>
+                    <a onclick="showPage('experience-skills')" class="nav-link">Experience & Skills</a>
                     <a onclick="showPage('projects')" class="nav-link">Projects</a>
-                    <a onclick="showPage('education')" class="nav-link">Education & Skills</a>
+                    <a onclick="showPage('education')" class="nav-link">Education</a>
                 </nav>
             </div>
         </div>
@@ -175,7 +175,7 @@
                             <p class="text-gray-400">Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.</p>
                         </div>
                          <div class="text-center mt-8">
-                            <a onclick="showPage('experience')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View Detailed Experience &rarr;</a>
+                            <a onclick="showPage('experience-skills')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View Detailed Experience &rarr;</a>
                         </div>
                     </div>
                 </div>
@@ -213,13 +213,21 @@
             </section>
         </div>
         
-        <!-- Page 2: Experience -->
-        <div id="page-experience" class="page">
+        <!-- Page 2: Experience & Skills -->
+        <div id="page-experience-skills" class="page">
             <section class="py-16">
                 <div class="container mx-auto px-6">
                     <h3 class="text-4xl font-bold text-center mb-20 text-white">Work Experience</h3>
-                    <div class="relative timeline">
+                    <div class="relative timeline" id="experience-container">
                         <!-- Experience Items will be injected here -->
+                    </div>
+                </div>
+            </section>
+             <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center" id="skills-container">
+                       <!-- Skills will be injected here -->
                     </div>
                 </div>
             </section>
@@ -244,21 +252,13 @@
             </section>
         </div>
 
-        <!-- Page 4: Education & Skills -->
+        <!-- Page 4: Education -->
         <div id="page-education" class="page">
             <section class="py-16">
                 <div class="container mx-auto px-6">
                     <h3 class="text-4xl font-bold text-center mb-12 text-white">Education</h3>
                     <div class="grid md:grid-cols-2 gap-8" id="education-container">
                         <!-- Education items will be injected here -->
-                    </div>
-                </div>
-            </section>
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center" id="skills-container">
-                       <!-- Skills will be injected here -->
                     </div>
                 </div>
             </section>
@@ -311,7 +311,7 @@
         }
 
         // Dynamic content injection
-        const experienceContainer = document.querySelector('#page-experience .timeline');
+        const experienceContainer = document.getElementById('experience-container');
         const skillsContainer = document.getElementById('skills-container');
         const educationContainer = document.getElementById('education-container');
 
