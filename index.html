@@ -133,6 +133,7 @@
                     <a onclick="showPage('experience-skills')" class="nav-link">Experience & Skills</a>
                     <a onclick="showPage('projects')" class="nav-link">Projects</a>
                     <a onclick="showPage('education')" class="nav-link">Education</a>
+                    <a onclick="showPage('resume')" class="nav-link">Resume</a>
                 </nav>
             </div>
         </div>
@@ -143,7 +144,6 @@
         <div id="page-home" class="page active">
             <section class="container mx-auto px-6 py-16 text-center">
                 <div class="relative w-48 h-48 mx-auto mb-8">
-                    <!-- PERMANENT IMAGE FIX: Using a stable, direct public URL for the image. -->
                     <img src="https://i.imgur.com/8F8wY8G.jpg" alt="Madhava Reddy Arimanda" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect">
                 </div>
                 <h2 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight text-white">Madhava Reddy Arimanda</h2>
@@ -151,7 +151,6 @@
                     Business management professional skilled in financial analysis, credit-risk assessment, and process governance.
                 </p>
                 <div class="mt-10">
-                    <!-- RESUME FIX: Using a relative path. Make sure your PDF is named 'Madhava Reddy Arimanda.pdf' and is in the same folder. -->
                     <a href="Madhava Reddy Arimanda.pdf" download="Madhava Reddy Arimanda.pdf" class="bg-transparent hover:bg-indigo-600 text-indigo-400 font-bold hover:text-white py-3 px-6 border border-indigo-500 hover:border-transparent rounded-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
                         Download Resume
                     </a>
@@ -261,6 +260,24 @@
                     <h3 class="text-4xl font-bold text-center mb-12 text-white">Education</h3>
                     <div class="grid md:grid-cols-2 gap-8" id="education-container">
                         <!-- Education items will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 5: Resume -->
+        <div id="page-resume" class="page">
+            <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Resume</h3>
+                    <div class="max-w-5xl mx-auto p-2 rounded-lg glass-effect">
+                         <!-- Using an iframe for better compatibility to display the PDF -->
+                         <iframe src="Madhava Reddy Arimanda.pdf" class="w-full rounded-md" style="height: 80vh; border: none;"></iframe>
+                    </div>
+                     <div class="text-center mt-8">
+                        <a href="Madhava Reddy Arimanda.pdf" download="Madhava Reddy Arimanda.pdf" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
+                            Download Resume
+                        </a>
                     </div>
                 </div>
             </section>
