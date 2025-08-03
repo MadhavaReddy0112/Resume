@@ -79,16 +79,6 @@
         .timeline-item:nth-child(even) .timeline-dot {
             left: -8px;
         }
-        .nav-link {
-            position: relative;
-            color: #9ca3af;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-        .nav-link.active, .nav-link:hover {
-            color: #a78bfa;
-        }
         .page {
             display: none;
             animation: fadeIn 0.5s ease-in-out;
@@ -100,20 +90,51 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* New Apple-like glass menu styles */
+        .nav-container {
+            display: inline-block;
+            background: rgba(30, 30, 30, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 0.5rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #e5e5e5;
+            cursor: pointer;
+        }
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .nav-link:not(.active):hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
     </style>
 </head>
 <body class="antialiased">
     <div id="particles-js"></div>
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-effect !rounded-none !border-x-0 !border-t-0">
-        <div class="container mx-auto px-6 py-4 flex justify-center items-center">
-            <nav class="hidden md:flex items-center space-x-8">
-                <a onclick="showPage('home')" class="nav-link active">Home</a>
-                <a onclick="showPage('experience')" class="nav-link">Experience</a>
-                <a onclick="showPage('projects')" class="nav-link">Projects</a>
-                <a onclick="showPage('education')" class="nav-link">Education & Skills</a>
-            </nav>
+    <header class="fixed top-0 left-0 right-0 z-50 py-4">
+        <div class="container mx-auto flex justify-center items-center">
+            <div class="nav-container">
+                <nav class="flex items-center space-x-2">
+                    <a onclick="showPage('home')" class="nav-link active">Home</a>
+                    <a onclick="showPage('experience')" class="nav-link">Experience</a>
+                    <a onclick="showPage('projects')" class="nav-link">Projects</a>
+                    <a onclick="showPage('education')" class="nav-link">Education & Skills</a>
+                </nav>
+            </div>
         </div>
     </header>
 
