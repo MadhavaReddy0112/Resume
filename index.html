@@ -3,535 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Portfolio - Beyond Tomorrow</title>
+    <title>Madhava Reddy Arimanda - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
             overflow-x: hidden;
-            cursor: none;
         }
-
-        /* Custom Cursor */
-        .cursor {
+        #particles-js {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, #00ff88, #0066ff);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.2s ease;
-        }
-
-        .cursor-trail {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: rgba(0, 255, 136, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.1) 0%, rgba(10, 10, 10, 1) 70%);
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 2;
-            max-width: 800px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 8rem);
-            font-weight: 900;
-            background: linear-gradient(45deg, #00ff88, #0066ff, #ff0066);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease infinite;
-            margin-bottom: 1rem;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-
-        .cta-button {
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid #00ff88;
-            color: #00ff88;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .cta-button:hover {
-            background: #00ff88;
-            color: #0a0a0a;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-        }
-
-        /* Interactive Cubes */
-        .cube-container {
-            position: absolute;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
-
-        .cube {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            transform-style: preserve-3d;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .cube-face {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            background: rgba(0, 102, 255, 0.1);
-        }
-
-        .cube-face.front { transform: rotateY(0deg) translateZ(30px); }
-        .cube-face.back { transform: rotateY(180deg) translateZ(30px); }
-        .cube-face.right { transform: rotateY(90deg) translateZ(30px); }
-        .cube-face.left { transform: rotateY(-90deg) translateZ(30px); }
-        .cube-face.top { transform: rotateX(90deg) translateZ(30px); }
-        .cube-face.bottom { transform: rotateX(-90deg) translateZ(30px); }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-            33% { transform: translateY(-20px) rotateX(120deg) rotateY(120deg); }
-            66% { transform: translateY(10px) rotateX(240deg) rotateY(240deg); }
-        }
-
-        /* About Section */
-        .about {
-            min-height: 100vh;
-            padding: 5rem 2rem;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, rgba(255, 0, 102, 0.05) 0%, rgba(0, 0, 0, 1) 50%);
-        }
-
-        .about-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            color: #00ff88;
-        }
-
-        .about-text p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .skill-item {
-            padding: 1rem;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .skill-item:hover {
-            background: rgba(0, 255, 136, 0.2);
-            transform: translateY(-5px);
-        }
-
-        /* Projects Section */
-        .projects {
-            min-height: 100vh;
-            padding: 5rem 2rem;
-            background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.05) 0%, rgba(10, 10, 10, 1) 70%);
-        }
-
-        .projects-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .projects h2 {
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #0066ff;
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.05);
+        .glass-effect {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .project-card::before {
+        .glass-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+        .timeline::before {
             content: '';
             position: absolute;
+            width: 2px;
+            background-image: linear-gradient(to bottom, #6366f1, #4338ca);
+            left: 50%;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ff88, transparent);
-            transition: left 0.5s ease;
+            bottom: 0;
+            transform: translateX(-50%);
         }
-
-        .project-card:hover::before {
-            left: 100%;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
-        }
-
-        .project-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #00ff88;
-        }
-
-        /* Contact Section */
-        .contact {
-            min-height: 100vh;
-            padding: 5rem 2rem;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(45deg, rgba(255, 0, 102, 0.05) 0%, rgba(0, 0, 0, 1) 100%);
-        }
-
-        .contact-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .contact h2 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            color: #ff0066;
-        }
-
-        .contact-form {
-            display: grid;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .form-group {
+        .timeline-item {
             position: relative;
+            width: 50%;
         }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 2rem;
         }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 2rem;
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .hero h1 {
-                font-size: 3rem;
-            }
-            
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
+        .timeline-dot {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #6366f1;
+            border-radius: 50%;
+            border: 3px solid #0a0a0a;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            box-shadow: 0 0 10px #6366f1;
         }
-
-        /* Scroll Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: -8px;
+            left: auto;
         }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: -8px;
+        }
+        .nav-link {
+            position: relative;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #a78bfa;
+        }
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
+<body class="antialiased">
+    <div id="particles-js"></div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="cube-container">
-            <!-- Interactive cubes will be generated by JavaScript -->
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect !rounded-none !border-x-0 !border-t-0">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wider text-white cursor-pointer" onclick="showPage('home')">M.R.A</h1>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a onclick="showPage('home')" class="nav-link active">Home</a>
+                <a onclick="showPage('experience')" class="nav-link">Experience</a>
+                <a onclick="showPage('projects')" class="nav-link">Projects</a>
+                <a onclick="showPage('education')" class="nav-link">Education & Skills</a>
+            </nav>
+            <a href="mailto:contactmadhava@gmail.com" class="hidden md:block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/50">
+                Get in Touch
+            </a>
         </div>
-        <div class="hero-content fade-in">
-            <h1>FUTURE IS NOW</h1>
-            <p>Crafting tomorrow's digital experiences today</p>
-            <button class="cta-button" onclick="document.querySelector('.about').scrollIntoView({behavior: 'smooth'})">
-                Explore Beyond
-            </button>
-        </div>
-    </section>
+    </header>
 
-    <!-- About Section -->
-    <section class="about">
-        <div class="about-content">
-            <div class="about-text fade-in">
-                <h2>Beyond Boundaries</h2>
-                <p>We push the limits of digital creativity, transforming ideas into immersive experiences that captivate and inspire. Our approach combines cutting-edge technology with artistic vision.</p>
-                <p>Every project is a journey into the unknown, where innovation meets imagination to create something truly extraordinary.</p>
-            </div>
-            <div class="skills-grid fade-in">
-                <div class="skill-item">
-                    <h4>3D Design</h4>
-                    <p>Immersive experiences</p>
+    <main class="pt-24 relative z-10">
+        <!-- Page 1: Home -->
+        <div id="page-home" class="page active">
+            <section class="container mx-auto px-6 py-16 text-center">
+                <div class="relative w-48 h-48 mx-auto mb-8">
+                    <img src="https://i.imgur.com/3f8aUa6.jpeg" alt="Madhava Reddy Arimanda" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect">
                 </div>
-                <div class="skill-item">
-                    <h4>Web Development</h4>
-                    <p>Future-ready solutions</p>
+                <h2 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight text-white">Madhava Reddy Arimanda</h2>
+                <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+                    Business management professional skilled in financial analysis, credit-risk assessment, and process governance.
+                </p>
+                <div class="mt-10">
+                    <a href="OP_Madhava.pdf" download="Madhava_Reddy_Arimanda_Resume.pdf" class="bg-transparent hover:bg-indigo-600 text-indigo-400 font-bold hover:text-white py-3 px-6 border border-indigo-500 hover:border-transparent rounded-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
+                        Download Resume
+                    </a>
                 </div>
-                <div class="skill-item">
-                    <h4>Interactive Media</h4>
-                    <p>Engaging interfaces</p>
-                </div>
-                <div class="skill-item">
-                    <h4>Digital Innovation</h4>
-                    <p>Tomorrow's technology</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Projects Section -->
-    <section class="projects">
-        <div class="projects-content">
-            <h2 class="fade-in">Featured Creations</h2>
-            <div class="project-grid">
-                <div class="project-card fade-in">
-                    <h3>Neural Interface</h3>
-                    <p>An immersive web experience that connects mind and machine through interactive 3D environments and responsive animations.</p>
-                    <div style="margin-top: 1rem;">
-                        <span style="color: #00ff88; font-size: 0.9rem;">3D • WebGL • Interactive</span>
+            <section class="py-16">
+                <div class="container mx-auto px-6">
+                     <h3 class="text-4xl font-bold text-center mb-12 text-white">About Me</h3>
+                    <div class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">
+                        I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track.
                     </div>
                 </div>
-                <div class="project-card fade-in">
-                    <h3>Digital Consciousness</h3>
-                    <p>Exploring the boundaries between human and artificial intelligence through dynamic visual narratives and user interaction.</p>
-                    <div style="margin-top: 1rem;">
-                        <span style="color: #0066ff; font-size: 0.9rem;">AI • Design • Experience</span>
-                    </div>
-                </div>
-                <div class="project-card fade-in">
-                    <h3>Quantum Reality</h3>
-                    <p>A groundbreaking platform that visualizes complex data through particle systems and real-time 3D simulations.</p>
-                    <div style="margin-top: 1rem;">
-                        <span style="color: #ff0066; font-size: 0.9rem;">Data Viz • 3D • Physics</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact">
-        <div class="contact-content">
-            <h2 class="fade-in">Connect to the Future</h2>
-            <p class="fade-in" style="font-size: 1.2rem; margin-bottom: 2rem;">Ready to transform your vision into reality? Let's create something extraordinary together.</p>
+            </section>
             
-            <form class="contact-form fade-in">
-                <div class="form-group">
-                    <input type="text" placeholder="Your Name" required>
+            <section class="py-16">
+                 <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Career Snapshot</h3>
+                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
+                        <div class="border-l-2 border-indigo-500 pl-6">
+                            <h4 class="text-xl font-bold text-white">Risk and Brand Protection Analyst</h4>
+                            <p class="text-lg text-indigo-400 mb-2">Deloitte, Hyderabad (Jun 2024 - Present)</p>
+                            <p class="text-gray-400">Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.</p>
+                        </div>
+                         <div class="text-center mt-8">
+                            <a onclick="showPage('experience')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View Detailed Experience &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Email Address" required>
+            </section>
+            
+            <section class="py-16">
+                 <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Project Highlights</h3>
+                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
+                        <div class="border-l-2 border-indigo-500 pl-6">
+                            <h4 class="text-xl font-bold text-white">Credit Risk Assessment Model</h4>
+                            <p class="text-lg text-indigo-400 mb-2">Key Skills: Excel, Financial Modelling</p>
+                            <p class="text-gray-400">Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.</p>
+                        </div>
+                         <div class="text-center mt-8">
+                            <a onclick="showPage('projects')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View All Projects &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <textarea rows="6" placeholder="Tell us about your vision..." required></textarea>
-                </div>
-                <button type="submit" class="cta-button" style="width: 100%;">Launch Project</button>
-            </form>
-        </div>
-    </section>
+            </section>
 
+            <section class="py-16">
+                <div class="container mx-auto px-6 text-center">
+                    <h3 class="text-4xl font-bold mb-4 text-white">Let's Connect</h3>
+                    <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">I'm currently seeking new opportunities and would love to hear from you. Feel free to reach out.</p>
+                    <a href="mailto:contactmadhava@gmail.com" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
+                        contactmadhava@gmail.com
+                    </a>
+                    <div class="flex justify-center space-x-6 mt-10">
+                        <a href="https://www.linkedin.com/in/example" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors duration-300">
+                            <i class="fab fa-linkedin fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Page 2: Experience -->
+        <div id="page-experience" class="page">
+            <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-20 text-white">Work Experience</h3>
+                    <div class="relative timeline">
+                        <!-- Experience Items will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 3: Projects -->
+        <div id="page-projects" class="page">
+             <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Projects</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="p-6 rounded-lg glass-effect">
+                            <h4 class="text-xl font-bold text-indigo-400">Credit Risk Assessment Model</h4>
+                            <p class="text-gray-400 mt-2">Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.</p>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Excel</span>
+                                <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Financial Modelling</span>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-lg glass-effect">
+                            <h4 class="text-xl font-bold text-indigo-400">Investment Portfolio Dashboard</h4>
+                            <p class="text-gray-400 mt-2">Designed and built an interactive dashboard in Tableau to visualize the performance of various investment opportunities and calculate covenants.</p>
+                             <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Tableau</span>
+                                <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Data Visualization</span>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-lg glass-effect">
+                            <h4 class="text-xl font-bold text-indigo-400">Anti-Corruption Due Diligence Automation</h4>
+                            <p class="text-gray-400 mt-2">A conceptual project to streamline due diligence processes using Boolean search strings and database APIs to flag potential conflicts of interest.</p>
+                             <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Process Improvement</span>
+                                 <span class="bg-gray-700 text-gray-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">Boolean Strings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 4: Education & Skills -->
+        <div id="page-education" class="page">
+            <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Education</h3>
+                    <div class="grid md:grid-cols-2 gap-8" id="education-container">
+                        <!-- Education items will be injected here -->
+                    </div>
+                </div>
+            </section>
+            <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center" id="skills-container">
+                       <!-- Skills will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center text-gray-500 relative z-10">
+        <p>&copy; 2024 Madhava Reddy Arimanda. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Custom Cursor
-        const cursor = document.querySelector('.cursor');
-        const trails = [];
-
-        // Create cursor trails
-        for (let i = 0; i < 20; i++) {
-            const trail = document.createElement('div');
-            trail.className = 'cursor-trail';
-            document.body.appendChild(trail);
-            trails.push(trail);
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            // Animate trails
-            trails.forEach((trail, index) => {
-                setTimeout(() => {
-                    trail.style.left = e.clientX + 'px';
-                    trail.style.top = e.clientY + 'px';
-                    trail.style.opacity = (20 - index) / 20;
-                }, index * 30);
-            });
+        // Particles.js configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#6366f1" },
+                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+                "opacity": { "value": 0.5, "random": false, "anim": { "enable": false } },
+                "size": { "value": 3, "random": true, "anim": { "enable": false } },
+                "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
         });
 
-        // Generate Interactive Cubes
-        function createCube(x, y) {
-            const cube = document.createElement('div');
-            cube.className = 'cube';
-            cube.style.left = x + 'px';
-            cube.style.top = y + 'px';
-            cube.style.animationDelay = Math.random() * 6 + 's';
+        // Page navigation logic
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-            const faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
-            faces.forEach(face => {
-                const faceElement = document.createElement('div');
-                faceElement.className = `cube-face ${face}`;
-                cube.appendChild(faceElement);
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
             });
-
-            // Add hover interaction
-            cube.addEventListener('mouseenter', () => {
-                cube.style.transform = 'scale(1.2) rotateX(45deg) rotateY(45deg)';
-                cube.style.transition = 'transform 0.3s ease';
-            });
-
-            cube.addEventListener('mouseleave', () => {
-                cube.style.transform = 'scale(1)';
-            });
-
-            return cube;
-        }
-
-        // Generate random cubes
-        const cubeContainer = document.querySelector('.cube-container');
-        for (let i = 0; i < 15; i++) {
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            cubeContainer.appendChild(createCube(x, y));
-        }
-
-        // Scroll Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick') === `showPage('${pageId}')`) {
+                    link.classList.add('active');
                 }
             });
-        }, observerOptions);
+            window.scrollTo(0, 0);
+        }
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
+        // Dynamic content injection
+        const experienceContainer = document.querySelector('#page-experience .timeline');
+        const skillsContainer = document.getElementById('skills-container');
+        const educationContainer = document.getElementById('education-container');
+
+        const experiences = [
+            {
+                date: 'Jun 2024 - Present',
+                title: 'Risk and Brand Protection Analyst',
+                company: 'Deloitte, Hyderabad',
+                duties: [
+                    'Maintained and validated client data to ensure compliance with regulations.',
+                    'Performed conflict-of-interest reviews and due diligence.',
+                    'Collaborated on confidentiality and privacy risk-mitigation programs.'
+                ]
+            },
+            {
+                date: 'Jun 2023 - Jul 2023',
+                title: 'Portfolio Management Intern',
+                company: 'Oxane Partners, Hyderabad',
+                duties: [
+                    'Managed financial risks associated with candidate onboarding.',
+                    'Analyzed internal and external databases for potential matches.'
+                ]
+            },
+            {
+                date: 'Jan 2022 - Aug 2022',
+                title: 'Talent Acquisition Specialist',
+                company: 'SSi People, Bangalore',
+                duties: [
+                    'Conducted analysis of financial statements to identify trends.',
+                    'Developed complex financial models using Microsoft Excel.',
+                    'Analyzed loan agreements for effective portfolio management.'
+                ]
+            }
+        ];
+
+        const skills = ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'];
+        
+        const educations = [
+            {
+                degree: 'Masters of Business Administration',
+                school: 'GITAM School of Business, Visakhapatnam',
+                date: 'Aug 2022 - May 2024',
+                details: 'CGPA: 8.46 (1st Year)'
+            },
+            {
+                degree: 'Bachelor of Business Administration',
+                school: 'Dayananda Sagar Institutions, Bangalore',
+                date: 'May 2018 - Aug 2021',
+                details: 'CGPA: 9.0 (A+ Grade)'
+            }
+        ];
+
+        experiences.forEach(exp => {
+            const item = document.createElement('div');
+            item.className = 'timeline-item';
+            item.innerHTML = `
+                <div class="timeline-dot"></div>
+                <div class="p-6 rounded-lg glass-effect">
+                    <p class="text-sm text-indigo-400">${exp.date}</p>
+                    <h4 class="text-xl font-bold my-2 text-white">${exp.title}</h4>
+                    <p class="text-lg font-semibold text-gray-300 mb-3">${exp.company}</p>
+                    <ul class="list-disc list-inside text-gray-400 space-y-2">
+                        ${exp.duties.map(duty => `<li>${duty}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            experienceContainer.appendChild(item);
         });
 
-        // Parallax Effect for Cubes
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const cubes = document.querySelectorAll('.cube');
-            
-            cubes.forEach((cube, index) => {
-                const speed = (index % 3 + 1) * 0.1;
-                cube.style.transform += ` translateY(${scrolled * speed}px)`;
-            });
+        skills.forEach(skill => {
+            const item = document.createElement('div');
+            item.className = 'p-6 rounded-lg glass-effect flex items-center justify-center';
+            item.innerHTML = `<p class="text-lg font-semibold text-white">${skill}</p>`;
+            skillsContainer.appendChild(item);
         });
 
-        // Mouse Movement Effect on Cubes
-        document.addEventListener('mousemove', (e) => {
-            const cubes = document.querySelectorAll('.cube');
-            const mouseX = e.clientX / window.innerWidth;
-            const mouseY = e.clientY / window.innerHeight;
-            
-            cubes.forEach((cube, index) => {
-                const speed = (index % 3 + 1) * 20;
-                const x = (mouseX - 0.5) * speed;
-                const y = (mouseY - 0.5) * speed;
-                
-                cube.style.transform += ` translate3d(${x}px, ${y}px, 0)`;
-            });
+        educations.forEach(edu => {
+             const item = document.createElement('div');
+             item.className = 'p-6 rounded-lg glass-effect';
+             item.innerHTML = `
+                <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
+                <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
+                <p class="text-gray-400">${edu.date}</p>
+                <p class="text-gray-400">${edu.details}</p>
+             `;
+             educationContainer.appendChild(item);
         });
 
-        // Form Submission
-        document.querySelector('.contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Message sent to the future! We\'ll be in touch soon.');
-        });
     </script>
 </body>
 </html>
