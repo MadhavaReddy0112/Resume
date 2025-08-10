@@ -54,7 +54,8 @@
         .timeline-line-progress {
             position: absolute;
             width: 2px;
-            background: linear-gradient(to bottom, #818cf8, #4f46e5);
+            /* Updated gradient for a more vibrant look */
+            background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981);
             top: 0;
             left: 1rem;
             height: 0; /* Initially hidden */
@@ -62,7 +63,8 @@
         }
         .timeline-item {
             position: relative;
-            padding-left: 4rem;
+            /* Reduced padding for less space */
+            padding-left: 3rem; 
             margin-bottom: 3rem;
             opacity: 0;
             transform: translateY(20px);
@@ -75,8 +77,9 @@
         }
         .timeline-icon {
             position: absolute;
-            width: 3rem; 
-            height: 3rem; 
+            /* Increased size for bigger logos */
+            width: 3.5rem; 
+            height: 3.5rem; 
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -95,7 +98,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 6px; 
+            padding: 8px; /* Adjusted padding for new size */
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); }
@@ -110,18 +113,17 @@
                 transform: translateX(-50%);
             }
             .timeline-item { width: 50%; padding-left: 0; margin-bottom: 4rem; }
-            .timeline-item:nth-child(odd) { left: 0; padding-right: 4rem; text-align: right; }
-            .timeline-item:nth-child(even) { left: 50%; padding-left: 4rem; text-align: left; }
+            /* Reduced padding for less space */
+            .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
+            .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; }
             .timeline-icon { top: 0; left: 50%; }
-            /* This rule places the icon for ODD items on the RIGHT */
             .timeline-item:nth-child(odd) .timeline-icon {
                 left: auto;
-                right: -1.5rem;
+                right: -1.75rem; /* Adjusted for new icon size */
                 transform: translateX(50%);
             }
-            /* This rule places the icon for EVEN items on the LEFT */
             .timeline-item:nth-child(even) .timeline-icon {
-                left: -1.5rem;
+                left: -1.75rem; /* Adjusted for new icon size */
                 transform: translateX(-50%);
             }
         }
@@ -135,11 +137,36 @@
         @media (min-width: 768px) { .nav-link { padding: 0.75rem 1.5rem; font-size: 1rem; } }
         .nav-link.active { background-color: rgba(255, 255, 255, 0.2); color: #fff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
         .nav-link:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        /* Success Popup Toast */
+        #success-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #22c55e; /* Green */
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        #success-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -10px);
+        }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
 
     <div id="particles-js"></div>
+    <div id="success-toast">
+        <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
+    </div>
 
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
@@ -185,7 +212,8 @@
                 snapshots: [
                     { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" },
                     { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" },
-                    { title: "Qualifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" }
+                    // Changed title from "Qualifications Snapshot"
+                    { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" }
                 ],
                 experiences: [
                     { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' },
@@ -250,7 +278,7 @@
                     <section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section>
                     <section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>
                     ${snapshotsHTML}
-                    <section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Let's Connect</h3><div class="max-w-xl mx-auto"><form action="https://formspree.io/f/mgvzryjy" method="POST" class="w-full p-8 rounded-lg glass-effect mb-12"><p class="text-gray-300 mb-6 text-lg">Have a question or want to work together? Fill out the form below.</p><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><button type="submit" class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button></form><p class="text-lg text-gray-400 mb-4">You can also find me on LinkedIn.</p><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></div></section>
+                    <section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Let's Connect</h3><div class="max-w-xl mx-auto"><form id="contact-form" class="w-full p-8 rounded-lg glass-effect mb-8"><p class="text-gray-300 mb-6 text-lg">Have a question or want to work together? Fill out the form below.</p><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>
                 `;
                 mainContainer.appendChild(page);
             };
@@ -314,12 +342,14 @@
                 mainContainer.appendChild(page);
             };
 
+            // --- INITIALIZE PAGES & LOGIC ---
             createHomePage();
             createExperiencePage();
             createProjectsPage();
             createCertificationsPage();
             createResumePage();
             
+            // --- EXPERIENCE TIMELINE LOGIC ---
             const timelineContainer = document.getElementById('experience-container');
             if (timelineContainer) {
                 const timelineProgress = document.getElementById('timeline-progress');
@@ -354,9 +384,47 @@
                 updateTimeline();
             }
 
+            // --- CONTACT FORM LOGIC ---
+            const contactForm = document.getElementById('contact-form');
+            const successToast = document.getElementById('success-toast');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    
+                    fetch("https://formspree.io/f/contactmadhava@gmail.com", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            showSuccessToast();
+                            contactForm.reset();
+                        } else {
+                            // Optional: Handle errors, e.g., show an error toast
+                            alert("Oops! There was a problem submitting your form.");
+                        }
+                    }).catch(error => {
+                        // Optional: Handle network errors
+                        alert("Oops! There was a network error.");
+                    });
+                });
+            }
+
+            function showSuccessToast() {
+                if (!successToast) return;
+                successToast.classList.add('show');
+                setTimeout(() => {
+                    successToast.classList.remove('show');
+                }, 4000); // Hide after 4 seconds
+            }
+
+            // --- PARTICLES.JS BACKGROUND ---
             particlesJS("particles-js", { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         });
     </script>
 </body>
 </html>
-
