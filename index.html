@@ -36,19 +36,40 @@
         .glow-effect {
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
         }
-        .timeline::before {
+        
+        /* --- Animated Timeline Styles --- */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::before {
             content: '';
             position: absolute;
             width: 2px;
-            background-image: linear-gradient(to bottom, #6366f1, #4338ca);
-            left: 1rem; /* Adjusted for mobile */
+            background-color: #374151; /* Base line color */
             top: 0;
             bottom: 0;
+            left: 1rem;
+        }
+        #timeline-progress {
+            position: absolute;
+            width: 2px;
+            background-image: linear-gradient(to bottom, #6366f1, #4338ca);
+            top: 0;
+            left: 1rem;
+            height: 0; /* Initially hidden */
+            transition: height 0.3s ease-out;
         }
         .timeline-item {
             position: relative;
-            padding-left: 3rem; /* Adjusted for mobile */
+            padding-left: 3rem;
             margin-bottom: 2rem;
+            opacity: 0; /* Initially hidden for animation */
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .timeline-dot {
             content: '';
@@ -66,7 +87,7 @@
         }
 
         @media (min-width: 768px) { /* md breakpoint */
-            .timeline::before {
+            .timeline-container::before, #timeline-progress {
                 left: 50%;
                 transform: translateX(-50%);
             }
@@ -95,53 +116,16 @@
                 left: -8px;
             }
         }
+        
+        .page { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .nav-container {
-            display: inline-block;
-            background: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            padding: 0.5rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .nav-link {
-            padding: 0.5rem 1rem; /* Smaller padding for mobile */
-            border-radius: 9999px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            color: #e5e5e5;
-            cursor: pointer;
-            font-size: 0.875rem; /* Smaller font size for mobile */
-        }
-         @media (min-width: 768px) { /* md breakpoint */
-            .nav-link {
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
-            }
-         }
-        .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        .nav-link:not(.active):hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
+        .nav-container { display: inline-block; background: rgba(30, 30, 30, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; padding: 0.5rem; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .nav-link { padding: 0.5rem 1rem; border-radius: 9999px; transition: all 0.3s ease; font-weight: 500; color: #e5e5e5; cursor: pointer; font-size: 0.875rem; }
+        @media (min-width: 768px) { .nav-link { padding: 0.75rem 1.5rem; font-size: 1rem; } }
+        .nav-link.active { background-color: rgba(255, 255, 255, 0.2); color: #fff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+        .nav-link:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
     </style>
 </head>
 <body class="antialiased">
@@ -151,170 +135,15 @@
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
         <div class="container mx-auto flex justify-center items-center px-4">
             <div class="nav-container">
-                <nav class="flex items-center space-x-1 md:space-x-2">
-                    <a onclick="showPage('home')" class="nav-link active">Home</a>
-                    <a onclick="showPage('experience-skills')" class="nav-link">Experience</a>
-                    <a onclick="showPage('projects')" class="nav-link">Projects</a>
-                    <a onclick="showPage('education')" class="nav-link">Education</a>
-                    <a onclick="showPage('resume')" class="nav-link">Resume</a>
+                <nav class="flex items-center space-x-1 md:space-x-2" id="main-nav">
+                    <!-- Nav links injected by JS -->
                 </nav>
             </div>
         </div>
     </header>
 
     <main class="pt-24 relative z-10">
-        <!-- Page 1: Home -->
-        <div id="page-home" class="page active">
-            <section class="container mx-auto px-6 py-16">
-                 <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left">
-                    <!-- Left Column: Image -->
-                    <div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0">
-                        <img src="Profile.jpg" alt="Madhava Reddy Arimanda" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;">
-                    </div>
-                    <!-- Right Column: Text -->
-                    <div>
-                        <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">Madhava Reddy Arimanda</h2>
-                        <p class="text-lg md:text-xl text-gray-400 max-w-3xl">
-                            Business management professional skilled in financial analysis, credit-risk assessment, and process governance.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-12">
-                <div class="container mx-auto px-6">
-                     <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3>
-                    <div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">
-                        I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track.
-                    </div>
-                </div>
-            </section>
-            
-            <section class="py-12">
-                 <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Career Snapshot</h3>
-                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
-                        <div class="border-l-2 border-indigo-500 pl-6">
-                            <h4 class="text-xl font-bold text-white">Risk and Brand Protection Analyst</h4>
-                            <p class="text-lg text-indigo-400 mb-2">Deloitte, Hyderabad (Jun 2024 - Present)</p>
-                            <p class="text-gray-400">Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.</p>
-                        </div>
-                         <div class="text-center mt-8">
-                            <a onclick="showPage('experience-skills')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View Detailed Experience &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="py-12">
-                 <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Project Highlights</h3>
-                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
-                        <div class="border-l-2 border-indigo-500 pl-6">
-                            <h4 class="text-xl font-bold text-white">Financial Model for Chipotle Mexican Grill</h4>
-                            <p class="text-lg text-indigo-400 mb-2">Key Skills: Excel, Financial Modelling</p>
-                            <p class="text-gray-400">Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.</p>
-                        </div>
-                         <div class="text-center mt-8">
-                            <a onclick="showPage('projects')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View All Projects &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-16">
-                <div class="container mx-auto px-6 text-center">
-                    <h3 class="text-3xl md:text-4xl font-bold mb-4 text-white">Let's Connect</h3>
-                    <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">I'm currently seeking new opportunities and would love to hear from you. Feel free to reach out via LinkedIn.</p>
-                    <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
-                        <i class="fab fa-linkedin"></i>
-                        Connect on LinkedIn
-                    </a>
-                </div>
-            </section>
-        </div>
-        
-        <!-- Page 2: Experience & Skills -->
-        <div id="page-experience-skills" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3>
-                    <div class="relative timeline" id="experience-container">
-                        <!-- Experience Items will be injected here -->
-                    </div>
-                </div>
-            </section>
-             <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center" id="skills-container">
-                       <!-- Skills will be injected here -->
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Page 3: Projects -->
-        <div id="page-projects" class="page">
-             <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Projects</h3>
-                    <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-4xl mx-auto">
-                        <div class="p-6 md:p-8 rounded-lg" style="background-color: #3c2d28; border: 1px solid #8a7a74;">
-                            <h4 class="text-xl md:text-2xl font-bold" style="color: #f4f1ee;">Financial Model for Chipotle Mexican Grill</h4>
-                            <p style="color: #d8cec5;" class="mt-2 mb-6">A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.</p>
-                            
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Dashboard" alt="Project Screenshot 1" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Revenue+Forecast" alt="Project Screenshot 2" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Cost+Analysis" alt="Project Screenshot 3" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Valuation" alt="Project Screenshot 4" class="rounded-lg w-full h-full object-cover">
-                            </div>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-4">
-                                <div class="flex flex-wrap gap-2">
-                                    <span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">Excel</span>
-                                    <span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">Financial Modelling</span>
-                                </div>
-                                <a href="Chipotle-Financial-Model.xlsx" download="Chipotle-Financial-Model.xlsx" class="w-full sm:w-auto sm:ml-auto text-white font-bold py-2 px-4 rounded-lg text-sm transition-all duration-300 inline-flex items-center justify-center gap-2" style="background-color: #8c1515; hover:background-color: #a82a2a;">
-                                    <i class="fas fa-download"></i>
-                                    Download Model
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Page 4: Education -->
-        <div id="page-education" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3>
-                    <div class="grid md:grid-cols-2 gap-8" id="education-container">
-                        <!-- Education items will be injected here -->
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Page 5: Resume -->
-        <div id="page-resume" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3>
-                    <div class="max-w-5xl mx-auto p-2 md:p-4 rounded-lg glass-effect">
-                         <img src="https://i.imgur.com/O1fX1gY.jpeg" alt="Madhava Reddy Arimanda Resume" class="rounded-md w-full">
-                    </div>
-                     <div class="text-center mt-8">
-                        <a href="Madhava Reddy Arimanda.pdf" download="Madhava Reddy Arimanda.pdf" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
-                            Download PDF Version
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </div>
+        <!-- All pages will be injected here by JS -->
     </main>
 
     <!-- Footer -->
@@ -324,100 +153,249 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Particles.js configuration
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#6366f1" },
-                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
-                "opacity": { "value": 0.5, "random": false, "anim": { "enable": false } },
-                "size": { "value": 3, "random": true, "anim": { "enable": false } },
-                "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
-            },
-            "retina_detect": true
-        });
-
-        // Page navigation logic
-        const pages = document.querySelectorAll('.page');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        function showPage(pageId) {
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick') === `showPage('${pageId}')`) {
-                    link.classList.add('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const portfolioData = {
+                pages: [
+                    { id: 'home', label: 'Home' },
+                    { id: 'experience', label: 'Experience' },
+                    { id: 'projects', label: 'Projects' },
+                    { id: 'education', label: 'Education' },
+                    { id: 'resume', label: 'Resume' }
+                ],
+                home: {
+                    name: "Madhava Reddy Arimanda",
+                    title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.",
+                    imageUrl: "https://i.imgur.com/8F8wY8G.jpg",
+                },
+                about: {
+                    title: "About Me",
+                    description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."
+                },
+                snapshots: [
+                    { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" },
+                    { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" },
+                    { title: "Education Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business, Visakhapatnam", description: "Specialized in Finance & Marketing, developing a strong foundation in business strategy and financial analytics.", link: "education", linkText: "View Full Education" }
+                ],
+                experiences: [
+                    { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'] },
+                    { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'] },
+                    { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'] }
+                ],
+                skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'],
+                projects: {
+                    title: "Financial Model for Chipotle Mexican Grill",
+                    description: "A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.",
+                    images: ["https://placehold.co/600x400/8c1515/f4f1ee?text=Dashboard", "https://placehold.co/600x400/8c1515/f4f1ee?text=Revenue+Forecast", "https://placehold.co/600x400/8c1515/f4f1ee?text=Cost+Analysis", "https://placehold.co/600x400/8c1515/f4f1ee?text=Valuation"],
+                    tags: ["Excel", "Financial Modelling"],
+                    fileUrl: "Chipotle-Financial-Model.xlsx"
+                },
+                educations: [
+                    { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)', theme: { bg: 'rgba(0, 47, 85, 0.5)', border: '#005a9c', text: '#00aef0' } },
+                    { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)', theme: { bg: 'rgba(18, 58, 114, 0.5)', border: '#e42329', text: '#fdb913' } }
+                ],
+                certifications: [
+                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' },
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' }
+                ],
+                resume: {
+                    imageUrl: "https://i.imgur.com/O1fX1gY.jpeg",
+                    pdfUrl: "Madhava Reddy Arimanda.pdf"
                 }
+            };
+
+            const mainContainer = document.querySelector('main');
+            const navContainer = document.getElementById('main-nav');
+
+            // --- PAGE NAVIGATION ---
+            const showPage = (pageId) => {
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                document.getElementById(`page-${pageId}`).classList.add('active');
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.pageId === pageId) {
+                        link.classList.add('active');
+                    }
+                });
+                window.scrollTo(0, 0);
+            };
+
+            // --- BUILD NAVIGATION ---
+            portfolioData.pages.forEach(page => {
+                const link = document.createElement('a');
+                link.className = 'nav-link';
+                if (page.id === 'home') link.classList.add('active');
+                link.textContent = page.label;
+                link.dataset.pageId = page.id;
+                link.onclick = () => showPage(page.id);
+                navContainer.appendChild(link);
             });
-            window.scrollTo(0, 0);
-        }
 
-        // Dynamic content injection
-        const experienceContainer = document.getElementById('experience-container');
-        const skillsContainer = document.getElementById('skills-container');
-        const educationContainer = document.getElementById('education-container');
+            // --- BUILD PAGES ---
+            const createHomePage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-home';
+                page.className = 'page active';
+                
+                const snapshotsHTML = portfolioData.snapshots.map(s => `
+                    <section class="py-12">
+                        <div class="container mx-auto px-6">
+                            <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3>
+                            <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
+                                <div class="border-l-2 border-indigo-500 pl-6">
+                                    <h4 class="text-xl font-bold text-white">${s.position}</h4>
+                                    <p class="text-lg text-indigo-400 mb-2">${s.company}</p>
+                                    <p class="text-gray-400">${s.description}</p>
+                                </div>
+                                <div class="text-center mt-8">
+                                    <a onclick="document.querySelector('[data-page-id=${s.link}]').click()" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `).join('');
 
-        const experiences = [
-            { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'] },
-            { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'] },
-            { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'] }
-        ];
+                page.innerHTML = `
+                    <section class="container mx-auto px-6 py-16">
+                        <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left">
+                            <div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0">
+                                <img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;">
+                            </div>
+                            <div>
+                                <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2>
+                                <p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>
+                    ${snapshotsHTML}
+                    <section class="py-16">
+                        <div class="container mx-auto px-6 text-center">
+                            <h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Contact Me</h3>
+                            <div class="max-w-2xl mx-auto p-8 rounded-lg glass-effect">
+                                <p class="text-gray-300 mb-6">Have a question or want to work together? Leave your details and I'll get back to you.</p>
+                                <form id="contact-form" action="https://formspree.io/f/YOUR_UNIQUE_ID" method="POST">
+                                    <div class="mb-4"><input type="text" name="name" placeholder="Your Name" class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required></div>
+                                    <div class="mb-4"><input type="email" name="email" placeholder="Your Email" class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required></div>
+                                    <div class="mb-4"><textarea name="message" placeholder="Your Message" rows="4" class="w-full bg-gray-800/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" required></textarea></div>
+                                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-all duration-300 glow-effect">Send Message</button>
+                                </form>
+                                <p class="text-xs text-gray-500 mt-4">Note: This form uses Formspree. You'll need to replace "YOUR_UNIQUE_ID" in the code with your own Formspree endpoint.</p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+                mainContainer.appendChild(page);
+            };
 
-        const skills = ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'];
-        
-        const educations = [
-            { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)', logoUrl: 'https://i.imgur.com/x0262oP.png' },
-            { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)', logoUrl: 'https://i.imgur.com/Y1jH0aB.png' }
-        ];
+            const createExperiencePage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-experience';
+                page.className = 'page';
+                const experiencesHTML = portfolioData.experiences.map(exp => `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="p-6 rounded-lg glass-effect">
+                            <p class="text-sm text-indigo-400">${exp.date}</p>
+                            <h4 class="text-xl font-bold my-2 text-white">${exp.title}</h4>
+                            <p class="text-lg font-semibold text-gray-300 mb-3">${exp.company}</p>
+                            <ul class="list-disc list-inside text-gray-400 space-y-2">
+                                ${exp.duties.map(duty => `<li>${duty}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `).join('');
+                const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
+                
+                page.innerHTML = `
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container">${experiencesHTML} <div id="timeline-progress"></div></div></div></section>
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>
+                `;
+                mainContainer.appendChild(page);
+            };
 
-        experiences.forEach(exp => {
-            const item = document.createElement('div');
-            item.className = 'timeline-item';
-            item.innerHTML = `
-                <div class="timeline-dot"></div>
-                <div class="p-6 rounded-lg glass-effect">
-                    <p class="text-sm text-indigo-400">${exp.date}</p>
-                    <h4 class="text-xl font-bold my-2 text-white">${exp.title}</h4>
-                    <p class="text-lg font-semibold text-gray-300 mb-3">${exp.company}</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-2">
-                        ${exp.duties.map(duty => `<li>${duty}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-            experienceContainer.appendChild(item);
+            const createProjectsPage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-projects';
+                page.className = 'page';
+                const p = portfolioData.projects;
+                page.innerHTML = `
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Projects</h3><div class="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-4xl mx-auto"><div class="p-6 md:p-8 rounded-lg" style="background-color: #3c2d28; border: 1px solid #8a7a74;"><h4 class="text-xl md:text-2xl font-bold" style="color: #f4f1ee;">${p.title}</h4><p style="color: #d8cec5;" class="mt-2 mb-6">${p.description}</p><div class="grid grid-cols-2 gap-4 mb-6">${p.images.map(img => `<img src="${img}" alt="Project Screenshot" class="rounded-lg w-full h-full object-cover">`).join('')}</div><div class="flex flex-col sm:flex-row items-center gap-4"><div class="flex flex-wrap gap-2">${p.tags.map(tag => `<span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">${tag}</span>`).join('')}</div><a href="${p.fileUrl}" download class="w-full sm:w-auto sm:ml-auto text-white font-bold py-2 px-4 rounded-lg text-sm transition-all duration-300 inline-flex items-center justify-center gap-2" style="background-color: #8c1515; hover:background-color: #a82a2a;"><i class="fas fa-download"></i>Download Model</a></div></div></div></div></section>
+                `;
+                mainContainer.appendChild(page);
+            };
+
+            const createEducationPage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-education';
+                page.className = 'page';
+                const educationsHTML = portfolioData.educations.map(edu => `
+                    <div class="p-8 rounded-lg glass-effect text-center" style="background: ${edu.theme.bg}; border-color: ${edu.theme.border};">
+                        <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
+                        <p class="text-lg mb-2" style="color: ${edu.theme.text};">${edu.school}</p>
+                        <p class="text-gray-400">${edu.date}</p>
+                        <p class="text-gray-400">${edu.details}</p>
+                    </div>
+                `).join('');
+                const certificationsHTML = portfolioData.certifications.map(cert => `
+                    <div class="p-6 rounded-lg glass-effect">
+                        <h4 class="text-lg font-bold text-white">${cert.name}</h4>
+                        <p class="text-indigo-400">${cert.issuer}</p>
+                    </div>
+                `).join('');
+                page.innerHTML = `
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid md:grid-cols-2 gap-8">${educationsHTML}</div></div></section>
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">${certificationsHTML}</div></div></section>
+                `;
+                mainContainer.appendChild(page);
+            };
+
+            const createResumePage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-resume';
+                page.className = 'page';
+                page.innerHTML = `
+                    <section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect" style="aspect-ratio: 1 / 1.414;"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>
+                `;
+                mainContainer.appendChild(page);
+            };
+
+            // --- INITIALIZE ---
+            createHomePage();
+            createExperiencePage();
+            createProjectsPage();
+            createEducationPage();
+            createResumePage();
+            
+            // --- ANIMATED TIMELINE LOGIC ---
+            const timeline = document.getElementById('experience-container');
+            const timelineProgress = document.getElementById('timeline-progress');
+            const timelineItems = document.querySelectorAll('.timeline-item');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            timelineItems.forEach(item => observer.observe(item));
+
+            const updateTimelineProgress = () => {
+                const { top, height } = timeline.getBoundingClientRect();
+                const scrollY = window.innerHeight - top;
+                const progress = Math.min(Math.max(0, scrollY / height), 1);
+                timelineProgress.style.height = `${progress * 100}%`;
+            };
+            
+            window.addEventListener('scroll', updateTimelineProgress);
+            updateTimelineProgress(); // Initial check
+
+            // --- PARTICLES.JS ---
+            particlesJS("particles-js", { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         });
-
-        skills.forEach(skill => {
-            const item = document.createElement('div');
-            item.className = 'p-6 rounded-lg glass-effect flex items-center justify-center';
-            item.innerHTML = `<p class="text-lg font-semibold text-white">${skill}</p>`;
-            skillsContainer.appendChild(item);
-        });
-
-        educations.forEach(edu => {
-             const item = document.createElement('div');
-             item.className = 'p-8 rounded-lg glass-effect text-center';
-             item.innerHTML = `
-                <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="h-20 mx-auto mb-6 object-contain">
-                <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
-                <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
-                <p class="text-gray-400">${edu.date}</p>
-                <p class="text-gray-400">${edu.details}</p>
-             `;
-             educationContainer.appendChild(item);
-        });
-
     </script>
 </body>
 </html>
-
