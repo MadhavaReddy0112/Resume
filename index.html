@@ -3,436 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhava Reddy Arimanda</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e5e5;
-            overflow-x: hidden;
-        }
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-        .glass-effect {
-            background: rgba(17, 17, 17, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .glass-effect:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        }
-        .glow-effect {
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background-image: linear-gradient(to bottom, #6366f1, #4338ca);
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            transform: translateX(-50%);
-        }
-        .timeline-item {
-            position: relative;
-            width: 50%;
-        }
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            padding-right: 2rem;
-        }
-        .timeline-item:nth-child(even) {
-            left: 50%;
-            padding-left: 2rem;
-        }
-        .timeline-dot {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background-color: #6366f1;
-            border-radius: 50%;
-            border: 3px solid #0a0a0a;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-            box-shadow: 0 0 10px #6366f1;
-        }
-        .timeline-item:nth-child(odd) .timeline-dot {
-            right: -8px;
-            left: auto;
-        }
-        .timeline-item:nth-child(even) .timeline-dot {
-            left: -8px;
-        }
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Apple-like glass menu styles */
-        .nav-container {
-            display: inline-block;
-            background: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            padding: 0.5rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .nav-link {
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            color: #e5e5e5;
-            cursor: pointer;
-        }
-        .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-        }
-        .nav-link:not(.active):hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-    </style>
+    <title>Madhava Reddy Arimanda | Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="antialiased">
-    <div id="particles-js"></div>
-
-    <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 py-4">
-        <div class="container mx-auto flex justify-center items-center">
-            <div class="nav-container">
-                <nav class="flex items-center space-x-2">
-                    <a onclick="showPage('home')" class="nav-link active">Home</a>
-                    <a onclick="showPage('experience-skills')" class="nav-link">Experience & Skills</a>
-                    <a onclick="showPage('projects')" class="nav-link">Projects</a>
-                    <a onclick="showPage('education')" class="nav-link">Education</a>
-                    <a onclick="showPage('resume')" class="nav-link">Resume</a>
-                </nav>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">MR</div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="pt-24 relative z-10">
-        <!-- Page 1: Home -->
-        <div id="page-home" class="page active">
-            <section class="container mx-auto px-6 py-16">
-                 <div class="flex flex-col md:flex-row items-center justify-center gap-12 text-center md:text-left">
-                    <!-- Left Column: Image -->
-                    <div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0">
-                        <img src="Profile.jpg" alt="Madhava Reddy Arimanda" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="glitch-text" data-text="Madhava Reddy Arimanda">Madhava Reddy Arimanda</h1>
+                    <div class="typewriter">
+                        <span id="typewriter-text"></span><span class="cursor">|</span>
                     </div>
-                    <!-- Right Column: Text -->
-                    <div>
-                        <h2 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight text-white">Madhava Reddy Arimanda</h2>
-                        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl">
-                            Business management professional skilled in financial analysis, credit-risk assessment, and process governance.
-                        </p>
+                    <p class="hero-description">Business management professional skilled in financial analysis, credit-risk assessment, and process governance.</p>
+                    <div class="hero-cta">
+                        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                        <a href="Madhava Reddy Arimanda.pdf" class="btn btn-secondary" target="_blank">Download CV</a>
                     </div>
                 </div>
-            </section>
-
-            <section class="py-12">
-                <div class="container mx-auto px-6">
-                     <h3 class="text-4xl font-bold text-center mb-12 text-white">About Me</h3>
-                    <div class="max-w-4xl mx-auto text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">
-                        I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track.
+                <div class="hero-image">
+                    <div class="profile-container">
+                        <img src="Profile.jpg" alt="Madhava Reddy Arimanda" class="profile-img">
+                        <div class="profile-glow"></div>
                     </div>
                 </div>
-            </section>
-            
-            <section class="py-12">
-                 <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Career Snapshot</h3>
-                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
-                        <div class="border-l-2 border-indigo-500 pl-6">
-                            <h4 class="text-xl font-bold text-white">Risk and Brand Protection Analyst</h4>
-                            <p class="text-lg text-indigo-400 mb-2">Deloitte, Hyderabad (Jun 2024 - Present)</p>
-                            <p class="text-gray-400">Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.</p>
-                        </div>
-                         <div class="text-center mt-8">
-                            <a onclick="showPage('experience-skills')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View Detailed Experience &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="py-12">
-                 <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Project Highlights</h3>
-                     <div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect">
-                        <div class="border-l-2 border-indigo-500 pl-6">
-                            <h4 class="text-xl font-bold text-white">Financial Model for Chipotle Mexican Grill</h4>
-                            <p class="text-lg text-indigo-400 mb-2">Key Skills: Excel, Financial Modelling</p>
-                            <p class="text-gray-400">Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.</p>
-                        </div>
-                         <div class="text-center mt-8">
-                            <a onclick="showPage('projects')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">View All Projects &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-16">
-                <div class="container mx-auto px-6 text-center">
-                    <h3 class="text-4xl font-bold mb-4 text-white">Let's Connect</h3>
-                    <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">I'm currently seeking new opportunities and would love to hear from you. Feel free to reach out via LinkedIn.</p>
-                    <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
-                        <i class="fab fa-linkedin"></i>
-                        Connect on LinkedIn
-                    </a>
-                </div>
-            </section>
+            </div>
         </div>
-        
-        <!-- Page 2: Experience & Skills -->
-        <div id="page-experience-skills" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-20 text-white">Work Experience</h3>
-                    <div class="relative timeline" id="experience-container">
-                        <!-- Experience Items will be injected here -->
-                    </div>
-                </div>
-            </section>
-             <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center" id="skills-container">
-                       <!-- Skills will be injected here -->
-                    </div>
-                </div>
-            </section>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="arrow-down">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
+    </section>
 
-        <!-- Page 3: Projects -->
-        <div id="page-projects" class="page">
-             <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Projects</h3>
-                    <div class="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-4xl mx-auto">
-                        <div class="p-8 rounded-lg" style="background-color: #3c2d28; border: 1px solid #8a7a74;">
-                            <h4 class="text-2xl font-bold" style="color: #f4f1ee;">Financial Model for Chipotle Mexican Grill</h4>
-                            <p style="color: #d8cec5;" class="mt-2 mb-6">A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.</p>
-                            
-                            <!-- Image Gallery -->
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Dashboard" alt="Project Screenshot 1" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Revenue+Forecast" alt="Project Screenshot 2" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Cost+Analysis" alt="Project Screenshot 3" class="rounded-lg w-full h-full object-cover">
-                                <img src="https://placehold.co/600x400/8c1515/f4f1ee?text=Valuation" alt="Project Screenshot 4" class="rounded-lg w-full h-full object-cover">
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>About Me</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-content">
+                <p>I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis.</p>
+                <p>I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+        <div class="container">
+            <div class="section-header">
+                <h2>Work Experience</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jun 2024 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Risk and Brand Protection Analyst</h3>
+                        <h4>Deloitte, Hyderabad</h4>
+                        <ul>
+                            <li>Maintained and validated client data to ensure compliance with regulations.</li>
+                            <li>Performed conflict-of-interest reviews and due diligence.</li>
+                            <li>Collaborated on confidentiality and privacy risk-mitigation programs.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jun 2023 - Jul 2023</div>
+                    <div class="timeline-content">
+                        <h3>Portfolio Management Intern</h3>
+                        <h4>Oxane Partners, Hyderabad</h4>
+                        <ul>
+                            <li>Managed financial risks associated with candidate onboarding.</li>
+                            <li>Analyzed internal and external databases for potential matches.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jan 2022 - Aug 2022</div>
+                    <div class="timeline-content">
+                        <h3>Talent Acquisition Specialist</h3>
+                        <h4>SSi People, Bangalore</h4>
+                        <ul>
+                            <li>Conducted analysis of financial statements to identify trends.</li>
+                            <li>Developed complex financial models using Microsoft Excel.</li>
+                            <li>Analyzed loan agreements for effective portfolio management.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2>Projects</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="financial">Financial</button>
+                <button class="filter-btn" data-filter="analysis">Analysis</button>
+                <button class="filter-btn" data-filter="modeling">Modeling</button>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-category="financial modeling">
+                    <div class="project-img">
+                        <img src="https://via.placeholder.com/600x400" alt="Financial Model for Chipotle Mexican Grill">
+                    </div>
+                    <div class="project-info">
+                        <h3>Financial Model for Chipotle Mexican Grill</h3>
+                        <p>A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.</p>
+                        <div class="project-tags">
+                            <span>Excel</span>
+                            <span>Financial Modelling</span>
+                        </div>
+                        <button class="btn-view-project">View Details</button>
+                    </div>
+                </div>
+                <!-- More project cards can be added here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div class="project-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical Skills</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Financial</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Financial Modelling</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
                             </div>
-
-                            <div class="flex flex-wrap items-center gap-4">
-                                <span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">Excel</span>
-                                <span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">Financial Modelling</span>
-                                <a href="Chipotle-Financial-Model.xlsx" download="Chipotle-Financial-Model.xlsx" class="ml-auto text-white font-bold py-2 px-4 rounded-lg text-sm transition-all duration-300 inline-flex items-center gap-2" style="background-color: #8c1515; hover:background-color: #a82a2a;">
-                                    <i class="fas fa-download"></i>
-                                    Download Financial Model
-                                </a>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Project Management</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
-
-        <!-- Page 4: Education -->
-        <div id="page-education" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Education</h3>
-                    <div class="grid md:grid-cols-2 gap-8" id="education-container">
-                        <!-- Education items will be injected here -->
+                <div class="skill-category">
+                    <h3>Software</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Excel</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Tableau</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">SPSS</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="75"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
-
-        <!-- Page 5: Resume -->
-        <div id="page-resume" class="page">
-            <section class="py-16">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-4xl font-bold text-center mb-12 text-white">Resume</h3>
-                    <div class="max-w-5xl mx-auto p-4 rounded-lg glass-effect">
-                         <!-- Displaying the resume as an image -->
-                         <img src="https://i.imgur.com/O1fX1gY.jpeg" alt="Madhava Reddy Arimanda Resume" class="rounded-md w-full">
+                <div class="skill-category">
+                    <h3>Tools</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-name">Daxtra</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Boolean Strings</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Canva</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">PowerPoint</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">Outlook</div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
                     </div>
-                     <div class="text-center mt-8">
-                        <a href="Madhava Reddy Arimanda.pdf" download="Madhava Reddy Arimanda.pdf" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect hover:shadow-lg hover:shadow-indigo-500/50">
-                            Download PDF Version
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education">
+        <div class="container">
+            <div class="section-header">
+                <h2>Education</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="education-cards">
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="education-details">
+                        <h3>Masters of Business Administration</h3>
+                        <h4>GITAM School of Business, Visakhapatnam</h4>
+                        <p class="education-date">Aug 2022 - May 2024</p>
+                        <p class="education-grade">CGPA: 8.46 (1st Year)</p>
+                    </div>
+                </div>
+                <div class="education-card">
+                    <div class="education-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="education-details">
+                        <h3>Bachelor of Business Administration</h3>
+                        <h4>Dayananda Sagar Institutions, Bangalore</h4>
+                        <p class="education-date">May 2018 - Aug 2021</p>
+                        <p class="education-grade">CGPA: 9.0 (A+ Grade)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Let's Connect</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p>I'm currently seeking new opportunities and would love to hear from you. Feel free to reach out via LinkedIn or send me a message.</p>
+                    <div class="social-links">
+                        <a href="https://linkedin.com" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="mailto:example@email.com" class="social-link">
+                            <i class="far fa-envelope"></i>
                         </a>
                     </div>
                 </div>
-            </section>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <label for="name">Your Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            <label for="email">Your Email</label>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                            <label for="message">Your Message</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
 
     <!-- Footer -->
-    <footer class="py-6 text-center text-gray-500 relative z-10">
-        <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Madhava Reddy Arimanda. All Rights Reserved.</p>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // Particles.js configuration
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#6366f1" },
-                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
-                "opacity": { "value": 0.5, "random": false, "anim": { "enable": false } },
-                "size": { "value": 3, "random": true, "anim": { "enable": false } },
-                "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
-            },
-            "retina_detect": true
-        });
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-        // Page navigation logic
-        const pages = document.querySelectorAll('.page');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        function showPage(pageId) {
-            pages.forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('onclick') === `showPage('${pageId}')`) {
-                    link.classList.add('active');
-                }
-            });
-            window.scrollTo(0, 0);
-        }
-
-        // Dynamic content injection
-        const experienceContainer = document.getElementById('experience-container');
-        const skillsContainer = document.getElementById('skills-container');
-        const educationContainer = document.getElementById('education-container');
-
-        const experiences = [
-            {
-                date: 'Jun 2024 - Present',
-                title: 'Risk and Brand Protection Analyst',
-                company: 'Deloitte, Hyderabad',
-                duties: [
-                    'Maintained and validated client data to ensure compliance with regulations.',
-                    'Performed conflict-of-interest reviews and due diligence.',
-                    'Collaborated on confidentiality and privacy risk-mitigation programs.'
-                ]
-            },
-            {
-                date: 'Jun 2023 - Jul 2023',
-                title: 'Portfolio Management Intern',
-                company: 'Oxane Partners, Hyderabad',
-                duties: [
-                    'Managed financial risks associated with candidate onboarding.',
-                    'Analyzed internal and external databases for potential matches.'
-                ]
-            },
-            {
-                date: 'Jan 2022 - Aug 2022',
-                title: 'Talent Acquisition Specialist',
-                company: 'SSi People, Bangalore',
-                duties: [
-                    'Conducted analysis of financial statements to identify trends.',
-                    'Developed complex financial models using Microsoft Excel.',
-                    'Analyzed loan agreements for effective portfolio management.'
-                ]
-            }
-        ];
-
-        const skills = ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'];
-        
-        const educations = [
-            {
-                degree: 'Masters of Business Administration',
-                school: 'GITAM School of Business, Visakhapatnam',
-                date: 'Aug 2022 - May 2024',
-                details: 'CGPA: 8.46 (1st Year)',
-                logoUrl: 'https://i.imgur.com/x0262oP.png'
-            },
-            {
-                degree: 'Bachelor of Business Administration',
-                school: 'Dayananda Sagar Institutions, Bangalore',
-                date: 'May 2018 - Aug 2021',
-                details: 'CGPA: 9.0 (A+ Grade)',
-                logoUrl: 'https://i.imgur.com/Y1jH0aB.png'
-            }
-        ];
-
-        experiences.forEach(exp => {
-            const item = document.createElement('div');
-            item.className = 'timeline-item';
-            item.innerHTML = `
-                <div class="timeline-dot"></div>
-                <div class="p-6 rounded-lg glass-effect">
-                    <p class="text-sm text-indigo-400">${exp.date}</p>
-                    <h4 class="text-xl font-bold my-2 text-white">${exp.title}</h4>
-                    <p class="text-lg font-semibold text-gray-300 mb-3">${exp.company}</p>
-                    <ul class="list-disc list-inside text-gray-400 space-y-2">
-                        ${exp.duties.map(duty => `<li>${duty}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-            experienceContainer.appendChild(item);
-        });
-
-        skills.forEach(skill => {
-            const item = document.createElement('div');
-            item.className = 'p-6 rounded-lg glass-effect flex items-center justify-center';
-            item.innerHTML = `<p class="text-lg font-semibold text-white">${skill}</p>`;
-            skillsContainer.appendChild(item);
-        });
-
-        educations.forEach(edu => {
-             const item = document.createElement('div');
-             item.className = 'p-8 rounded-lg glass-effect text-center';
-             item.innerHTML = `
-                <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="h-20 mx-auto mb-6 object-contain">
-                <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
-                <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
-                <p class="text-gray-400">${edu.date}</p>
-                <p class="text-gray-400">${edu.details}</p>
-             `;
-             educationContainer.appendChild(item);
-        });
-
-    </script>
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
 </body>
 </html>
-
