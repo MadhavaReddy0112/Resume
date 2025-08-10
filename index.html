@@ -58,7 +58,7 @@
             top: 0;
             left: 1rem;
             height: 0; /* Initially hidden */
-            transition: height 0.5s ease-out; /* Slower animation */
+            transition: height 1.5s ease-out; /* Slower animation */
         }
         .timeline-item {
             position: relative;
@@ -111,10 +111,19 @@
             }
             .timeline-item { width: 50%; padding-left: 0; margin-bottom: 4rem; }
             .timeline-item:nth-child(odd) { left: 0; padding-right: 4rem; text-align: right; }
-            .timeline-item:nth-child(even) { left: 50%; padding-left: 4rem; }
+            .timeline-item:nth-child(even) { left: 50%; padding-left: 4rem; text-align: left; }
             .timeline-icon { top: 0; left: 50%; }
-            .timeline-item:nth-child(odd) .timeline-icon { right: -1.5rem; left: auto; }
-            .timeline-item:nth-child(even) .timeline-icon { left: -1.5rem; }
+            /* This rule places the icon for ODD items on the RIGHT */
+            .timeline-item:nth-child(odd) .timeline-icon {
+                left: auto;
+                right: -1.5rem;
+                transform: translateX(50%);
+            }
+            /* This rule places the icon for EVEN items on the LEFT */
+            .timeline-item:nth-child(even) .timeline-icon {
+                left: -1.5rem;
+                transform: translateX(-50%);
+            }
         }
         
         .page { display: none; animation: fadeIn 0.5s ease-in-out; }
@@ -241,7 +250,7 @@
                     <section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section>
                     <section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>
                     ${snapshotsHTML}
-                    <section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-4 text-white">Let's Connect</h3><p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">I'm actively seeking new opportunities. Feel free to reach out via email or connect with me on LinkedIn.</p><div class="flex flex-col sm:flex-row justify-center items-center gap-4"><a href="mailto:contactmadhava@gmail.com" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-envelope"></i>contactmadhava@gmail.com</a><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></div></section>
+                    <section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Let's Connect</h3><div class="max-w-xl mx-auto"><form action="https://formspree.io/f/contactmadhava@gmail.com" method="POST" class="w-full p-8 rounded-lg glass-effect mb-12"><p class="text-gray-300 mb-6 text-lg">Have a question or want to work together? Fill out the form below.</p><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><button type="submit" class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button></form><p class="text-lg text-gray-400 mb-4">You can also find me on LinkedIn.</p><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></div></section>
                 `;
                 mainContainer.appendChild(page);
             };
@@ -350,4 +359,3 @@
     </script>
 </body>
 </html>
-
