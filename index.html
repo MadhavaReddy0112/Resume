@@ -58,11 +58,11 @@
             top: 0;
             left: 1rem;
             height: 0; /* Initially hidden */
-            transition: height 0.2s ease-out;
+            transition: height 0.5s ease-out; /* Slower animation */
         }
         .timeline-item {
             position: relative;
-            padding-left: 3rem;
+            padding-left: 4rem;
             margin-bottom: 3rem;
             opacity: 0;
             transform: translateY(20px);
@@ -75,8 +75,8 @@
         }
         .timeline-icon {
             position: absolute;
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 3rem; 
+            height: 3rem; 
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -87,12 +87,15 @@
             z-index: 2;
             animation: pulse 2s infinite;
             overflow: hidden;
+            left: 1rem;
+            top: 0;
+            transform: translateX(-50%);
         }
         .timeline-icon img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 4px;
+            padding: 6px; 
         }
         @keyframes pulse {
             0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); }
@@ -107,11 +110,11 @@
                 transform: translateX(-50%);
             }
             .timeline-item { width: 50%; padding-left: 0; margin-bottom: 4rem; }
-            .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; }
-            .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; }
+            .timeline-item:nth-child(odd) { left: 0; padding-right: 4rem; text-align: right; }
+            .timeline-item:nth-child(even) { left: 50%; padding-left: 4rem; }
             .timeline-icon { top: 0; left: 50%; }
-            .timeline-item:nth-child(odd) .timeline-icon { right: -1.25rem; left: auto; }
-            .timeline-item:nth-child(even) .timeline-icon { left: -1.25rem; }
+            .timeline-item:nth-child(odd) .timeline-icon { right: -1.5rem; left: auto; }
+            .timeline-item:nth-child(even) .timeline-icon { left: -1.5rem; }
         }
         
         .page { display: none; animation: fadeIn 0.5s ease-in-out; }
@@ -125,7 +128,8 @@
         .nav-link:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased" oncontextmenu="return false;">
+
     <div id="particles-js"></div>
 
     <!-- Header -->
@@ -157,7 +161,7 @@
                     { id: 'home', label: 'Home' },
                     { id: 'experience', label: 'Experience' },
                     { id: 'projects', label: 'Projects' },
-                    { id: 'credentials', label: 'Credentials' },
+                    { id: 'certifications', label: 'Certifications' },
                     { id: 'resume', label: 'Resume' }
                 ],
                 home: {
@@ -172,10 +176,10 @@
                 snapshots: [
                     { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" },
                     { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" },
-                    { title: "Qualifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "credentials", linkText: "View All Credentials" }
+                    { title: "Qualifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" }
                 ],
                 experiences: [
-                    { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.svg.png' },
+                    { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'https://i.imgur.com/932k6cT.png' },
                     { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'https://i.imgur.com/4cWj2gB.png' },
                     { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'https://i.imgur.com/aE2kY2C.png' }
                 ],
@@ -250,9 +254,9 @@
                     <div class="timeline-item">
                         <div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div>
                         <div class="p-6 rounded-lg glass-effect">
-                            <p class="text-sm text-indigo-400">${exp.date}</p>
-                            <h4 class="text-xl font-bold my-2 text-white">${exp.title}</h4>
-                            <p class="text-lg font-semibold text-gray-300 mb-3">${exp.company}</p>
+                            <h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4>
+                            <p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p>
+                            <p class="text-sm text-indigo-400 mb-3">${exp.date}</p>
                             <ul class="list-disc list-inside text-gray-400 space-y-2">
                                 ${exp.duties.map(duty => `<li>${duty}</li>`).join('')}
                             </ul>
@@ -278,9 +282,9 @@
                 mainContainer.appendChild(page);
             };
 
-            const createCredentialsPage = () => {
+            const createCertificationsPage = () => {
                 const page = document.createElement('div');
-                page.id = 'page-credentials';
+                page.id = 'page-certifications';
                 page.className = 'page';
                 const certificationsHTML = portfolioData.certifications.map(cert => `<div class="p-6 rounded-lg glass-effect"><h4 class="text-lg font-bold text-white">${cert.name}</h4><p class="text-indigo-400">${cert.issuer}</p></div>`).join('');
                 const educationsHTML = portfolioData.educations.map(edu => `<div class="p-8 rounded-lg glass-effect text-center"><h4 class="text-xl font-bold text-white">${edu.degree}</h4><p class="text-lg text-indigo-400 mb-2">${edu.school}</p><p class="text-gray-400">${edu.date}</p><p class="text-gray-400">${edu.details}</p></div>`).join('');
@@ -304,7 +308,7 @@
             createHomePage();
             createExperiencePage();
             createProjectsPage();
-            createCredentialsPage();
+            createCertificationsPage();
             createResumePage();
             
             const timelineContainer = document.getElementById('experience-container');
@@ -346,4 +350,3 @@
     </script>
 </body>
 </html>
-
