@@ -198,13 +198,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 1; /* Behind content */
             pointer-events: none;
         }
         .presentation-svg-connector path {
-            stroke-dasharray: 10000;
-            stroke-dashoffset: 10000;
-            transition: stroke-dashoffset 0.5s linear;
+            transition: stroke-dashoffset 0.2s linear;
         }
         .presentation-page {
             min-height: 100vh;
@@ -212,7 +210,7 @@
             flex-direction: column;
             justify-content: center;
             position: relative;
-            z-index: 2;
+            z-index: 2; /* In front of SVG line */
             padding: 2rem 0;
         }
         .presentation-content {
@@ -231,6 +229,8 @@
         .chart-placeholder {
             background-color: rgba(255, 255, 255, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 3; /* Ensure charts are above the line */
         }
         .chart-placeholder:hover {
             transform: scale(1.03);
@@ -355,15 +355,8 @@
                             <p class="text-lg text-gray-400 mt-2">An in-depth look at Chipotle Mexican Grill</p>
                         </div>
                         <div class="presentation-container">
-                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none" viewBox="0 0 1200 4500">
-                                <path id="presentation-path"
-                                      d="M 600,150 
-                                         C 600,350 200,450 200,750
-                                         S 200,1050 1000,1150
-                                         S 1000,1450 200,1550
-                                         S 200,1850 600,2000
-                                         L 600,2200"
-                                      fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
+                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
+                                <path id="presentation-path" fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
                                 <defs>
                                     <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
                                         <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
@@ -424,7 +417,7 @@
                             <!-- Page 5: Takeaways -->
                             <div class="presentation-page" id="pres-page-5">
                                 <div class="text-center max-w-3xl mx-auto presentation-content">
-                                    <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1">Key Takeaways & Strategic Outlook</h5>
+                                    <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5>
                                     <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
                                 </div>
                             </div>
@@ -485,13 +478,62 @@
             }
 
             // --- FINANCIAL PRESENTATION ANIMATION ---
-            const presentationConnector = document.getElementById('presentation-connector');
             const presentationContainer = document.querySelector('.presentation-container');
-            if (presentationConnector && presentationContainer) {
+            if (presentationContainer) {
+                const svg = document.getElementById('presentation-connector');
                 const path = document.getElementById('presentation-path');
-                const pathLength = path.getTotalLength();
-                path.style.strokeDasharray = pathLength;
-                path.style.strokeDashoffset = pathLength;
+                const presLogo = document.getElementById('pres-logo');
+                const presChart1 = document.getElementById('pres-chart-1');
+                const presChart2 = document.getElementById('pres-chart-2');
+                const presChart3 = document.getElementById('pres-chart-3');
+                const presTakeawaysK = document.getElementById('pres-takeaways-k');
+
+                const updatePath = () => {
+                    if (!path) return;
+                    const containerRect = presentationContainer.getBoundingClientRect();
+                    
+                    const getCoords = (el, point = 'center') => {
+                        if (!el) return { x: 0, y: 0 };
+                        const elRect = el.getBoundingClientRect();
+                        if (elRect.width === 0) return { x: 0, y: 0 };
+                        let x = elRect.left - containerRect.left;
+                        let y = elRect.top - containerRect.top;
+
+                        if (point === 'bottom-center') {
+                            x += elRect.width / 2;
+                            y += elRect.height;
+                        } else if (point === 'top-center') {
+                            x += elRect.width / 2;
+                        } else if (point === 'left-middle') {
+                            y += elRect.height / 2;
+                        }
+                        return { x, y };
+                    };
+
+                    const logoPos = getCoords(presLogo, 'bottom-center');
+                    const chart1Pos = getCoords(presChart1, 'top-center');
+                    const chart2Pos = getCoords(presChart2, 'top-center');
+                    const chart3Pos = getCoords(presChart3, 'top-center');
+                    const kPos = getCoords(presTakeawaysK, 'left-middle');
+
+                    const curveVOffset = 200;
+                    const hOffset = 400;
+
+                    const d = `M ${logoPos.x},${logoPos.y}
+                               L ${logoPos.x},${logoPos.y + 50}
+                               C ${logoPos.x},${logoPos.y + curveVOffset} ${logoPos.x + hOffset},${chart1Pos.y - curveVOffset} ${chart1Pos.x},${chart1Pos.y}
+                               M ${chart1Pos.x},${chart1Pos.y}
+                               C ${chart1Pos.x},${chart1Pos.y + curveVOffset} ${chart2Pos.x},${chart2Pos.y - curveVOffset} ${chart2Pos.x},${chart2Pos.y}
+                               M ${chart2Pos.x},${chart2Pos.y}
+                               C ${chart2Pos.x},${chart2Pos.y + curveVOffset} ${chart3Pos.x},${chart3Pos.y - curveVOffset} ${chart3Pos.x},${chart3Pos.y}
+                               M ${chart3Pos.x},${chart3Pos.y}
+                               C ${chart3Pos.x},${chart3Pos.y + curveVOffset} ${kPos.x},${kPos.y - curveVOffset} ${kPos.x},${kPos.y}`;
+                    
+                    path.setAttribute('d', d);
+                    const pathLength = path.getTotalLength();
+                    path.style.strokeDasharray = pathLength;
+                    path.style.strokeDashoffset = pathLength;
+                };
 
                 const presentationPages = document.querySelectorAll('.presentation-page');
                 const pageObserver = new IntersectionObserver((entries) => {
@@ -503,15 +545,19 @@
 
                 window.addEventListener('scroll', () => {
                     const containerRect = presentationContainer.getBoundingClientRect();
-                    if (containerRect.top > window.innerHeight || containerRect.bottom < 0) {
-                        return; // Don't run if container is not in view
+                     if (containerRect.top > window.innerHeight || containerRect.bottom < 0) {
+                        return;
                     }
                     const containerScrollAmount = window.scrollY - presentationContainer.offsetTop;
                     const containerScrollPercentage = Math.max(0, Math.min(1, containerScrollAmount / (presentationContainer.scrollHeight - window.innerHeight)));
                     
+                    const pathLength = path.getTotalLength();
                     const drawLength = pathLength * containerScrollPercentage;
                     path.style.strokeDashoffset = pathLength - drawLength;
                 });
+                
+                new ResizeObserver(updatePath).observe(presentationContainer);
+                setTimeout(updatePath, 100);
             }
 
 
