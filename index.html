@@ -195,17 +195,16 @@
         .presentation-svg-connector {
             position: absolute;
             top: 0;
-            left: 50%;
-            width: 100px;
+            left: 0;
+            width: 100%;
             height: 100%;
-            transform: translateX(-50%);
             z-index: 1;
-            overflow: visible;
+            pointer-events: none;
         }
         .presentation-svg-connector path {
-            stroke-dasharray: 5000;
-            stroke-dashoffset: 5000;
-            transition: stroke-dashoffset 1s ease-out;
+            stroke-dasharray: 10000;
+            stroke-dashoffset: 10000;
+            transition: stroke-dashoffset 0.5s linear;
         }
         .presentation-page {
             min-height: 100vh;
@@ -231,18 +230,11 @@
         
         .chart-placeholder {
             background-color: rgba(255, 255, 255, 0.05);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .chart-placeholder:hover {
             transform: scale(1.03);
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
-        }
-        @media (max-width: 767px) {
-            .presentation-svg-connector {
-                left: 1rem;
-                transform: translateX(0);
-            }
         }
     </style>
 </head>
@@ -363,25 +355,15 @@
                             <p class="text-lg text-gray-400 mt-2">An in-depth look at Chipotle Mexican Grill</p>
                         </div>
                         <div class="presentation-container">
-                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="xMidYMax meet">
-                                <path d="M 50,0 
-                                         C 50,150 50,150 50,300
-                                         S 50,450 50,600
-                                         S 50,750 50,900
-                                         S 50,1050 50,1200
-                                         S 50,1350 50,1500
-                                         S 50,1650 50,1800
-                                         S 50,1950 50,2100
-                                         S 50,2250 50,2400
-                                         S 50,2550 50,2700
-                                         S 50,2850 50,3000
-                                         S 50,3150 50,3300
-                                         S 50,3450 50,3600
-                                         S 50,3750 50,3900
-                                         S 50,4050 50,4200
-                                         S 50,4350 50,4500
-                                         L 50,5000"
-                                      fill="none" stroke="url(#line-gradient)" stroke-width="2"/>
+                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none" viewBox="0 0 1200 4500">
+                                <path id="presentation-path"
+                                      d="M 600,150 
+                                         C 600,350 200,450 200,750
+                                         S 200,1050 1000,1150
+                                         S 1000,1450 200,1550
+                                         S 200,1850 600,2000
+                                         L 600,2200"
+                                      fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
                                 <defs>
                                     <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
                                         <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
@@ -393,7 +375,7 @@
                             <!-- Page 1: Overview -->
                             <div class="presentation-page" id="pres-page-1">
                                 <div class="text-center max-w-3xl mx-auto presentation-content">
-                                    <img src="https://placehold.co/150x60/0a0a0a/e5e5e5?text=LOGO" alt="Company Logo" class="mx-auto mb-8 stagger-1">
+                                    <img id="pres-logo" src="https://i.imgur.com/s3sZ3gC.png" alt="Chipotle Logo" class="mx-auto mb-8 stagger-1 h-16">
                                     <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill – Financial Analysis Project</h4>
                                     <p class="text-indigo-400 mt-2 text-lg stagger-2">Applying FMVA®-level financial modeling and valuation techniques from CFI.</p>
                                     <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3">This presentation provides a comprehensive financial analysis of Chipotle Mexican Grill (CMG), covering key performance indicators, profitability trends, and cash flow management. The scope includes a detailed valuation to assess the company's market position and future outlook.</p>
@@ -404,7 +386,7 @@
                             <div class="presentation-page" id="pres-page-2">
                                 <div class="grid md:grid-cols-2 gap-12 items-center">
                                     <div class="presentation-content stagger-1">
-                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full">
+                                        <img id="pres-chart-1" src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full">
                                     </div>
                                     <div class="presentation-content text-center md:text-left stagger-2">
                                         <h5 class="text-2xl font-bold text-white">Revenue & Profitability Trends</h5>
@@ -421,7 +403,7 @@
                                         <p class="text-gray-300 mt-4 leading-relaxed">Examination of operating, investing, and financing cash flows to assess liquidity and solvency. The capital structure analysis reviews the balance of debt and equity, highlighting the company's financial leverage and risk profile.</p>
                                     </div>
                                     <div class="presentation-content stagger-1 md:order-1">
-                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full">
+                                        <img id="pres-chart-2" src="https://i.imgur.com/sA2Gv5E.png" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full">
                                     </div>
                                 </div>
                             </div>
@@ -430,7 +412,7 @@
                             <div class="presentation-page" id="pres-page-4">
                                 <div class="grid md:grid-cols-2 gap-12 items-center">
                                     <div class="presentation-content stagger-1">
-                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Valuation Chart" class="rounded-lg chart-placeholder w-full">
+                                        <img id="pres-chart-3" src="https://i.imgur.com/yB8J0fN.png" alt="Valuation Chart" class="rounded-lg chart-placeholder w-full">
                                     </div>
                                     <div class="presentation-content text-center md:text-left stagger-2">
                                         <h5 class="text-2xl font-bold text-white">Valuation Overview</h5>
@@ -442,7 +424,7 @@
                             <!-- Page 5: Takeaways -->
                             <div class="presentation-page" id="pres-page-5">
                                 <div class="text-center max-w-3xl mx-auto presentation-content">
-                                    <h5 class="text-3xl md:text-4xl font-bold text-white stagger-1">Key Takeaways & Strategic Outlook</h5>
+                                    <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1">Key Takeaways & Strategic Outlook</h5>
                                     <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
                                 </div>
                             </div>
@@ -504,8 +486,9 @@
 
             // --- FINANCIAL PRESENTATION ANIMATION ---
             const presentationConnector = document.getElementById('presentation-connector');
-            if (presentationConnector) {
-                const path = presentationConnector.querySelector('path');
+            const presentationContainer = document.querySelector('.presentation-container');
+            if (presentationConnector && presentationContainer) {
+                const path = document.getElementById('presentation-path');
                 const pathLength = path.getTotalLength();
                 path.style.strokeDasharray = pathLength;
                 path.style.strokeDashoffset = pathLength;
@@ -519,8 +502,14 @@
                 presentationPages.forEach(page => pageObserver.observe(page));
 
                 window.addEventListener('scroll', () => {
-                    const scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
-                    const drawLength = pathLength * scrollPercentage * 1.5; // Multiply to make it draw faster
+                    const containerRect = presentationContainer.getBoundingClientRect();
+                    if (containerRect.top > window.innerHeight || containerRect.bottom < 0) {
+                        return; // Don't run if container is not in view
+                    }
+                    const containerScrollAmount = window.scrollY - presentationContainer.offsetTop;
+                    const containerScrollPercentage = Math.max(0, Math.min(1, containerScrollAmount / (presentationContainer.scrollHeight - window.innerHeight)));
+                    
+                    const drawLength = pathLength * containerScrollPercentage;
                     path.style.strokeDashoffset = pathLength - drawLength;
                 });
             }
