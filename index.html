@@ -190,7 +190,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 1rem;
+            padding: 2rem 1rem; /* Reduced top padding */
         }
         .presentation-svg-connector {
             position: absolute;
@@ -349,10 +349,10 @@
                 page.id = 'page-projects';
                 page.className = 'page';
                 page.innerHTML = `
-                    <section class="py-16">
+                    <section class="py-8">
                         <div class="container mx-auto px-6 text-center">
                             <h3 class="text-3xl md:text-4xl font-bold text-white">Financial Analysis Project</h3>
-                            <p class="text-lg text-gray-400 mt-2">An in-depth look at Chipotle Mexican Grill</p>
+                            <p class="text-lg text-gray-400 mt-2 mb-8">An in-depth look at Chipotle Mexican Grill</p>
                         </div>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
@@ -367,11 +367,15 @@
 
                             <!-- Page 1: Overview -->
                             <div class="presentation-page" id="pres-page-1">
-                                <div class="text-center max-w-3xl mx-auto presentation-content">
-                                    <img id="pres-logo" src="https://i.imgur.com/s3sZ3gC.png" alt="Chipotle Logo" class="mx-auto mb-8 stagger-1 h-16">
-                                    <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill – Financial Analysis Project</h4>
-                                    <p class="text-indigo-400 mt-2 text-lg stagger-2">Applying FMVA®-level financial modeling and valuation techniques from CFI.</p>
-                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3">This presentation provides a comprehensive financial analysis of Chipotle Mexican Grill (CMG), covering key performance indicators, profitability trends, and cash flow management. The scope includes a detailed valuation to assess the company's market position and future outlook.</p>
+                                <div class="max-w-3xl mx-auto presentation-content">
+                                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center md:text-left">
+                                        <img id="pres-logo" src="https://i.imgur.com/s3sZ3gC.png" alt="Chipotle Logo" class="stagger-1 h-16 flex-shrink-0">
+                                        <div>
+                                            <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill – Financial Analysis Project</h4>
+                                            <p class="text-indigo-400 mt-2 text-lg stagger-2">Applying FMVA®-level financial modeling and valuation techniques from CFI.</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-center">This presentation provides a comprehensive financial analysis of Chipotle Mexican Grill (CMG), covering key performance indicators, profitability trends, and cash flow management. The scope includes a detailed valuation to assess the company's market position and future outlook.</p>
                                 </div>
                             </div>
 
@@ -512,8 +516,11 @@
 
                     const logoPos = getCoords(presLogo, 'bottom-center');
                     const chart1Pos = getCoords(presChart1, 'top-center');
+                    const chart1BottomPos = getCoords(presChart1, 'bottom-center');
                     const chart2Pos = getCoords(presChart2, 'top-center');
+                    const chart2BottomPos = getCoords(presChart2, 'bottom-center');
                     const chart3Pos = getCoords(presChart3, 'top-center');
+                    const chart3BottomPos = getCoords(presChart3, 'bottom-center');
                     const kPos = getCoords(presTakeawaysK, 'left-middle');
 
                     const curveVOffset = 200;
@@ -521,13 +528,13 @@
 
                     const d = `M ${logoPos.x},${logoPos.y}
                                L ${logoPos.x},${logoPos.y + 50}
-                               C ${logoPos.x},${logoPos.y + curveVOffset} ${logoPos.x + hOffset},${chart1Pos.y - curveVOffset} ${chart1Pos.x},${chart1Pos.y}
-                               M ${chart1Pos.x},${chart1Pos.y}
-                               C ${chart1Pos.x},${chart1Pos.y + curveVOffset} ${chart2Pos.x},${chart2Pos.y - curveVOffset} ${chart2Pos.x},${chart2Pos.y}
-                               M ${chart2Pos.x},${chart2Pos.y}
-                               C ${chart2Pos.x},${chart2Pos.y + curveVOffset} ${chart3Pos.x},${chart3Pos.y - curveVOffset} ${chart3Pos.x},${chart3Pos.y}
-                               M ${chart3Pos.x},${chart3Pos.y}
-                               C ${chart3Pos.x},${chart3Pos.y + curveVOffset} ${kPos.x},${kPos.y - curveVOffset} ${kPos.x},${kPos.y}`;
+                               C ${logoPos.x},${logoPos.y + curveVOffset} ${logoPos.x - hOffset},${chart1Pos.y - curveVOffset} ${chart1Pos.x},${chart1Pos.y}
+                               M ${chart1BottomPos.x},${chart1BottomPos.y}
+                               C ${chart1BottomPos.x},${chart1BottomPos.y + curveVOffset} ${chart2Pos.x},${chart2Pos.y - curveVOffset} ${chart2Pos.x},${chart2Pos.y}
+                               M ${chart2BottomPos.x},${chart2BottomPos.y}
+                               C ${chart2BottomPos.x},${chart2BottomPos.y + curveVOffset} ${chart3Pos.x},${chart3Pos.y - curveVOffset} ${chart3Pos.x},${chart3Pos.y}
+                               M ${chart3BottomPos.x},${chart3BottomPos.y}
+                               C ${chart3BottomPos.x},${chart3BottomPos.y + curveVOffset} ${kPos.x},${kPos.y - curveVOffset} ${kPos.x},${kPos.y}`;
                     
                     path.setAttribute('d', d);
                     const pathLength = path.getTotalLength();
