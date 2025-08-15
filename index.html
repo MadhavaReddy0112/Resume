@@ -37,7 +37,6 @@
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
         }
         
-        /* --- Header Auto-Hide Styling --- */
         header {
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -45,7 +44,6 @@
             transform: translateY(-100%);
         }
 
-        /* --- Straight Animated Timeline --- */
         .timeline-container {
             position: relative;
             width: 100%;
@@ -185,6 +183,67 @@
         #success-toast.show {
             opacity: 1; visibility: visible; transform: translate(-50%, -10px);
         }
+
+        /* --- Financial Presentation Styles --- */
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 1rem;
+        }
+        .presentation-svg-connector {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100px;
+            height: 100%;
+            transform: translateX(-50%);
+            z-index: 1;
+            overflow: visible;
+        }
+        .presentation-svg-connector path {
+            stroke-dasharray: 5000;
+            stroke-dashoffset: 5000;
+            transition: stroke-dashoffset 1s ease-out;
+        }
+        .presentation-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            padding: 2rem 0;
+        }
+        .presentation-content {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .presentation-page.is-visible .presentation-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .presentation-page.is-visible .stagger-1 { transition-delay: 0.2s; }
+        .presentation-page.is-visible .stagger-2 { transition-delay: 0.4s; }
+        .presentation-page.is-visible .stagger-3 { transition-delay: 0.6s; }
+        
+        .chart-placeholder {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .chart-placeholder:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+        }
+        @media (max-width: 767px) {
+            .presentation-svg-connector {
+                left: 1rem;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -245,7 +304,6 @@
                 snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'],
-                projects: { title: "Financial Model for Chipotle Mexican Grill", description: "A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.", images: ["https://placehold.co/600x400/8c1515/f4f1ee?text=Dashboard", "https://placehold.co/600x400/8c1515/f4f1ee?text=Revenue+Forecast", "https://placehold.co/600x400/8c1515/f4f1ee?text=Cost+Analysis", "https://placehold.co/600x400/8c1515/f4f1ee?text=Valuation"], tags: ["Excel", "Financial Modelling"], fileUrl: "Chipotle-Financial-Model.xlsx" },
                 educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' } ],
                 certifications: [ { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' }, { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' } ],
                 resume: { imageUrl: "https://i.imgur.com/O1fX1gY.jpeg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
@@ -256,7 +314,8 @@
 
             const showPage = (pageId) => {
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                document.getElementById(`page-${pageId}`)?.classList.add('active');
+                const newPage = document.getElementById(`page-${pageId}`);
+                if (newPage) newPage.classList.add('active');
                 
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.remove('active');
@@ -293,7 +352,106 @@
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
-            const createProjectsPage = () => { const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page'; const p = portfolioData.projects; page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Projects</h3><div class="grid md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-4xl mx-auto"><div class="p-6 md:p-8 rounded-lg" style="background-color: #3c2d28; border: 1px solid #8a7a74;"><h4 class="text-xl md:text-2xl font-bold" style="color: #f4f1ee;">${p.title}</h4><p style="color: #d8cec5;" class="mt-2 mb-6">${p.description}</p><div class="grid grid-cols-2 gap-4 mb-6">${p.images.map(img => `<img src="${img}" alt="Project Screenshot" class="rounded-lg w-full h-full object-cover">`).join('')}</div><div class="flex flex-col sm:flex-row items-center gap-4"><div class="flex flex-wrap gap-2">${p.tags.map(tag => `<span style="background-color: #59433d; color: #f4f1ee;" class="text-sm font-medium px-2.5 py-0.5 rounded">${tag}</span>`).join('')}</div><a href="${p.fileUrl}" download class="w-full sm:w-auto sm:ml-auto text-white font-bold py-2 px-4 rounded-lg text-sm transition-all duration-300 inline-flex items-center justify-center gap-2" style="background-color: #8c1515; hover:background-color: #a82a2a;"><i class="fas fa-download"></i>Download Model</a></div></div></div></div></section>`; mainContainer.appendChild(page); };
+            const createProjectsPage = () => {
+                const page = document.createElement('div');
+                page.id = 'page-projects';
+                page.className = 'page';
+                page.innerHTML = `
+                    <section class="py-16">
+                        <div class="container mx-auto px-6 text-center">
+                            <h3 class="text-3xl md:text-4xl font-bold text-white">Financial Analysis Project</h3>
+                            <p class="text-lg text-gray-400 mt-2">An in-depth look at Chipotle Mexican Grill</p>
+                        </div>
+                        <div class="presentation-container">
+                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="xMidYMax meet">
+                                <path d="M 50,0 
+                                         C 50,150 50,150 50,300
+                                         S 50,450 50,600
+                                         S 50,750 50,900
+                                         S 50,1050 50,1200
+                                         S 50,1350 50,1500
+                                         S 50,1650 50,1800
+                                         S 50,1950 50,2100
+                                         S 50,2250 50,2400
+                                         S 50,2550 50,2700
+                                         S 50,2850 50,3000
+                                         S 50,3150 50,3300
+                                         S 50,3450 50,3600
+                                         S 50,3750 50,3900
+                                         S 50,4050 50,4200
+                                         S 50,4350 50,4500
+                                         L 50,5000"
+                                      fill="none" stroke="url(#line-gradient)" stroke-width="2"/>
+                                <defs>
+                                    <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+
+                            <!-- Page 1: Overview -->
+                            <div class="presentation-page" id="pres-page-1">
+                                <div class="text-center max-w-3xl mx-auto presentation-content">
+                                    <img src="https://placehold.co/150x60/0a0a0a/e5e5e5?text=LOGO" alt="Company Logo" class="mx-auto mb-8 stagger-1">
+                                    <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill – Financial Analysis Project</h4>
+                                    <p class="text-indigo-400 mt-2 text-lg stagger-2">Applying FMVA®-level financial modeling and valuation techniques from CFI.</p>
+                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3">This presentation provides a comprehensive financial analysis of Chipotle Mexican Grill (CMG), covering key performance indicators, profitability trends, and cash flow management. The scope includes a detailed valuation to assess the company's market position and future outlook.</p>
+                                </div>
+                            </div>
+
+                            <!-- Page 2: Revenue -->
+                            <div class="presentation-page" id="pres-page-2">
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content stagger-1">
+                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full">
+                                    </div>
+                                    <div class="presentation-content text-center md:text-left stagger-2">
+                                        <h5 class="text-2xl font-bold text-white">Revenue & Profitability Trends</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed">Analysis of historical revenue growth, identifying key drivers such as store expansion and menu pricing strategies. A deep dive into gross and net profit margins reveals the company's operational efficiency and cost control measures over recent fiscal periods.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Page 3: Cash Flow -->
+                            <div class="presentation-page" id="pres-page-3">
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content text-center md:text-right stagger-2 md:order-2">
+                                        <h5 class="text-2xl font-bold text-white">Cash Flow & Capital Structure</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed">Examination of operating, investing, and financing cash flows to assess liquidity and solvency. The capital structure analysis reviews the balance of debt and equity, highlighting the company's financial leverage and risk profile.</p>
+                                    </div>
+                                    <div class="presentation-content stagger-1 md:order-1">
+                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Page 4: Valuation -->
+                            <div class="presentation-page" id="pres-page-4">
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content stagger-1">
+                                        <img src="https://placehold.co/600x400/1f2937/a5b4fc?text=Chart+Placeholder" alt="Valuation Chart" class="rounded-lg chart-placeholder w-full">
+                                    </div>
+                                    <div class="presentation-content text-center md:text-left stagger-2">
+                                        <h5 class="text-2xl font-bold text-white">Valuation Overview</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Page 5: Takeaways -->
+                            <div class="presentation-page" id="pres-page-5">
+                                <div class="text-center max-w-3xl mx-auto presentation-content">
+                                    <h5 class="text-3xl md:text-4xl font-bold text-white stagger-1">Key Takeaways & Strategic Outlook</h5>
+                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                `;
+                mainContainer.appendChild(page);
+            };
             const createCertificationsPage = () => { const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page'; const certificationsHTML = portfolioData.certifications.map(cert => `<div class="p-6 rounded-lg glass-effect"><h4 class="text-lg font-bold text-white">${cert.name}</h4><p class="text-indigo-400">${cert.issuer}</p></div>`).join(''); const educationsHTML = portfolioData.educations.map(edu => `<div class="p-8 rounded-lg glass-effect text-center"><h4 class="text-xl font-bold text-white">${edu.degree}</h4><p class="text-lg text-indigo-400 mb-2">${edu.school}</p><p class="text-gray-400">${edu.date}</p><p class="text-gray-400">${edu.details}</p></div>`).join(''); page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid md:grid-cols-2 gap-8">${educationsHTML}</div></div></section>`; mainContainer.appendChild(page); };
             const createResumePage = () => { const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page'; page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect" style="aspect-ratio: 1 / 1.414;"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; mainContainer.appendChild(page); };
 
@@ -344,6 +502,30 @@
                 }
             }
 
+            // --- FINANCIAL PRESENTATION ANIMATION ---
+            const presentationConnector = document.getElementById('presentation-connector');
+            if (presentationConnector) {
+                const path = presentationConnector.querySelector('path');
+                const pathLength = path.getTotalLength();
+                path.style.strokeDasharray = pathLength;
+                path.style.strokeDashoffset = pathLength;
+
+                const presentationPages = document.querySelectorAll('.presentation-page');
+                const pageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+                    });
+                }, { threshold: 0.4 });
+                presentationPages.forEach(page => pageObserver.observe(page));
+
+                window.addEventListener('scroll', () => {
+                    const scrollPercentage = (document.documentElement.scrollTop + document.body.scrollTop) / (document.documentElement.scrollHeight - document.documentElement.clientHeight);
+                    const drawLength = pathLength * scrollPercentage * 1.5; // Multiply to make it draw faster
+                    path.style.strokeDashoffset = pathLength - drawLength;
+                });
+            }
+
+
             // --- Contact Form Logic ---
             const contactForm = document.getElementById('contact-form');
             const successToast = document.getElementById('success-toast');
@@ -368,7 +550,6 @@
             // --- Particles.js Background ---
             particlesJS("particles-js", { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         
-            // Center the initial active nav item on load
             document.querySelector('.nav-link.active')?.scrollIntoView({ inline: 'center', block: 'nearest' });
         });
     </script>
