@@ -190,7 +190,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 0 1rem 2rem 1rem;
         }
         .presentation-svg-connector {
             position: absolute;
@@ -236,6 +236,21 @@
             transform: scale(1.03);
             box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
         }
+        #global-progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(99, 102, 241, 0.2);
+            z-index: 100;
+        }
+        #global-progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #6366f1;
+            transition: width 0.05s linear;
+        }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -262,6 +277,10 @@
     <footer class="py-6 text-center text-gray-500 relative z-10">
         <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
     </footer>
+
+    <div id="global-progress-container">
+        <div id="global-progress-bar"></div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
@@ -332,7 +351,7 @@
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a onclick="document.querySelector('[data-page-id=${s.link}]').click()" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}<section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Let's Connect</h3><div class="max-w-xl mx-auto"><form id="contact-form" class="w-full p-8 rounded-lg glass-effect mb-8"><p class="text-gray-300 mb-6 text-lg">Have a question or want to work together? Fill out the form below.</p><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}<section class="py-16"><div class="container mx-auto px-6 text-center"><h3 class="text-3xl md:text-4xl font-bold mb-12 text-white">Let's Connect</h3><div class="max-w-xl mx-auto"><form id="contact-form" class="w-full p-8 rounded-lg glass-effect mb-8"><p class="text-gray-300 text-lg">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md">Feel free to send a message or connect with me on LinkedIn.</p><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
@@ -349,10 +368,10 @@
                 page.id = 'page-projects';
                 page.className = 'page';
                 page.innerHTML = `
-                    <section class="py-8">
+                    <section class="pt-8">
                         <div class="container mx-auto px-6 text-center">
                             <h3 class="text-3xl md:text-4xl font-bold text-white">Financial Analysis Project</h3>
-                            <p class="text-lg text-gray-400 mt-2 mb-4">An in-depth look at Chipotle Mexican Grill</p>
+                            <p class="text-lg text-gray-400 mt-2">An in-depth look at Chipotle Mexican Grill</p>
                         </div>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
@@ -423,6 +442,12 @@
                                 <div class="text-center max-w-3xl mx-auto presentation-content">
                                     <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5>
                                     <p id="takeaways-content" class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
+                                    <div class="mt-8">
+                                        <a href="#" download class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
+                                            <i class="fas fa-file-excel"></i>
+                                            Download Full Analysis
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -605,6 +630,31 @@
                 successToast.classList.add('show'); 
                 setTimeout(() => { successToast.classList.remove('show'); }, 4000); 
             }
+            
+            // --- Global Scroll Progress Bar ---
+            const progressBar = document.getElementById('global-progress-bar');
+            window.addEventListener('scroll', () => {
+                const activePage = document.querySelector('.page.active');
+                if (!activePage || !progressBar) return;
+
+                const pageTop = activePage.offsetTop;
+                const pageHeight = activePage.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const scrollableHeight = pageHeight - windowHeight;
+                
+                // Calculate scroll position relative to the top of the active page
+                const scrollTopInPage = window.scrollY - pageTop;
+
+                if (scrollableHeight <= 0) {
+                    // Page is not scrollable, show full bar if it's in view
+                    progressBar.style.width = (window.scrollY + windowHeight > pageTop && window.scrollY < pageTop + pageHeight) ? '100%' : '0%';
+                    return;
+                }
+
+                const progress = Math.max(0, Math.min(1, scrollTopInPage / scrollableHeight));
+                progressBar.style.width = `${progress * 100}%`;
+            });
+
 
             // --- Particles.js Background ---
             particlesJS("particles-js", { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
