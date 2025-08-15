@@ -39,7 +39,6 @@
         
         /* --- Header Auto-Hide Styling --- */
         header {
-            /* Slower, smoother transition for hiding/showing */
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         header.nav-hidden {
@@ -67,7 +66,6 @@
             top: 0;
             left: 1rem;
             height: 0;
-            /* Slow transition for the staged animation */
             transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .timeline-item {
@@ -137,18 +135,30 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .nav-container { display: inline-block; background: rgba(30, 30, 30, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; padding: 0.5rem; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        .nav-container { 
+            display: inline-block; 
+            background: rgba(30, 30, 30, 0.5); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 9999px; 
+            padding: 0.5rem; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
+            /* Added to constrain width on mobile */
+            max-width: 100%;
+        }
         
-        /* --- Swipeable Mobile Nav --- */
         #main-nav {
-            overflow-x: auto; /* Allows horizontal scrolling */
-            scrollbar-width: none; /* Hides scrollbar for Firefox */
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
         #main-nav::-webkit-scrollbar {
-            display: none; /* Hides scrollbar for Chrome, Safari */
+            display: none;
         }
         .nav-link { 
-            flex-shrink: 0; /* Prevents links from shrinking */
+            flex-shrink: 0; 
             padding: 0.5rem 1rem; 
             border-radius: 9999px; 
             transition: all 0.3s ease; 
@@ -167,24 +177,14 @@
         .nav-link:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); color: #fff; }
 
         #success-toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #22c55e;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            background-color: #22c55e; color: white; padding: 1rem 1.5rem;
+            border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 100; opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         }
         #success-toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -10px);
+            opacity: 1; visibility: visible; transform: translate(-50%, -10px);
         }
     </style>
 </head>
@@ -198,7 +198,7 @@
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
         <div class="container mx-auto flex justify-center items-center px-4">
             <div class="nav-container">
-                <nav class="flex items-center" id="main-nav">
+                <nav id="main-nav">
                     <!-- Nav links injected by JS -->
                 </nav>
             </div>
@@ -218,10 +218,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- DEV TOOLS & CODE PROTECTION ---
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'F12' ||
-                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) ||
-                    (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) ||
-                    (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) || (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) || (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
                     e.preventDefault();
                 }
             });
@@ -229,52 +226,29 @@
             // --- SMOOTH AUTO-HIDE NAVIGATION ---
             const header = document.querySelector('header');
             let lastScrollTop = 0;
-            const delta = 50; // Sensitivity threshold in pixels
+            const delta = 50; 
             window.addEventListener('scroll', function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // Make sure scroll difference is larger than delta
                 if (Math.abs(lastScrollTop - scrollTop) <= delta) return;
-
                 if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
-                    header.classList.add('nav-hidden'); // Scroll Down
+                    header.classList.add('nav-hidden');
                 } else {
-                    header.classList.remove('nav-hidden'); // Scroll Up
+                    header.classList.remove('nav-hidden');
                 }
                 lastScrollTop = scrollTop;
             }, false);
 
             // --- DATA ---
             const portfolioData = {
-                pages: [
-                    { id: 'home', label: 'Home' },
-                    { id: 'experience', label: 'Experience' },
-                    { id: 'projects', label: 'Projects' },
-                    { id: 'certifications', label: 'Certifications' },
-                    { id: 'resume', label: 'Resume' }
-                ],
+                pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [
-                    { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" },
-                    { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" },
-                    { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" }
-                ],
-                experiences: [
-                    { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' },
-                    { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' },
-                    { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' }
-                ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Financial Model for Chipotle Mexican Grill", company: "Key Skills: Excel, Financial Modelling", description: "Developed a predictive model to assess credit risk for potential borrowers, utilizing financial spreading techniques and historical data analysis.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
+                experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'],
                 projects: { title: "Financial Model for Chipotle Mexican Grill", description: "A comprehensive financial model analyzing Chipotle's revenue streams, cost structures, and growth potential. This project involved forecasting financial performance and assessing market opportunities.", images: ["https://placehold.co/600x400/8c1515/f4f1ee?text=Dashboard", "https://placehold.co/600x400/8c1515/f4f1ee?text=Revenue+Forecast", "https://placehold.co/600x400/8c1515/f4f1ee?text=Cost+Analysis", "https://placehold.co/600x400/8c1515/f4f1ee?text=Valuation"], tags: ["Excel", "Financial Modelling"], fileUrl: "Chipotle-Financial-Model.xlsx" },
-                educations: [
-                    { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' },
-                    { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' }
-                ],
-                certifications: [
-                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' },
-                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' }
-                ],
+                educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' } ],
+                certifications: [ { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' }, { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' } ],
                 resume: { imageUrl: "https://i.imgur.com/O1fX1gY.jpeg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
@@ -289,7 +263,6 @@
                     link.classList.remove('active');
                     if (link.dataset.pageId === pageId) {
                         link.classList.add('active');
-                        // Scroll the active link into the center of the nav bar
                         link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                     }
                 });
@@ -324,11 +297,12 @@
             createCertificationsPage();
             createResumePage();
             
-            // --- NEW: STAGED TIMELINE ANIMATION ---
+            // --- STAGED TIMELINE ANIMATION ---
             const timelineContainer = document.getElementById('experience-container');
             if (timelineContainer) {
                 const timelineProgress = document.getElementById('timeline-progress');
                 const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
+                
                 const itemEntryObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         entry.target.classList.toggle('visible', entry.isIntersecting);
@@ -339,11 +313,12 @@
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             const icon = entry.target.querySelector('.timeline-icon');
-                            const newHeight = icon.offsetTop + (icon.offsetHeight / 2);
+                            // CORRECTED CALCULATION: Use the timeline item's offsetTop
+                            const newHeight = entry.target.offsetTop + (icon.offsetHeight / 2);
                             timelineProgress.style.height = `${newHeight}px`;
                         }
                     });
-                }, { threshold: 0.8 }); // Trigger when item is mostly in view
+                }, { threshold: 0.6 }); // Lowered threshold for better trigger reliability
 
                 timelineItems.forEach(item => {
                     itemEntryObserver.observe(item);
@@ -351,7 +326,7 @@
                 });
             }
 
-            // Contact Form Logic
+            // --- Contact Form Logic ---
             const contactForm = document.getElementById('contact-form');
             const successToast = document.getElementById('success-toast');
             if (contactForm) { 
@@ -359,31 +334,20 @@
                     e.preventDefault(); 
                     const formData = new FormData(this); 
                     fetch("https://formspree.io/f/contactmadhava@gmail.com", { 
-                        method: 'POST', 
-                        body: formData, 
-                        headers: { 'Accept': 'application/json' } 
+                        method: 'POST', body: formData, headers: { 'Accept': 'application/json' } 
                     }).then(response => { 
-                        if (response.ok) { 
-                            showSuccessToast(); 
-                            contactForm.reset(); 
-                        } else { 
-                            alert("Oops! There was a problem submitting your form."); 
-                        } 
-                    }).catch(error => { 
-                        alert("Oops! There was a network error."); 
-                    }); 
+                        if (response.ok) { showSuccessToast(); contactForm.reset(); } 
+                        else { alert("Oops! There was a problem submitting your form."); } 
+                    }).catch(error => { alert("Oops! There was a network error."); }); 
                 }); 
             }
             function showSuccessToast() { 
                 if (!successToast) return; 
                 successToast.classList.add('show'); 
-                setTimeout(() => { 
-                    successToast.classList.remove('show'); 
-                }, 4000); 
+                setTimeout(() => { successToast.classList.remove('show'); }, 4000); 
             }
 
-
-            // Particles.js Background
+            // --- Particles.js Background ---
             particlesJS("particles-js", { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         
             // Center the initial active nav item on load
