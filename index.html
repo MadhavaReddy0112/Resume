@@ -190,7 +190,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem; /* Reduced top padding */
+            padding: 2rem 1rem;
         }
         .presentation-svg-connector {
             position: absolute;
@@ -202,7 +202,7 @@
             pointer-events: none;
         }
         .presentation-svg-connector path {
-            transition: stroke-dashoffset 0.2s linear;
+            transition: stroke-dashoffset 0.1s linear;
         }
         .presentation-page {
             min-height: 100vh;
@@ -352,7 +352,7 @@
                     <section class="py-8">
                         <div class="container mx-auto px-6 text-center">
                             <h3 class="text-3xl md:text-4xl font-bold text-white">Financial Analysis Project</h3>
-                            <p class="text-lg text-gray-400 mt-2 mb-8">An in-depth look at Chipotle Mexican Grill</p>
+                            <p class="text-lg text-gray-400 mt-2 mb-4">An in-depth look at Chipotle Mexican Grill</p>
                         </div>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
@@ -371,7 +371,7 @@
                                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center md:text-left">
                                         <img id="pres-logo" src="https://i.imgur.com/s3sZ3gC.png" alt="Chipotle Logo" class="stagger-1 h-16 flex-shrink-0">
                                         <div>
-                                            <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill – Financial Analysis Project</h4>
+                                            <h4 class="text-3xl md:text-4xl font-bold text-white stagger-2">Chipotle Mexican Grill</h4>
                                             <p class="text-indigo-400 mt-2 text-lg stagger-2">Applying FMVA®-level financial modeling and valuation techniques from CFI.</p>
                                         </div>
                                     </div>
@@ -386,8 +386,8 @@
                                         <img id="pres-chart-1" src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full">
                                     </div>
                                     <div class="presentation-content text-center md:text-left stagger-2">
-                                        <h5 class="text-2xl font-bold text-white">Revenue & Profitability Trends</h5>
-                                        <p class="text-gray-300 mt-4 leading-relaxed">Analysis of historical revenue growth, identifying key drivers such as store expansion and menu pricing strategies. A deep dive into gross and net profit margins reveals the company's operational efficiency and cost control measures over recent fiscal periods.</p>
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Revenue & Profitability Trends</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>Analysis of historical revenue growth, identifying key drivers such as store expansion and menu pricing strategies. A deep dive into gross and net profit margins reveals the company's operational efficiency and cost control measures over recent fiscal periods.</p>
                                     </div>
                                 </div>
                             </div>
@@ -396,8 +396,8 @@
                             <div class="presentation-page" id="pres-page-3">
                                 <div class="grid md:grid-cols-2 gap-12 items-center">
                                     <div class="presentation-content text-center md:text-right stagger-2 md:order-2">
-                                        <h5 class="text-2xl font-bold text-white">Cash Flow & Capital Structure</h5>
-                                        <p class="text-gray-300 mt-4 leading-relaxed">Examination of operating, investing, and financing cash flows to assess liquidity and solvency. The capital structure analysis reviews the balance of debt and equity, highlighting the company's financial leverage and risk profile.</p>
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Cash Flow & Capital Structure</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>Examination of operating, investing, and financing cash flows to assess liquidity and solvency. The capital structure analysis reviews the balance of debt and equity, highlighting the company's financial leverage and risk profile.</p>
                                     </div>
                                     <div class="presentation-content stagger-1 md:order-1">
                                         <img id="pres-chart-2" src="https://i.imgur.com/sA2Gv5E.png" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full">
@@ -412,8 +412,8 @@
                                         <img id="pres-chart-3" src="https://i.imgur.com/yB8J0fN.png" alt="Valuation Chart" class="rounded-lg chart-placeholder w-full">
                                     </div>
                                     <div class="presentation-content text-center md:text-left stagger-2">
-                                        <h5 class="text-2xl font-bold text-white">Valuation Overview</h5>
-                                        <p class="text-gray-300 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p>
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Valuation Overview</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p>
                                     </div>
                                 </div>
                             </div>
@@ -422,7 +422,7 @@
                             <div class="presentation-page" id="pres-page-5">
                                 <div class="text-center max-w-3xl mx-auto presentation-content">
                                     <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5>
-                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
+                                    <p id="takeaways-content" class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p>
                                 </div>
                             </div>
 
@@ -491,58 +491,70 @@
                 const presChart2 = document.getElementById('pres-chart-2');
                 const presChart3 = document.getElementById('pres-chart-3');
                 const presTakeawaysK = document.getElementById('pres-takeaways-k');
+                const presentationPages = document.querySelectorAll('.presentation-page');
 
                 const updatePath = () => {
                     if (!path) return;
                     const containerRect = presentationContainer.getBoundingClientRect();
                     
                     const getCoords = (el, point = 'center') => {
-                        if (!el) return { x: 0, y: 0 };
+                        if (!el) return null;
                         const elRect = el.getBoundingClientRect();
-                        if (elRect.width === 0) return { x: 0, y: 0 };
+                        if (elRect.width === 0 || elRect.height === 0) return null;
                         let x = elRect.left - containerRect.left;
                         let y = elRect.top - containerRect.top;
 
-                        if (point === 'bottom-center') {
-                            x += elRect.width / 2;
-                            y += elRect.height;
-                        } else if (point === 'top-center') {
-                            x += elRect.width / 2;
-                        } else if (point === 'left-middle') {
-                            y += elRect.height / 2;
+                        switch (point) {
+                            case 'bottom-center': x += elRect.width / 2; y += elRect.height; break;
+                            case 'top-center': x += elRect.width / 2; break;
+                            case 'left-middle': y += elRect.height / 2; break;
+                            case 'center': x += elRect.width / 2; y += elRect.height / 2; break;
                         }
                         return { x, y };
                     };
 
-                    const logoPos = getCoords(presLogo, 'bottom-center');
-                    const chart1Pos = getCoords(presChart1, 'top-center');
+                    const logoPos = getCoords(presLogo, 'left-middle');
+                    const chart1TopPos = getCoords(presChart1, 'top-center');
                     const chart1BottomPos = getCoords(presChart1, 'bottom-center');
-                    const chart2Pos = getCoords(presChart2, 'top-center');
+                    const chart2TopPos = getCoords(presChart2, 'top-center');
                     const chart2BottomPos = getCoords(presChart2, 'bottom-center');
-                    const chart3Pos = getCoords(presChart3, 'top-center');
+                    const chart3TopPos = getCoords(presChart3, 'top-center');
                     const chart3BottomPos = getCoords(presChart3, 'bottom-center');
                     const kPos = getCoords(presTakeawaysK, 'left-middle');
 
-                    const curveVOffset = 200;
-                    const hOffset = 400;
+                    if (!logoPos || !chart1TopPos || !chart1BottomPos || !chart2TopPos || !chart2BottomPos || !chart3TopPos || !chart3BottomPos || !kPos) {
+                        path.setAttribute('d', '');
+                        return;
+                    }
 
-                    const d = `M ${logoPos.x},${logoPos.y}
-                               L ${logoPos.x},${logoPos.y + 50}
-                               C ${logoPos.x},${logoPos.y + curveVOffset} ${logoPos.x - hOffset},${chart1Pos.y - curveVOffset} ${chart1Pos.x},${chart1Pos.y}
-                               M ${chart1BottomPos.x},${chart1BottomPos.y}
-                               C ${chart1BottomPos.x},${chart1BottomPos.y + curveVOffset} ${chart2Pos.x},${chart2Pos.y - curveVOffset} ${chart2Pos.x},${chart2Pos.y}
-                               M ${chart2BottomPos.x},${chart2BottomPos.y}
-                               C ${chart2BottomPos.x},${chart2BottomPos.y + curveVOffset} ${chart3Pos.x},${chart3Pos.y - curveVOffset} ${chart3Pos.x},${chart3Pos.y}
-                               M ${chart3BottomPos.x},${chart3BottomPos.y}
-                               C ${chart3BottomPos.x},${chart3BottomPos.y + curveVOffset} ${kPos.x},${kPos.y - curveVOffset} ${kPos.x},${kPos.y}`;
+                    const vOffset = 150; 
+                    const hOffset = 80;
+
+                    const d = `
+                        M ${logoPos.x}, ${logoPos.y}
+                        C ${logoPos.x - hOffset}, ${logoPos.y},
+                          ${chart1TopPos.x - hOffset}, ${chart1TopPos.y - vOffset},
+                          ${chart1TopPos.x}, ${chart1TopPos.y}
+                        L ${chart1BottomPos.x}, ${chart1BottomPos.y}
+                        C ${chart1BottomPos.x}, ${chart1BottomPos.y + vOffset},
+                          ${chart2TopPos.x}, ${chart2TopPos.y - vOffset},
+                          ${chart2TopPos.x}, ${chart2TopPos.y}
+                        L ${chart2BottomPos.x}, ${chart2BottomPos.y}
+                        C ${chart2BottomPos.x}, ${chart2BottomPos.y + vOffset},
+                          ${chart3TopPos.x}, ${chart3TopPos.y - vOffset},
+                          ${chart3TopPos.x}, ${chart3TopPos.y}
+                        L ${chart3BottomPos.x}, ${chart3BottomPos.y}
+                        C ${chart3BottomPos.x}, ${chart3BottomPos.y + vOffset},
+                          ${kPos.x - 150}, ${kPos.y},
+                          ${kPos.x}, ${kPos.y}
+                    `;
                     
-                    path.setAttribute('d', d);
+                    path.setAttribute('d', d.trim().replace(/\s+/g, ' '));
                     const pathLength = path.getTotalLength();
                     path.style.strokeDasharray = pathLength;
                     path.style.strokeDashoffset = pathLength;
                 };
 
-                const presentationPages = document.querySelectorAll('.presentation-page');
                 const pageObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         entry.target.classList.toggle('is-visible', entry.isIntersecting);
@@ -555,16 +567,21 @@
                      if (containerRect.top > window.innerHeight || containerRect.bottom < 0) {
                         return;
                     }
+                    // Animate SVG path
                     const containerScrollAmount = window.scrollY - presentationContainer.offsetTop;
                     const containerScrollPercentage = Math.max(0, Math.min(1, containerScrollAmount / (presentationContainer.scrollHeight - window.innerHeight)));
                     
                     const pathLength = path.getTotalLength();
-                    const drawLength = pathLength * containerScrollPercentage;
-                    path.style.strokeDashoffset = pathLength - drawLength;
+                    if (pathLength > 0) {
+                        const drawLength = pathLength * containerScrollPercentage;
+                        path.style.strokeDashoffset = pathLength - drawLength;
+                    }
                 });
                 
                 new ResizeObserver(updatePath).observe(presentationContainer);
-                setTimeout(updatePath, 100);
+                requestAnimationFrame(() => {
+                    setTimeout(updatePath, 100);
+                });
             }
 
 
@@ -579,8 +596,8 @@
                         method: 'POST', body: formData, headers: { 'Accept': 'application/json' } 
                     }).then(response => { 
                         if (response.ok) { showSuccessToast(); contactForm.reset(); } 
-                        else { alert("Oops! There was a problem submitting your form."); } 
-                    }).catch(error => { alert("Oops! There was a network error."); }); 
+                        else { console.error("Form submission error."); } 
+                    }).catch(error => { console.error("Network error.", error); }); 
                 }); 
             }
             function showSuccessToast() { 
