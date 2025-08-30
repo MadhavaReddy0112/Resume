@@ -312,10 +312,7 @@
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
-                    <section class="pt-8">
-                        <div class="container mx-auto px-6 text-center">
-                            <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Financial Analysis Project</h3>
-                        </div>
+                    <section>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
                                 <path id="presentation-path" fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
@@ -323,8 +320,9 @@
                             </svg>
                             <!-- Page 1: Overview -->
                             <div class="presentation-page" id="pres-page-1">
-                                <div class="max-w-4xl mx-auto presentation-content">
-                                    <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-center md:text-left">
+                                <div class="max-w-4xl mx-auto presentation-content text-center">
+                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Financial Analysis Project</h3>
+                                    <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left">
                                         <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
                                         <div>
                                             <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
