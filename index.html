@@ -17,10 +17,10 @@
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
 
-            --bg-light: #f5f7fa; /* Softer white */
+            --bg-light: #f8f7ff; /* Softer pastel lavender */
             --text-light: #1f2937;
-            --glass-bg-light: rgba(255, 255, 255, 0.6);
-            --glass-border-light: rgba(0, 0, 0, 0.08);
+            --glass-bg-light: rgba(255, 255, 255, 0.8); /* Increased opacity for glossier feel */
+            --glass-border-light: rgba(0, 0, 0, 0.1); /* Slightly more defined border */
             --nav-bg-light: rgba(249, 250, 251, 0.7);
         }
 
@@ -124,7 +124,6 @@
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
-        .light-mode #particles-js { opacity: 0; pointer-events: none; }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
         .light-mode .nav-container { background: var(--nav-bg-light); border: 1px solid var(--glass-border-light); }
@@ -197,22 +196,43 @@
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
             
+            // --- PARTICLES.JS BACKGROUND ---
+            const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#4b5563" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 150, color: "#9ca3af", opacity: 0.2, width: 1 }, move: { enable: true, speed: 1.5, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: false }, resize: true }, modes: { grab: { distance: 140, line_opacity: 0.3 } } }, retina_detect: true };
+
+            const initParticles = (isLight) => {
+                // If an instance already exists, destroy it to prevent multiple canvases.
+                if(window.pJSDom && window.pJSDom.length > 0) {
+                    window.pJSDom[0].pJS.fn.vendors.destroypJS();
+                    window.pJSDom = [];
+                }
+                const config = isLight ? particlesLightConfig : particlesDarkConfig;
+                particlesJS("particles-js", config);
+            }
+
             // --- THEME TOGGLE LOGIC ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
+            
+            const prefersLight = localStorage.getItem('theme') === 'light';
 
-            if (localStorage.getItem('theme') === 'light') {
+            if (prefersLight) {
                 body.classList.add('light-mode');
                 darkIcon.classList.add('hidden');
                 lightIcon.classList.remove('hidden');
             }
+            // Initialize particles based on the current theme
+            initParticles(prefersLight);
 
             themeToggleBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
                 darkIcon.classList.toggle('hidden');
                 lightIcon.classList.toggle('hidden');
-                localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+                const isLight = body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                // Re-initialize particles for the new theme
+                initParticles(isLight);
             });
 
 
@@ -294,7 +314,7 @@
                 page.innerHTML = `
                     <section class="pt-8">
                         <div class="container mx-auto px-6 text-center">
-                            <h3 class="text-3xl md:text-4xl font-bold text-white mb-12">Financial Analysis Project</h3>
+                            <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Financial Analysis Project</h3>
                         </div>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
@@ -305,13 +325,14 @@
                             <div class="presentation-page" id="pres-page-1">
                                 <div class="max-w-4xl mx-auto presentation-content">
                                     <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-center md:text-left">
-                                        <img id="pres-logo" src="https://placehold.co/128x128/ffffff/cccccc?text=" alt="Company Logo Placeholder" class="stagger-1 h-20 w-20 flex-shrink-0 rounded-full bg-white p-1 object-contain">
+                                        <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
                                         <div>
                                             <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
                                             <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
                                         </div>
                                     </div>
-                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS). To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
+                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
+                                    <p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed stagger-3 text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
                                 </div>
                             </div>
                             <!-- Page 2: Revenue -->
@@ -398,9 +419,6 @@
                 const progress = Math.max(0, Math.min(1, (window.scrollY - pageTop) / scrollableHeight));
                 progressBar.style.width = `${progress * 100}%`;
             });
-
-            // --- Particles.js Background ---
-            particlesJS("particles-js", { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         
             document.querySelector('.nav-link.active')?.scrollIntoView({ inline: 'center', block: 'nearest' });
         });
