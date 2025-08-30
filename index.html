@@ -19,8 +19,8 @@
 
             --bg-light: #f8f7ff; /* Softer pastel lavender */
             --text-light: #1f2937;
-            --glass-bg-light: rgba(255, 255, 255, 0.8); /* Increased opacity for glossier feel */
-            --glass-border-light: rgba(0, 0, 0, 0.1); /* Slightly more defined border */
+            --glass-bg-light: rgba(255, 255, 255, 0.8);
+            --glass-border-light: rgba(0, 0, 0, 0.1);
             --nav-bg-light: rgba(249, 250, 251, 0.7);
         }
 
@@ -65,10 +65,10 @@
         /* --- Timeline --- */
         .timeline-container { position: relative; width: 100%; margin: auto; }
         .timeline-line { position: absolute; width: 2px; background-color: #374151; top: 0; bottom: 0; left: 1rem; transition: background-color 0.5s ease; }
-        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); }
+        .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: border-color 0.5s ease, box-shadow 0.5s ease; }
         .timeline-icon img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         @media (min-width: 768px) { .timeline-line, .timeline-line-progress { left: 50%; transform: translateX(-50%); } .timeline-item { width: 50%; padding-left: 0; margin-bottom: 4rem; } .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; } .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; } .timeline-icon { top: 0; left: 50%; } .timeline-item:nth-child(odd) .timeline-icon { left: auto; right: -1.75rem; transform: translateX(50%); } .timeline-item:nth-child(even) .timeline-icon { left: -1.75rem; transform: translateX(-50%); } }
@@ -95,7 +95,8 @@
         .presentation-container { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem 1rem; }
         .presentation-svg-connector { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .presentation-svg-connector path { transition: stroke-dashoffset 0.1s linear; }
-        .presentation-page { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; padding: 2rem 0; }
+        .presentation-page { min-height: calc(100vh - 6rem); display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; padding: 2rem 0; }
+        #pres-page-1 { min-height: auto; justify-content: flex-start; }
         .presentation-content { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .presentation-page.is-visible .presentation-content { opacity: 1; transform: translateY(0); }
         .presentation-page.is-visible .stagger-1 { transition-delay: 0.2s; }
@@ -104,6 +105,9 @@
         .chart-placeholder { background-color: rgba(255, 255, 255, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; position: relative; z-index: 3; }
         .chart-placeholder:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(99, 102, 241, 0.3); }
         .text-justify { text-align: justify; }
+        
+        .grad-stop-1 { stop-color: #a855f7; transition: stop-color 0.5s ease; }
+        .grad-stop-2 { stop-color: #10b981; transition: stop-color 0.5s ease; }
 
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
@@ -125,15 +129,15 @@
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
         .light-mode .nav-container { background: var(--nav-bg-light); border: 1px solid var(--glass-border-light); }
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
         .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5, .light-mode .text-white { color: #111827 !important; }
         .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer { color: #4b5563 !important; }
-        .light-mode .border-indigo-500 { border-color: #6366f1; }
-        .light-mode .text-indigo-400 { color: #6366f1 !important; }
+        .light-mode .border-indigo-500 { border-color: #f59e0b; }
+        .light-mode .text-indigo-400 { color: #f97316 !important; }
         .light-mode input, .light-mode textarea { background-color: #e5e7eb; border-color: #d1d5db; color: #111827; }
         .light-mode input::placeholder, .light-mode textarea::placeholder { color: #6b7280; }
         .light-mode .timeline-line { background-color: #d1d5db; }
@@ -142,6 +146,13 @@
         .light-mode .close-btn { background-color: rgba(255,255,255,0.5); color: #111827; }
         .light-mode .close-btn:hover { background-color: rgba(255,255,255,0.8); }
         .light-mode .chart-placeholder { background-color: rgba(0,0,0,0.03); }
+        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
+        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
+        .light-mode .timeline-icon { border-color: #f97316; }
+        .light-mode .bg-indigo-600 { background-color: #f59e0b; }
+        .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
+        .light-mode .grad-stop-1 { stop-color: #f97316; }
+        .light-mode .grad-stop-2 { stop-color: #f59e0b; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -166,7 +177,7 @@
         </div>
     </header>
 
-    <main class="pt-24 relative z-10">
+    <main class="relative z-10">
         <!-- All pages will be injected here by JS -->
     </main>
     
@@ -198,10 +209,9 @@
             
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
-            const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#4b5563" }, shape: { type: "circle" }, opacity: { value: 0.3, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 150, color: "#9ca3af", opacity: 0.2, width: 1 }, move: { enable: true, speed: 1.5, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: false }, resize: true }, modes: { grab: { distance: 140, line_opacity: 0.3 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 150, density: { enable: true, value_area: 800 } }, color: { value: "#d1d5db" }, shape: { type: "triangle" }, opacity: { value: 0.5, random: true }, size: { value: 3, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 1, direction: "top", random: true, straight: false, out_mode: "out", bounce: false } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 250, size: 0, duration: 2, opacity: 0, speed: 3 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
-                // If an instance already exists, destroy it to prevent multiple canvases.
                 if(window.pJSDom && window.pJSDom.length > 0) {
                     window.pJSDom[0].pJS.fn.vendors.destroypJS();
                     window.pJSDom = [];
@@ -222,7 +232,6 @@
                 darkIcon.classList.add('hidden');
                 lightIcon.classList.remove('hidden');
             }
-            // Initialize particles based on the current theme
             initParticles(prefersLight);
 
             themeToggleBtn.addEventListener('click', () => {
@@ -231,10 +240,8 @@
                 lightIcon.classList.toggle('hidden');
                 const isLight = body.classList.contains('light-mode');
                 localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                // Re-initialize particles for the new theme
                 initParticles(isLight);
             });
-
 
             // --- DEV TOOLS & CODE PROTECTION ---
             document.addEventListener('keydown', function (e) {
@@ -299,7 +306,8 @@
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a onclick="document.querySelector('[data-page-id=${s.link}]').click()" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}`;
+                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><form id="home-contact-form" class="w-full p-8 rounded-lg glass-effect text-center"><h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3><p class="text-gray-300 text-lg">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p><input type="text" name="_honey" style="display:none"><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
@@ -312,25 +320,34 @@
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
-                    <section>
+                    <section class="pt-16">
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
                                 <path id="presentation-path" fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
-                                <defs><linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" /><stop offset="100%" style="stop-color:#10b981;stop-opacity:1" /></linearGradient></defs>
+                                <defs>
+                                    <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop class="grad-stop-1" offset="0%"/>
+                                        <stop class="grad-stop-2" offset="100%"/>
+                                    </linearGradient>
+                                </defs>
                             </svg>
                             <!-- Page 1: Overview -->
                             <div class="presentation-page" id="pres-page-1">
                                 <div class="max-w-4xl mx-auto presentation-content text-center">
-                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Financial Analysis Project</h3>
-                                    <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left">
-                                        <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
-                                        <div>
-                                            <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
-                                            <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
+                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-8">Financial Analysis Project</h3>
+                                    <div class="flex flex-col items-center gap-8">
+                                        <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left">
+                                            <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
+                                            <div>
+                                                <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
+                                                <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
+                                            </div>
+                                        </div>
+                                        <div class="stagger-3">
+                                            <p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
+                                            <p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
                                         </div>
                                     </div>
-                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
-                                    <p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed stagger-3 text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
                                 </div>
                             </div>
                             <!-- Page 2: Revenue -->
@@ -385,25 +402,37 @@
             // --- Contact Modal & Form Logic ---
             const contactModal = document.getElementById('contact-modal');
             const contactModalContent = document.getElementById('contact-modal-content');
-            const contactFormHTML = `<div class="text-center relative"> <div class="max-w-xl mx-auto"> <form id="contact-form" class="w-full p-8 rounded-lg glass-effect contact-form-modal"> <button type="button" id="modal-close-btn" class="close-btn">&times;</button> <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3> <p class="text-gray-300 text-lg">Have a question or want to work together?</p> <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p> <input type="text" name="_honey" style="display:none"> <div class="space-y-4 text-left"> <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea> </div> <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"> <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button> <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a> </div> </form> </div> </div>`;
-            contactModalContent.innerHTML = contactFormHTML;
-
-            const contactForm = document.getElementById('contact-form');
             const successToast = document.getElementById('success-toast');
             let lastSubmission = 0;
-
+            const contactFormHTML = `<div class="text-center relative"> <div class="max-w-xl mx-auto"> <form id="contact-form" class="w-full p-8 rounded-lg glass-effect contact-form-modal"> <button type="button" id="modal-close-btn" class="close-btn">&times;</button> <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3> <p class="text-gray-300 text-lg">Have a question or want to work together?</p> <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p> <input type="text" name="_honey" style="display:none"> <div class="space-y-4 text-left"> <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea> </div> <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"> <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button> <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a> </div> </form> </div> </div>`;
+            contactModalContent.innerHTML = contactFormHTML;
+            
             const showSuccessToast = () => { if (!successToast) return; successToast.classList.add('show'); setTimeout(() => { successToast.classList.remove('show'); }, 4000); };
             const showModal = () => contactModal.classList.add('visible');
             const hideModal = () => contactModal.classList.remove('visible');
 
-            if (contactForm) { 
-                contactForm.addEventListener('submit', function(e) { 
-                    e.preventDefault(); const now = Date.now(); if (now - lastSubmission < 10000) return; if (new FormData(this).get('_honey')) return; lastSubmission = now;
-                    fetch("https://formspree.io/f/mgvzryjy", { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } })
-                        .then(res => { if (res.ok) { showSuccessToast(); contactForm.reset(); hideModal(); } })
-                        .catch(err => console.error("Form error.", err)); 
-                }); 
-            }
+            const handleFormSubmit = function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const now = Date.now();
+                if (now - lastSubmission < 10000) return;
+                if (new FormData(form).get('_honey')) return;
+                lastSubmission = now;
+
+                fetch("https://formspree.io/f/mgvzryjy", { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+                    .then(res => {
+                        if (res.ok) {
+                            showSuccessToast();
+                            form.reset();
+                            if (form.id === 'contact-form') { hideModal(); }
+                        }
+                    })
+                    .catch(err => console.error("Form error.", err));
+            };
+
+            document.getElementById('home-contact-form')?.addEventListener('submit', handleFormSubmit);
+            document.getElementById('contact-form')?.addEventListener('submit', handleFormSubmit);
+
             floatingContactBtn.addEventListener('click', showModal);
             document.getElementById('modal-close-btn').addEventListener('click', hideModal);
             contactModal.addEventListener('click', e => { if (e.target === contactModal) hideModal(); });
