@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Madhava Reddy Arimanda</title>
-    <script src="https://cdn/tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
 
-            --bg-light: #eaf2f8; /* Softer pastel blue */
+            --bg-light: #f5f7fa; /* Softer white */
             --text-light: #1f2937;
             --glass-bg-light: rgba(255, 255, 255, 0.6);
             --glass-border-light: rgba(0, 0, 0, 0.08);
@@ -45,7 +45,7 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border-dark);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease, backdrop-filter 0.5s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease, border-color 0.5s ease;
         }
         .glass-effect:hover {
             transform: translateY(-5px);
@@ -124,14 +124,9 @@
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
-        .light-mode .glass-effect {
-            background: var(--glass-bg-light);
-            border: 1px solid var(--glass-border-light);
-            box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.75), 0 8px 16px -4px rgb(0 0 0 / 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .light-mode .glass-effect:hover { box-shadow: inset 0 2px 1px 0 rgba(255, 255, 255, 0.75), 0 0 20px rgba(99, 102, 241, 0.2); }
+        .light-mode #particles-js { opacity: 0; pointer-events: none; }
+        .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
         .light-mode .nav-container { background: var(--nav-bg-light); border: 1px solid var(--glass-border-light); }
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
@@ -217,9 +212,7 @@
                 body.classList.toggle('light-mode');
                 darkIcon.classList.toggle('hidden');
                 lightIcon.classList.toggle('hidden');
-                const newTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
-                localStorage.setItem('theme', newTheme);
-                initParticles(newTheme);
+                localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
             });
 
 
@@ -301,7 +294,7 @@
                 page.innerHTML = `
                     <section class="pt-8">
                         <div class="container mx-auto px-6 text-center">
-                            <h3 class="text-3xl md:text-4xl font-bold text-white mb-2">Financial Analysis Project</h3>
+                            <h3 class="text-3xl md:text-4xl font-bold text-white mb-12">Financial Analysis Project</h3>
                         </div>
                         <div class="presentation-container">
                             <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
@@ -312,16 +305,13 @@
                             <div class="presentation-page" id="pres-page-1">
                                 <div class="max-w-4xl mx-auto presentation-content">
                                     <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-center md:text-left">
-                                        <img id="pres-logo" src="Starbucks.jpg" alt="Company Logo Placeholder" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
+                                        <img id="pres-logo" src="https://placehold.co/128x128/ffffff/cccccc?text=" alt="Company Logo Placeholder" class="stagger-1 h-20 w-20 flex-shrink-0 rounded-full bg-white p-1 object-contain">
                                         <div>
                                             <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
                                             <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
                                         </div>
                                     </div>
-                                    <div class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-justify space-y-4">
-                                        <p>This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
-                                        <p>To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
-                                    </div>
+                                    <p class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-3 text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS). To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
                                 </div>
                             </div>
                             <!-- Page 2: Revenue -->
@@ -410,23 +400,10 @@
             });
 
             // --- Particles.js Background ---
-            const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
-            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: "#607d8b" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 4, random: true }, line_linked: { enable: true, distance: 150, color: "#90a4ae", opacity: 0.4, width: 1 }, move: { enable: true, speed: 1.5, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 5, duration: 2, opacity: 0.8 }, push: { particles_nb: 4 } } }, retina_detect: true };
-
-            const initParticles = (theme) => {
-                if (window.pJSDom && window.pJSDom.length > 0) {
-                    window.pJSDom[0].pJS.fn.vendors.destroypJS();
-                    window.pJSDom = [];
-                }
-                const config = theme === 'light' ? particlesLightConfig : particlesDarkConfig;
-                particlesJS('particles-js', config);
-            };
-            
-            initParticles(localStorage.getItem('theme') || 'dark');
+            particlesJS("particles-js", { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true });
         
             document.querySelector('.nav-link.active')?.scrollIntoView({ inline: 'center', block: 'nearest' });
         });
     </script>
 </body>
 </html>
-
