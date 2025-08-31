@@ -141,21 +141,17 @@
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
-        .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5, .light-mode .text-white { color: #111827 !important; }
-        .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer, .light-mode .text-gray-500 { color: #4b5563 !important; }
+        .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5 { color: #111827 !important; }
+        .light-mode p, .light-mode li, .light-mode .text-gray-400, .light-mode .text-gray-500 { color: #4b5563 !important; }
+        .light-mode .text-white { color: #1d1d1f !important; } /* Fix for elements using text-white */
         .light-mode .border-indigo-500 { border-color: #f59e0b; } /* Sunbright orange */
         .light-mode .text-indigo-400 { color: #f97316 !important; } /* Yellowish orange */
-        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
-        .light-mode .timeline-line { background-color: #d1d5db; } /* Lighter gray for line */
+        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(249, 115, 22, 0.2); } /* Lighter glow */
+        .light-mode .timeline-line { background-color: #d1d5db; }
         .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
-        .light-mode .timeline-icon { border-color: #f97316; background-color: #ffffff; box-shadow: 0 0 15px rgba(249, 115, 22, 0.7); animation: none; /* remove pulse in light mode if desired */ }
+        .light-mode .timeline-icon { border-color: #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.7); }
         .light-mode .bg-indigo-600 { background-color: #f59e0b; }
         .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
-        .light-mode .bg-gray-900\/50 { background-color: rgba(255, 255, 255, 0.7); } /* Lighter input backgrounds */
-        .light-mode .border-gray-700 { border-color: #d1d5db; } /* Lighter input borders */
-        .light-mode .text-gray-300, .light-mode .text-white { color: #374151 !important; } /* General text color */
-        .light-mode input, .light-mode textarea { color: #1f2937; } /* Input text color */
-        .light-mode input::placeholder, .light-mode textarea::placeholder { color: #6b7280; } /* Placeholder color */
         .light-mode .case-button {
             background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
@@ -163,28 +159,6 @@
         .light-mode .case-button.active {
             background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
-        }
-        .light-mode .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
-        .light-mode .hover\:bg-gray-600:hover { background-color: #d1d5db; }
-        
-        .resume-image-container {
-            position: relative;
-            aspect-ratio: 1 / 1.414;
-        }
-        #resume-update-date {
-            position: absolute;
-            bottom: 0.75rem; /* Adjust as needed */
-            left: 0.75rem; /* Adjust as needed */
-            color: #d1d5db; /* Light gray for dark mode */
-            font-size: 0.8rem;
-            z-index: 10;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-        }
-        .light-mode #resume-update-date {
-            color: #4b5563; /* Darker gray for light mode */
-            background-color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
@@ -208,8 +182,7 @@
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
         <div class="container mx-auto flex justify-center items-center px-4">
             <div class="nav-container">
-                <nav id="main-nav">
-                    </nav>
+                <nav id="main-nav"></nav>
                 <button id="theme-toggle" class="p-2 rounded-full focus:outline-none flex items-center justify-center">
                     <svg id="theme-toggle-dark-icon" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     <svg id="theme-toggle-light-icon" class="h-6 w-6 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -218,8 +191,7 @@
         </div>
     </header>
 
-    <main class="pt-24 relative z-10">
-        </main>
+    <main class="pt-24 relative z-10"></main>
     
     <button id="floating-contact-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg glass-effect">
         <i class="fas fa-envelope text-2xl text-gray-300"></i>
@@ -295,6 +267,7 @@
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
+                certifications: [ { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' }, { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' } ],
                 resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
@@ -337,22 +310,27 @@
             // --- PAGE CREATION ---
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-400 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page'; 
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('')}<div id="timeline-end" class="h-1"></div></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress"></div>${portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('')}<div id="timeline-end" class="h-1"></div></div></div></section>`; 
                 mainContainer.appendChild(page); 
+            };
+            const createCertificationsPage = () => {
+                const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page';
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">${portfolioData.certifications.map(cert => `<div class="p-6 rounded-lg glass-effect"><h4 class="text-lg font-bold text-white">${cert.name}</h4><p class="text-indigo-400">${cert.issuer}</p></div>`).join('')}</div></div></section>`;
+                mainContainer.appendChild(page);
             };
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
                     <section class="pt-16"><div class="presentation-container">
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-300 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-300 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
-                        <div class="presentation-page" id="pres-page-4"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4></div><div class="flex justify-center gap-4 mb-6" id="case-buttons-container"><button class="case-button active" data-case="base">Base Case</button><button class="case-button" data-case="bull">Bull Case</button><button class="case-button" data-case="bear">Bear Case</button></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><div id="case-selector-container" class="p-6 rounded-lg glass-effect"><div id="base-case-content" class="case-content active"><img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Base case interpretation text goes here.</p></div><div id="bull-case-content" class="case-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Bull case interpretation text goes here.</p></div><div id="bear-case-content" class="case-content"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Bear case interpretation text goes here.</p></div></div></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Valuation Overview</h5><p class="text-gray-300 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
+                        <div class="presentation-page" id="pres-page-4"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4></div><div class="flex justify-center gap-4 mb-6" id="case-buttons-container"><button class="case-button active" data-case="base">Base Case</button><button class="case-button" data-case="bull">Bull Case</button><button class="case-button" data-case="bear">Bear Case</button></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><div id="case-selector-container" class="p-6 rounded-lg glass-effect"><div id="base-case-content" class="case-content active"><img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Base case interpretation text goes here.</p></div><div id="bull-case-content" class="case-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Bull case interpretation text goes here.</p></div><div id="bear-case-content" class="case-content"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Bear case interpretation text goes here.</p></div></div></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Valuation Overview</h5><p class="text-gray-400 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p></div></div></div>
                     </div></section>
                 `;
                 mainContainer.appendChild(page);
@@ -360,14 +338,14 @@
             const createResumePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page';
                 const today = new Date();
-                const dayOfWeek = today.getDay(); // Sunday - Saturday : 0 - 6
-                const lastSunday = new Date(today.setDate(today.getDate() - dayOfWeek)); // Get the date of the last Sunday
+                const dayOfWeek = today.getDay();
+                const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek));
                 const formattedDate = lastSunday.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect resume-image-container"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"><p class="italic" id="resume-update-date">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
 
-            createHomePage(); createExperiencePage(); createProjectsPage(); createResumePage();
+            createHomePage(); createExperiencePage(); createProjectsPage(); createCertificationsPage(); createResumePage();
             
             // --- DYNAMIC LISTENERS & OBSERVERS ---
             const caseButtons = document.querySelectorAll('#case-buttons-container .case-button');
