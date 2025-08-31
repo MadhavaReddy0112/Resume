@@ -17,7 +17,7 @@
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
 
-            --bg-light: #f5f5f7;
+            --bg-light: #f8f7ff; /* Light Pastel Lavender */
             --text-light: #1d1d1f;
             --glass-bg-light: rgba(245, 245, 247, 0.7);
             --glass-border-light: rgba(0, 0, 0, 0.1);
@@ -92,57 +92,29 @@
         #theme-toggle:hover { background: rgba(255,255,255,0.2); }
         #theme-toggle:focus { outline: none; }
 
-
         /* --- Financial Presentation --- */
         .presentation-container { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem 1rem; }
-        .presentation-svg-connector {
-            display: none; /* Hiding the flowing line as requested */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .presentation-svg-connector path { transition: stroke-dashoffset 0.1s linear; }
+        .heading-left-align { text-align: left !important; }
         .presentation-page { min-height: calc(100vh - 6rem); display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; padding: 2rem 0; }
         #pres-page-1 { min-height: auto; justify-content: flex-start; }
         .presentation-content { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .presentation-page.is-visible .presentation-content { opacity: 1; transform: translateY(0); }
-        .presentation-page.is-visible .stagger-1 { transition-delay: 0.2s; }
-        .presentation-page.is-visible .stagger-2 { transition-delay: 0.4s; }
-        .presentation-page.is-visible .stagger-3 { transition-delay: 0.6s; }
         .chart-placeholder { background-color: rgba(255, 255, 255, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; position: relative; z-index: 3; }
         .chart-placeholder:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(99, 102, 241, 0.3); }
         .text-justify { text-align: justify; }
         
-        .grad-stop-1 { stop-color: #a855f7; transition: stop-color 0.5s ease; }
-        .grad-stop-2 { stop-color: #10b981; transition: stop-color 0.5s ease; }
-        
         .case-button {
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            transition: all 0.3s ease;
-            font-weight: 500;
+            padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid transparent; transition: all 0.3s ease; font-weight: 500;
             background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
             box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
         }
-        
         .case-button.active {
-            background-color: rgba(99, 102, 241, 0.2);
-            border-color: #6366f1;
-            color: #fff;
+            background-color: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
-        
         .case-content { display: none; }
-        .case-content.active { display: block; }
-        
-        ul.list-disc {
-            padding-left: 1.25rem;
-        }
+        .case-content.active { display: block; animation: fadeIn 0.5s; }
+        ul.list-disc { padding-left: 1.25rem; }
 
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
@@ -152,45 +124,14 @@
         #mobile-alert { background: linear-gradient(145deg, #333, #111); color: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center; max-width: 90%; }
         #contact-modal { transition: opacity 0.3s ease; }
         #contact-modal.visible { opacity: 1; pointer-events: auto; }
-        #contact-modal.visible #contact-modal-content { transform: scale(1); opacity: 1; }
         #contact-modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
-        .contact-form-modal { position: relative; }
-        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(0,0,0,0.2); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; }
-        .close-btn:hover { background-color: rgba(0,0,0,0.4); }
-        #floating-contact-btn { transition: transform 0.5s ease, opacity 0.5s ease, background-color 0.5s ease, border-color 0.5s ease; opacity: 1; }
-        #floating-contact-btn.btn-hidden { opacity: 0; transform: translateY(calc(100% + 1.5rem)); pointer-events: none; }
         
-        .device-animation {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .phone-to-laptop .fa-laptop {
-            display: none;
-        }
-
-        .phone-to-laptop.animated .fa-mobile-alt {
-            animation: hide-phone 1s forwards;
-        }
-
-        .phone-to-laptop.animated .fa-laptop {
-            animation: show-laptop 1s 1s forwards;
-            display: inline-block;
-        }
-        
-        @keyframes hide-phone {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0.5); opacity: 0; }
-        }
-
-        @keyframes show-laptop {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* --- Global Scrollbar --- */
-        #global-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; background-color: rgba(85, 79, 153, 0.2); z-index: 100; }
-        #global-progress-bar { height: 100%; width: 0; background-color: #554f99; transition: width 0.05s linear; }
+        .device-animation { font-size: 4rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+        .device-animation .fa-laptop { color: #34c759; }
+        .device-animation .fa-long-arrow-alt-right { opacity: 0; transition: opacity 1s ease 1s; }
+        .device-animation.animated .fa-long-arrow-alt-right { opacity: 1; }
+        .device-animation .fa-laptop { transform: scale(0.5); opacity: 0; transition: all 1s ease 2s; }
+        .device-animation.animated .fa-laptop { transform: scale(1); opacity: 1; }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
@@ -201,35 +142,20 @@
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
         .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5, .light-mode .text-white { color: #111827 !important; }
-        .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer { color: #4b5563 !important; }
-        .light-mode .border-indigo-500 { border-color: #007aff; }
-        .light-mode .text-indigo-400 { color: #007aff !important; }
-        .light-mode input, .light-mode textarea { background-color: #e5e7eb; border-color: #d1d5db; color: #111827; }
-        .light-mode input::placeholder, .light-mode textarea::placeholder { color: #6b7280; }
-        .light-mode .timeline-line { background-color: #d1d5db; }
-        .light-mode #theme-toggle { background-color: rgba(0,0,0,0.05); }
-        .light-mode #theme-toggle:hover { background-color: rgba(0,0,0,0.1); }
-        .light-mode .close-btn { background-color: rgba(255,255,255,0.5); color: #111827; }
-        .light-mode .close-btn:hover { background-color: rgba(255,255,255,0.8); }
-        .light-mode .chart-placeholder { background-color: rgba(0,0,0,0.03); }
-        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(0, 122, 255, 0.5), 0 0 30px rgba(0, 122, 255, 0.3); }
-        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #007aff, #34c759); }
-        .light-mode .timeline-icon { border-color: #007aff; }
-        .light-mode .bg-indigo-600 { background-color: #007aff; }
-        .light-mode .hover\:bg-indigo-700:hover { background-color: #0056b3; }
-        .light-mode .grad-stop-1 { stop-color: #007aff; }
-        .light-mode .grad-stop-2 { stop-color: #34c759; }
-        .light-mode .bg-gray-700 { background-color: #374151; color: white !important; }
-        .light-mode .hover\:bg-gray-600:hover { background-color: #1f2937; }
+        .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer, .light-mode .text-gray-500 { color: #4b5563 !important; }
+        .light-mode .border-indigo-500 { border-color: #f59e0b; }
+        .light-mode .text-indigo-400 { color: #f97316 !important; }
+        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
+        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
+        .light-mode .timeline-icon { border-color: #f97316; }
+        .light-mode .bg-indigo-600 { background-color: #f59e0b; }
+        .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
         .light-mode .case-button {
-            background: linear-gradient(145deg, #fefefe, #e6e6e6);
-            color: #333;
+            background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
         }
         .light-mode .case-button.active {
-            background: linear-gradient(145deg, #007aff, #0056b3);
-            border-color: #007aff;
-            color: #fff;
+            background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
     </style>
@@ -243,10 +169,9 @@
     <div id="mobile-alert-container">
         <div id="mobile-alert">
             <div class="device-animation">
-                <span class="phone-to-laptop">
-                    <i class="fas fa-mobile-alt"></i>
-                    <i class="fas fa-laptop"></i>
-                </span>
+                <i class="fas fa-mobile-alt"></i>
+                <i class="fas fa-long-arrow-alt-right"></i>
+                <i class="fas fa-laptop"></i>
             </div>
             <p>For the best experience, please view this page on a larger screen.</p>
         </div>
@@ -273,10 +198,8 @@
     </button>
 
     <div id="contact-modal" class="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-4 opacity-0 pointer-events-none">
-        <div id="contact-modal-content" class="w-full max-w-xl mx-auto">
-            </div>
+        <div id="contact-modal-content" class="w-full max-w-xl mx-auto"></div>
     </div>
-
 
     <footer class="py-6 text-center text-gray-500 relative z-10">
         <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
@@ -292,8 +215,8 @@
             const body = document.body;
             
             // --- PARTICLES.JS BACKGROUND ---
-            const particlesDarkConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#ffffff" }, shape: { type: "circle", stroke: { width: 0, color: "#000000" }, polygon: { nb_sides: 5 } }, opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } }, size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 }, move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } } }, retina_detect: true };
-            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: "#007aff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: true, rotateX: 600, rotateY: 1200 } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 }, push: { particles_nb: 4 } } }, retina_detect: true };
+            const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: "#f97316" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: true, rotateX: 600, rotateY: 1200 } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 }, push: { particles_nb: 4 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -327,24 +250,14 @@
                 initParticles(isLight);
             });
 
-            // --- DEV TOOLS & CODE PROTECTION ---
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || (e.ctrlKey && e.key.toUpperCase() === 'U') || (e.metaKey && e.altKey && e.key.toUpperCase() === 'I') ) {
-                    e.preventDefault();
-                }
-            });
-
             // --- SMOOTH AUTO-HIDE NAVIGATION & BUTTONS ---
-            const header = document.querySelector('header');
-            const floatingContactBtn = document.getElementById('floating-contact-btn');
             let lastScrollTop = 0;
-            const delta = 50; 
             window.addEventListener('scroll', function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (Math.abs(lastScrollTop - scrollTop) <= delta) return;
-                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > header.offsetHeight;
-                header.classList.toggle('nav-hidden', isScrollingDown);
-                floatingContactBtn.classList.toggle('btn-hidden', isScrollingDown);
+                if (Math.abs(lastScrollTop - scrollTop) <= 50) return;
+                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
+                document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
+                document.getElementById('floating-contact-btn').classList.toggle('btn-hidden', isScrollingDown);
                 lastScrollTop = scrollTop;
             }, false);
 
@@ -353,19 +266,12 @@
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
-                skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Daxtra', 'Boolean Strings', 'Canva', 'PowerPoint', 'Outlook'],
-                educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' } ],
-                certifications: [ { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' }, { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' } ],
                 resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
             const mainContainer = document.querySelector('main');
-            const navContainer = document.getElementById('main-nav');
-            const mobileAlertContainer = document.getElementById('mobile-alert-container');
-            const deviceAnimation = document.querySelector('.phone-to-laptop');
-
+            
             const showPage = (pageId) => {
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
@@ -373,18 +279,18 @@
                 
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.toggle('active', link.dataset.pageId === pageId);
-                    if (link.dataset.pageId === pageId) {
-                        link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                    }
+                    if (link.dataset.pageId === pageId) link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 });
 
                 if (pageId === 'projects' && window.innerWidth < 768) {
+                    const mobileAlertContainer = document.getElementById('mobile-alert-container');
+                    const deviceAnimation = document.querySelector('.device-animation');
                     mobileAlertContainer.classList.add('show');
                     deviceAnimation.classList.add('animated');
                     setTimeout(() => {
                         mobileAlertContainer.classList.remove('show');
                         deviceAnimation.classList.remove('animated');
-                    }, 4000);
+                    }, 6000);
                 }
                 
                 window.scrollTo(0, 0);
@@ -397,235 +303,57 @@
                 link.textContent = page.label;
                 link.dataset.pageId = page.id;
                 link.onclick = () => showPage(page.id);
-                navContainer.appendChild(link);
+                document.getElementById('main-nav').appendChild(link);
             });
 
+            // --- PAGE CREATION ---
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
-                const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a onclick="document.querySelector('[data-page-id=${s.link}]').click()" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
-                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><form id="home-contact-form" class="w-full p-8 rounded-lg glass-effect text-center"><h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3><p class="text-gray-300 text-lg">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p><input type="text" name="_honey" style="display:none"><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${portfolioData.about.title}</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page'; 
-                const experiencesHTML = portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join(''); 
-                const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join(''); 
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container">${portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('')}<div id="timeline-end" class="h-1"></div></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
-                    <section class="pt-16">
-                        <div class="presentation-container">
-                            <svg class="presentation-svg-connector" id="presentation-connector" preserveAspectRatio="none">
-                                <path id="presentation-path" fill="none" stroke="url(#line-gradient)" stroke-width="3"/>
-                                <defs>
-                                    <linearGradient id="line-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop class="grad-stop-1" offset="0%"/>
-                                        <stop class="grad-stop-2" offset="100%"/>
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <div class="presentation-page" id="pres-page-1">
-                                <div class="max-w-4xl mx-auto presentation-content text-center">
-                                    <div class="flex flex-col items-center gap-8">
-                                        <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left">
-                                            <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain">
-                                            <div>
-                                                <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
-                                                <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
-                                            </div>
-                                        </div>
-                                        <div class="stagger-3">
-                                            <p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
-                                            <p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="presentation-page" id="pres-page-2">
-                                <div class="text-center mb-8">
-                                    <h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-12 items-center">
-                                    <div class="presentation-content stagger-1">
-                                        <img id="pres-chart-1" src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto">
-                                    </div>
-                                    <div class="presentation-content text-center md:text-left stagger-2">
-                                        <h5 class="text-2xl font-bold text-white" data-section-title>Revenue vs. profitability — margin-driven earnings volatility</h5>
-                                        <div class="text-gray-300 mt-4 leading-relaxed text-justify" data-section-content>
-                                            <p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p>
-                                            <ul class="list-disc mt-4 space-y-2">
-                                                <li>The chart indicates earnings moved largely because margins changed more than revenue did.</li>
-                                                <li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="presentation-page" id="pres-page-3">
-                                <div class="text-center mb-8">
-                                    <h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-12 items-center">
-                                    <div class="presentation-content text-center md:text-right stagger-2 md:order-2">
-                                        <h5 class="text-2xl font-bold text-white" data-section-title>Cash Flow & Capital Structure</h5>
-                                        <div class="text-gray-300 mt-4 leading-relaxed text-justify" data-section-content>
-                                            <p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p>
-                                            <ul class="list-disc mt-4 space-y-2">
-                                                <li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li>
-                                                <li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="presentation-content stagger-1 md:order-1">
-                                        <img id="pres-chart-2" src="https://i.imgur.com/sA2Gv5E.png" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full h-auto">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="presentation-page" id="pres-page-4">
-                                <div class="text-center mb-8">
-                                    <h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4>
-                                </div>
-                                <div class="grid md:grid-cols-2 gap-12 items-center">
-                                    <div class="presentation-content stagger-1">
-                                        <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
-                                            <div class="flex justify-center gap-2 mb-4">
-                                                <button class="case-button active" data-case="base">Base Case</button>
-                                                <button class="case-button" data-case="bull">Bull Case</button>
-                                                <button class="case-button" data-case="bear">Bear Case</button>
-                                            </div>
-                                            <div id="base-case-content" class="case-content active">
-                                                 <img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto">
-                                                 <p class="text-gray-300 mt-4 text-sm text-center">Base case interpretation text goes here.</p>
-                                            </div>
-                                            <div id="bull-case-content" class="case-content">
-                                                 <img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto">
-                                                 <p class="text-gray-300 mt-4 text-sm text-center">Bull case interpretation text goes here.</p>
-                                            </div>
-                                            <div id="bear-case-content" class="case-content">
-                                                 <img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto">
-                                                 <p class="text-gray-300 mt-4 text-sm text-center">Bear case interpretation text goes here.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="presentation-content text-center md:text-left stagger-2">
-                                        <h5 class="text-2xl font-bold text-white" data-section-title>Valuation Overview</h5>
-                                        <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="presentation-page" id="pres-page-5"> <div class="text-center max-w-3xl mx-auto presentation-content"> <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5> <p id="takeaways-content" class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p> <div class="mt-8"> <a href="#" download class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"> <i class="fas fa-file-excel"></i> Download Full Analysis </a> </div> </div> </div>
-                        </div>
-                    </section>
+                    <section class="pt-16"><div class="presentation-container">
+                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-300 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-300 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
+                        <div class="presentation-page" id="pres-page-4"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4></div><div class="flex justify-center gap-4 mb-6" id="case-buttons-container"><button class="case-button active" data-case="base">Base Case</button><button class="case-button" data-case="bull">Bull Case</button><button class="case-button" data-case="bear">Bear Case</button></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><div id="case-selector-container" class="p-6 rounded-lg glass-effect"><div id="base-case-content" class="case-content active"><img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Base case interpretation text goes here.</p></div><div id="bull-case-content" class="case-content"><img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Bull case interpretation text goes here.</p></div><div id="bear-case-content" class="case-content"><img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-300 mt-4 text-sm text-center">Bear case interpretation text goes here.</p></div></div></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Valuation Overview</h5><p class="text-gray-300 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p></div></div></div>
+                    </div></section>
                 `;
                 mainContainer.appendChild(page);
             };
-            const createCertificationsPage = () => { const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page'; const certificationsHTML = portfolioData.certifications.map(cert => `<div class="p-6 rounded-lg glass-effect"><h4 class="text-lg font-bold text-white">${cert.name}</h4><p class="text-indigo-400">${cert.issuer}</p></div>`).join(''); const educationsHTML = portfolioData.educations.map(edu => `<div class="p-8 rounded-lg glass-effect text-center"><h4 class="text-xl font-bold text-white">${edu.degree}</h4><p class="text-lg text-indigo-400 mb-2">${edu.school}</p><p class="text-gray-400">${edu.date}</p><p class="text-gray-400">${edu.details}</p></div>`).join(''); page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid md:grid-cols-2 gap-8">${educationsHTML}</div></div></section>`; mainContainer.appendChild(page); };
-            const createResumePage = () => { const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page'; page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect" style="aspect-ratio: 1 / 1.414;"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; mainContainer.appendChild(page); };
-
-            createHomePage(); createExperiencePage(); createProjectsPage(); createCertificationsPage(); createResumePage();
-            
-            // --- STAGED TIMELINE ANIMATION ---
-            const timelineContainer = document.getElementById('experience-container');
-            if (timelineContainer) {
-                const timelineProgress = document.getElementById('timeline-progress');
-                const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
-                const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)); }, { threshold: 0.5, rootMargin: "0px 0px -50px 0px" });
-                const lineProgressObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) timelineProgress.style.height = `${e.target.offsetTop + (e.target.querySelector('.timeline-icon').offsetHeight / 2)}px`; }); }, { threshold: 0.6 });
-                timelineItems.forEach(item => { itemEntryObserver.observe(item); lineProgressObserver.observe(item); });
-                const timelineEnd = document.getElementById('timeline-end');
-                if (timelineEnd) { new IntersectionObserver(e => { if (e[0].isIntersecting) timelineProgress.style.height = '100%'; }, { threshold: 1.0 }).observe(timelineEnd); }
-            }
-
-            // --- FINANCIAL PRESENTATION ANIMATION ---
-            const presentationContainer = document.querySelector('.presentation-container');
-            if (presentationContainer) {
-                const path = document.getElementById('presentation-path');
-                const updatePath = () => {
-                    if (!path) return;
-                    const containerRect = presentationContainer.getBoundingClientRect();
-                    const getCoords = (selector, point = 'center') => { const el = document.getElementById(selector); if (!el) return null; const r = el.getBoundingClientRect(); if (r.width === 0) return null; let x = r.left - containerRect.left, y = r.top - containerRect.top; switch (point) { case 'bottom-center': x += r.width/2; y += r.height; break; case 'top-center': x+= r.width/2; break; case 'left-middle': y += r.height/2; break; case 'center': x+= r.width/2; y+= r.height/2; break; } return {x,y}; };
-                    const p = { logo: getCoords('pres-logo', 'left-middle'), c1t: getCoords('pres-chart-1', 'top-center'), c1b: getCoords('pres-chart-1', 'bottom-center'), c2t: getCoords('pres-chart-2', 'top-center'), c2b: getCoords('pres-chart-2', 'bottom-center'), c3t: getCoords('pres-chart-3', 'top-center'), c3b: getCoords('pres-chart-3', 'bottom-center'), k: getCoords('pres-takeaways-k', 'left-middle') };
-                    if (Object.values(p).some(val => val === null)) { path.setAttribute('d', ''); return; }
-                    const d = `M ${p.logo.x},${p.logo.y} C ${p.logo.x - 80},${p.logo.y}, ${p.c1t.x - 80},${p.c1t.y - 150}, ${p.c1t.x},${p.c1t.y} L ${p.c1b.x},${p.c1b.y} C ${p.c1b.x},${p.c1b.y + 150}, ${p.c2t.x},${p.c2t.y - 150}, ${p.c2t.x},${p.c2t.y} L ${p.c2b.x},${p.c2b.y} C ${p.c2b.x},${p.c2b.y + 150}, ${p.c3t.x},${p.c3t.y - 150}, ${p.c3t.x},${p.c3t.y} L ${p.c3b.x},${p.c3b.y} C ${p.c3b.x},${p.c3b.y + 150}, ${p.k.x-150},${p.k.y}, ${p.k.x},${p.k.y}`;
-                    path.setAttribute('d', d.trim().replace(/\s+/g, ' ')); const len = path.getTotalLength(); path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
-                };
-                const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.4 });
-                document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
-                window.addEventListener('scroll', () => { const r = presentationContainer.getBoundingClientRect(); if (r.top > window.innerHeight || r.bottom < 0) return; const percent = Math.max(0, Math.min(1, (window.scrollY - presentationContainer.offsetTop) / (presentationContainer.scrollHeight - window.innerHeight))); const len = path.getTotalLength(); if (len > 0) path.style.strokeDashoffset = len - (len * percent); });
-                new ResizeObserver(updatePath).observe(presentationContainer); requestAnimationFrame(() => setTimeout(updatePath, 100));
-            }
-
-            // --- CASE SELECTOR LOGIC ---
-            const caseSelectorContainer = document.getElementById('case-selector-container');
-            if (caseSelectorContainer) {
-                const caseButtons = caseSelectorContainer.querySelectorAll('.case-button');
-                const caseContents = caseSelectorContainer.querySelectorAll('.case-content');
-                caseButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        caseButtons.forEach(btn => btn.classList.remove('active'));
-                        button.classList.add('active');
-                        const caseName = button.dataset.case;
-                        caseContents.forEach(content => {
-                            content.classList.toggle('active', content.id === `${caseName}-case-content`);
-                        });
-                    });
-                });
-            }
-
-
-            // --- Contact Modal & Form Logic ---
-            const contactModal = document.getElementById('contact-modal');
-            const contactModalContent = document.getElementById('contact-modal-content');
-            const successToast = document.getElementById('success-toast');
-            let lastSubmission = 0;
-            const contactFormHTML = `<div class="text-center relative"> <div class="max-w-xl mx-auto"> <form id="contact-form" class="w-full p-8 rounded-lg glass-effect contact-form-modal"> <button type="button" id="modal-close-btn" class="close-btn">&times;</button> <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3> <p class="text-gray-300 text-lg">Have a question or want to work together?</p> <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p> <input type="text" name="_honey" style="display:none"> <div class="space-y-4 text-left"> <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"> <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea> </div> <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"> <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button> <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a> </div> </form> </div> </div>`;
-            contactModalContent.innerHTML = contactFormHTML;
-            
-            const showSuccessToast = () => { if (!successToast) return; successToast.classList.add('show'); setTimeout(() => { successToast.classList.remove('show'); }, 4000); };
-            const showModal = () => contactModal.classList.add('visible');
-            const hideModal = () => contactModal.classList.remove('visible');
-
-            const handleFormSubmit = function(e) {
-                e.preventDefault();
-                const form = e.target;
-                const now = Date.now();
-                if (now - lastSubmission < 10000) return;
-                if (new FormData(form).get('_honey')) return;
-                lastSubmission = now;
-
-                fetch("https://formspree.io/f/mgvzryjy", { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
-                    .then(res => {
-                        if (res.ok) {
-                            showSuccessToast();
-                            form.reset();
-                            if (form.id === 'contact-form') { hideModal(); }
-                        }
-                    })
-                    .catch(err => console.error("Form error.", err));
+            const createResumePage = () => { 
+                const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page';
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                const lastSunday = new Date(today.setDate(today.getDate() - dayOfWeek));
+                const formattedDate = lastSunday.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-white">Resume</h3><p class="text-center text-gray-400 italic mb-8" id="resume-update-date">Last updated on ${formattedDate}</p><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect" style="aspect-ratio: 1 / 1.414;"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
+                mainContainer.appendChild(page); 
             };
 
-            document.getElementById('home-contact-form')?.addEventListener('submit', handleFormSubmit);
-            document.getElementById('contact-form')?.addEventListener('submit', handleFormSubmit);
-
-            floatingContactBtn.addEventListener('click', showModal);
-            document.getElementById('modal-close-btn').addEventListener('click', hideModal);
-            contactModal.addEventListener('click', e => { if (e.target === contactModal) hideModal(); });
+            createHomePage(); createExperiencePage(); createProjectsPage(); createResumePage();
             
-            // --- Global Scroll Progress Bar ---
-            const progressBar = document.getElementById('global-progress-bar');
-            window.addEventListener('scroll', () => {
-                const activePage = document.querySelector('.page.active'); if (!activePage || !progressBar) return;
-                const pageTop = activePage.offsetTop; const pageHeight = activePage.offsetHeight; const windowHeight = window.innerHeight; const scrollableHeight = pageHeight - windowHeight;
-                if (scrollableHeight <= 0) { progressBar.style.width = (window.scrollY + windowHeight > pageTop && window.scrollY < pageTop + pageHeight) ? '100%' : '0%'; return; }
-                const progress = Math.max(0, Math.min(1, (window.scrollY - pageTop) / scrollableHeight));
-                progressBar.style.width = `${progress * 100}%`;
+            // --- DYNAMIC LISTENERS & OBSERVERS ---
+            const caseButtons = document.querySelectorAll('#case-buttons-container .case-button');
+            const caseContents = document.querySelectorAll('#case-selector-container .case-content');
+            caseButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    caseButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    caseContents.forEach(content => content.classList.toggle('active', content.id === `${button.dataset.case}-case-content`));
+                });
             });
-        
-            document.querySelector('.nav-link.active')?.scrollIntoView({ inline: 'center', block: 'nearest' });
+
+            const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.4 });
+            document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
         });
     </script>
 </body>
