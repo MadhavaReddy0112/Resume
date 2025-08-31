@@ -66,7 +66,7 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            height: 4px;
+            height: 5px;
             background: rgba(99, 102, 241, 0.6);
             width: 0%;
             z-index: 100;
@@ -372,13 +372,15 @@
                         <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
                         <div class="presentation-page" id="pres-page-4">
+                            <p class="text-gray-400 mb-4 text-center">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
                             <div class="mb-8">
-                                <p class="text-gray-400 mb-4 text-center">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
                                 <h4 class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
-                                <div class="presentation-content">
-                                    <img src="Graph-3.jpg" alt="Forecast Chart" class="rounded-lg chart-placeholder w-full h-auto">
+                                <div class="presentation-content relative">
+                                    <img id="base-case-chart" src="Graph-3.jpg" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="bull-case-chart" src="Graph-4.jpg" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="bear-case-chart" src="Graph-5.jpg" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
                                 </div>
                                 <div class="presentation-content">
                                     <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
@@ -526,11 +528,16 @@
             }
             const caseButtons = document.querySelectorAll('#case-buttons-container .case-button');
             const caseContents = document.querySelectorAll('#case-selector-container .case-content');
+            const caseCharts = document.querySelectorAll('.case-chart');
             caseButtons.forEach(button => {
                 button.addEventListener('click', () => {
+                    const activeCase = button.dataset.case;
                     caseButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
-                    caseContents.forEach(content => content.classList.toggle('active', content.id === `${button.dataset.case}-case-content`));
+                    caseContents.forEach(content => content.classList.toggle('active', content.id === `${activeCase}-case-content`));
+                    caseCharts.forEach(chart => {
+                        chart.classList.toggle('hidden', chart.id !== `${activeCase}-case-chart`);
+                    });
                 });
             });
 
@@ -540,5 +547,3 @@
     </script>
 </body>
 </html>
-
-
