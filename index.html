@@ -143,13 +143,19 @@
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
         .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5, .light-mode .text-white { color: #111827 !important; }
         .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer, .light-mode .text-gray-500 { color: #4b5563 !important; }
-        .light-mode .border-indigo-500 { border-color: #f59e0b; }
-        .light-mode .text-indigo-400 { color: #f97316 !important; }
+        .light-mode .border-indigo-500 { border-color: #f59e0b; } /* Sunbright orange */
+        .light-mode .text-indigo-400 { color: #f97316 !important; } /* Yellowish orange */
         .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
+        .light-mode .timeline-line { background-color: #d1d5db; } /* Lighter gray for line */
         .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
-        .light-mode .timeline-icon { border-color: #f97316; }
+        .light-mode .timeline-icon { border-color: #f97316; background-color: #ffffff; box-shadow: 0 0 15px rgba(249, 115, 22, 0.7); animation: none; /* remove pulse in light mode if desired */ }
         .light-mode .bg-indigo-600 { background-color: #f59e0b; }
         .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
+        .light-mode .bg-gray-900\/50 { background-color: rgba(255, 255, 255, 0.7); } /* Lighter input backgrounds */
+        .light-mode .border-gray-700 { border-color: #d1d5db; } /* Lighter input borders */
+        .light-mode .text-gray-300, .light-mode .text-white { color: #374151 !important; } /* General text color */
+        .light-mode input, .light-mode textarea { color: #1f2937; } /* Input text color */
+        .light-mode input::placeholder, .light-mode textarea::placeholder { color: #6b7280; } /* Placeholder color */
         .light-mode .case-button {
             background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
@@ -157,6 +163,28 @@
         .light-mode .case-button.active {
             background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
+        }
+        .light-mode .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
+        .light-mode .hover\:bg-gray-600:hover { background-color: #d1d5db; }
+        
+        .resume-image-container {
+            position: relative;
+            aspect-ratio: 1 / 1.414;
+        }
+        #resume-update-date {
+            position: absolute;
+            bottom: 0.75rem; /* Adjust as needed */
+            left: 0.75rem; /* Adjust as needed */
+            color: #d1d5db; /* Light gray for dark mode */
+            font-size: 0.8rem;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .light-mode #resume-update-date {
+            color: #4b5563; /* Darker gray for light mode */
+            background-color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
@@ -314,7 +342,7 @@
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page'; 
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container">${portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('')}<div id="timeline-end" class="h-1"></div></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('')}<div id="timeline-end" class="h-1"></div></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
             const createProjectsPage = () => {
@@ -332,10 +360,10 @@
             const createResumePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page';
                 const today = new Date();
-                const dayOfWeek = today.getDay();
-                const lastSunday = new Date(today.setDate(today.getDate() - dayOfWeek));
+                const dayOfWeek = today.getDay(); // Sunday - Saturday : 0 - 6
+                const lastSunday = new Date(today.setDate(today.getDate() - dayOfWeek)); // Get the date of the last Sunday
                 const formattedDate = lastSunday.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-4 text-white">Resume</h3><p class="text-center text-gray-400 italic mb-8" id="resume-update-date">Last updated on ${formattedDate}</p><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect" style="aspect-ratio: 1 / 1.414;"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto p-2 md:p-4 rounded-lg glass-effect resume-image-container"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"><p class="italic" id="resume-update-date">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
 
