@@ -128,19 +128,6 @@
         ul.list-disc { padding-left: 1.25rem; }
         .case-chart.hidden { display: none; }
 
-        /* --- Project Connector Line --- */
-        .connector-path {
-            stroke-dasharray: 4000;
-            stroke-dashoffset: 4000;
-            animation: draw-line 4s 0.5s ease-out forwards;
-        }
-        .connector-dot {
-            opacity: 0;
-            animation: fade-in-dot 0.5s ease-out forwards;
-        }
-        @keyframes draw-line { to { stroke-dashoffset: 0; } }
-        @keyframes fade-in-dot { to { opacity: 1; } }
-
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
@@ -344,8 +331,10 @@
                             mobileAlertContainer.classList.remove('show');
                         }, 5000);
                     } else {
-                        // Use a timeout to ensure elements are rendered before drawing
-                        setTimeout(drawProjectConnector, 500);
+                        setTimeout(() => {
+                            drawProjectConnector();
+                            updateLineOnScroll();
+                        }, 200);
                     }
                 }
                 
@@ -572,6 +561,8 @@
             document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
         
             // --- PROJECT CONNECTOR LINE LOGIC ---
+            let projectConnectorPath, pathLength;
+
             const drawProjectConnector = () => {
                 const svg = document.getElementById('project-connector-line');
                 if (!svg || window.innerWidth < 768) {
@@ -587,12 +578,13 @@
 
                 if (!logo || !h1 || !h2 || !h3 || !h4) return;
                 
-                const svgRect = svg.getBoundingClientRect();
-
+                const container = document.querySelector('.presentation-container');
+                const containerRect = container.getBoundingClientRect();
+                
                 const getRelativeCoords = (el, xOffset, yOffset) => {
                     const elRect = el.getBoundingClientRect();
-                    const x = elRect.left - svgRect.left + xOffset;
-                    const y = elRect.top - svgRect.top + yOffset;
+                    const x = elRect.left - containerRect.left + xOffset;
+                    const y = elRect.top - containerRect.top + yOffset;
                     return { x, y };
                 };
                 
@@ -615,10 +607,39 @@
                     pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`;
                 }
 
-                svg.innerHTML = `
-                    <path d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" class="connector-path" />
-                    ${points.slice(1).map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#2d9a69" class="connector-dot" style="animation-delay: ${0.8 + i*0.6}s;" />`).join('')}
-                `;
+                svg.innerHTML = `<path d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" />`;
+                
+                projectConnectorPath = svg.querySelector('path');
+                if (!projectConnectorPath) return;
+
+                pathLength = projectConnectorPath.getTotalLength();
+                projectConnectorPath.style.strokeDasharray = pathLength;
+                projectConnectorPath.style.strokeDashoffset = pathLength;
+            };
+
+            const updateLineOnScroll = () => {
+                if (!projectConnectorPath || !document.getElementById('page-projects').classList.contains('active')) {
+                    return;
+                }
+
+                const container = document.querySelector('.presentation-container');
+                const containerTop = container.offsetTop;
+                const containerHeight = container.offsetHeight;
+                const viewportHeight = window.innerHeight;
+                const scrollY = window.scrollY;
+
+                const scrollStart = containerTop - viewportHeight * 0.7; // Start drawing when container is 70% from top
+                const scrollEnd = containerTop + containerHeight - viewportHeight;
+                
+                const totalScrollDist = scrollEnd - scrollStart;
+                const currentScroll = scrollY - scrollStart;
+
+                let progress = currentScroll / totalScrollDist;
+                progress = Math.max(0, Math.min(1, progress));
+
+                if (pathLength) {
+                    projectConnectorPath.style.strokeDashoffset = pathLength * (1 - progress);
+                }
             };
             
             function debounce(func, wait) {
@@ -633,7 +654,15 @@
                 };
             };
             
-            window.addEventListener('resize', debounce(drawProjectConnector, 250));
+            const debouncedOnResize = debounce(() => {
+                if (document.getElementById('page-projects').classList.contains('active')) {
+                    drawProjectConnector();
+                    updateLineOnScroll();
+                }
+            }, 250);
+
+            window.addEventListener('scroll', updateLineOnScroll);
+            window.addEventListener('resize', debouncedOnResize);
         });
     </script>
 </body>
