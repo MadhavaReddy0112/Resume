@@ -132,6 +132,8 @@
         .device-animation.animated .fa-long-arrow-alt-right { opacity: 1; }
         .device-animation .fa-laptop { transform: scale(0.5); opacity: 0; transition: all 1s ease 2s; }
         .device-animation.animated .fa-laptop { transform: scale(1); opacity: 1; }
+        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(0,0,0,0.2); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; }
+        .close-btn:hover { background-color: rgba(0,0,0,0.4); }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
@@ -159,6 +161,12 @@
             background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
+        .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
+        .light-mode .close-btn { color: #1f2937; }
+        .light-mode #home-contact-form { background: linear-gradient(145deg, #FFFFFF, #E6E6E6); }
+        .light-mode #home-contact-form h3, .light-mode #home-contact-form p { color: #1d1d1f !important; }
+        .light-mode #home-contact-form .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
+        .light-mode #home-contact-form .hover\:bg-gray-600:hover { background-color: #d1d5db; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -203,10 +211,6 @@
     <footer class="py-6 text-center text-gray-500 relative z-10">
         <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
     </footer>
-
-    <div id="global-progress-container">
-        <div id="global-progress-bar"></div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
@@ -314,14 +318,14 @@
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a onclick="showPage('${s.link}')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
                 const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><form id="home-contact-form" class="w-full p-8 rounded-lg glass-effect text-center"><h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3><p class="text-gray-300 text-lg">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p><input type="text" name="_honey" style="display:none"><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-400 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
                 const experiencesHTML = portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('');
                 const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
             const createCertificationsPage = () => {
@@ -357,6 +361,16 @@
             createHomePage(); createExperiencePage(); createProjectsPage(); createCertificationsPage(); createResumePage();
             
             // --- DYNAMIC LISTENERS & OBSERVERS ---
+            const timelineContainer = document.getElementById('experience-container');
+            if (timelineContainer) {
+                const timelineProgress = document.getElementById('timeline-progress');
+                const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
+                const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)); }, { threshold: 0.5, rootMargin: "0px 0px -50px 0px" });
+                const lineProgressObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) timelineProgress.style.height = `${e.target.offsetTop + (e.target.querySelector('.timeline-icon').offsetHeight / 2)}px`; }); }, { threshold: 0.6 });
+                timelineItems.forEach(item => { itemEntryObserver.observe(item); lineProgressObserver.observe(item); });
+                const timelineEnd = document.getElementById('timeline-end');
+                if (timelineEnd) { new IntersectionObserver(e => { if (e[0].isIntersecting) timelineProgress.style.height = '100%'; }, { threshold: 1.0 }).observe(timelineEnd); }
+            }
             const caseButtons = document.querySelectorAll('#case-buttons-container .case-button');
             const caseContents = document.querySelectorAll('#case-selector-container .case-content');
             caseButtons.forEach(button => {
