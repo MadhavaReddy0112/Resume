@@ -575,7 +575,7 @@
             const drawProjectConnector = () => {
                 const svg = document.getElementById('project-connector-line');
                 if (!svg || window.innerWidth < 768) {
-                    if(svg) svg.innerHTML = '';
+                    if (svg) svg.innerHTML = '';
                     return;
                 }
 
@@ -587,21 +587,21 @@
 
                 if (!logo || !h1 || !h2 || !h3 || !h4) return;
                 
-                const getCoords = (el, xOffset = -20, yOffset = 0) => {
-                    const y = el.parentElement.offsetTop + el.offsetTop + (el.offsetHeight / 2) + yOffset;
-                    const x = el.parentElement.offsetLeft + el.offsetLeft + xOffset;
+                const svgRect = svg.getBoundingClientRect();
+
+                const getRelativeCoords = (el, xOffset, yOffset) => {
+                    const elRect = el.getBoundingClientRect();
+                    const x = elRect.left - svgRect.left + xOffset;
+                    const y = elRect.top - svgRect.top + yOffset;
                     return { x, y };
                 };
                 
-                const startY = logo.parentElement.offsetTop + logo.offsetTop + logo.offsetHeight;
-                const startX = logo.parentElement.offsetLeft + logo.offsetLeft + (logo.offsetWidth / 2);
-
                 const points = [
-                    { x: startX, y: startY },
-                    getCoords(h1),
-                    getCoords(h2),
-                    getCoords(h3),
-                    getCoords(h4),
+                    getRelativeCoords(logo, logo.offsetWidth / 2, logo.offsetHeight),
+                    getRelativeCoords(h1, -20, h1.offsetHeight / 2),
+                    getRelativeCoords(h2, -20, h2.offsetHeight / 2),
+                    getRelativeCoords(h3, -20, h3.offsetHeight / 2),
+                    getRelativeCoords(h4, -20, h4.offsetHeight / 2),
                 ];
 
                 let pathData = `M ${points[0].x} ${points[0].y}`;
