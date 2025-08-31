@@ -128,6 +128,13 @@
         ul.list-disc { padding-left: 1.25rem; }
         .case-chart.hidden { display: none; }
 
+        /* --- Project Connector Line --- */
+        .connector-path {
+            stroke-dasharray: 1;
+            stroke-dashoffset: 1;
+            transition: stroke-dashoffset 3s ease-out;
+        }
+
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
@@ -336,11 +343,8 @@
                             mobileAlertContainer.classList.remove('show');
                         }, 5000);
                     } else {
-                        // Use requestAnimationFrame to ensure layout is stable
                         requestAnimationFrame(() => {
                             drawProjectConnector();
-                            updateLineOnScroll();
-                            window.addEventListener('scroll', updateLineOnScroll);
                         });
                     }
                 }
@@ -570,8 +574,6 @@
             document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
         
             // --- PROJECT CONNECTOR LINE LOGIC ---
-            let projectConnectorPath, pathLength;
-
             const drawProjectConnector = () => {
                 const svg = document.getElementById('project-connector-line');
                 if (!svg || window.innerWidth < 768) {
@@ -616,39 +618,19 @@
                     pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`;
                 }
 
-                svg.innerHTML = `<path d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" />`;
+                svg.innerHTML = `<path class="connector-path" d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" />`;
                 
-                projectConnectorPath = svg.querySelector('path');
-                if (!projectConnectorPath) return;
+                const path = svg.querySelector('.connector-path');
+                if (!path) return;
 
-                pathLength = projectConnectorPath.getTotalLength();
-                projectConnectorPath.style.strokeDasharray = pathLength;
-                projectConnectorPath.style.strokeDashoffset = pathLength;
-            };
-
-            const updateLineOnScroll = () => {
-                if (!projectConnectorPath || !document.getElementById('page-projects').classList.contains('active')) {
-                    return;
-                }
-
-                const container = document.querySelector('.presentation-container');
-                const containerRect = container.getBoundingClientRect();
-                const scrollY = window.scrollY;
+                const pathLength = path.getTotalLength();
+                path.style.strokeDasharray = pathLength;
+                path.style.strokeDashoffset = pathLength;
                 
-                // The top of the scrollable area for the animation
-                const scrollStart = container.offsetTop - (window.innerHeight * 0.5);
-                // The bottom of the scrollable area for the animation
-                const scrollEnd = container.offsetTop + containerRect.height - window.innerHeight;
-
-                const totalScrollDist = scrollEnd - scrollStart;
-                const currentScroll = scrollY - scrollStart;
-
-                let progress = currentScroll / totalScrollDist;
-                progress = Math.max(0, Math.min(1, progress));
-
-                if (pathLength) {
-                    projectConnectorPath.style.strokeDashoffset = pathLength * (1 - progress);
-                }
+                // Trigger the animation
+                setTimeout(() => {
+                    path.style.strokeDashoffset = '0';
+                }, 100);
             };
             
             function debounce(func, wait) {
@@ -666,7 +648,6 @@
             const debouncedOnResize = debounce(() => {
                 if (document.getElementById('page-projects').classList.contains('active')) {
                     drawProjectConnector();
-                    updateLineOnScroll();
                 }
             }, 250);
 
