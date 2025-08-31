@@ -61,6 +61,17 @@
         header.nav-hidden {
             transform: translateY(-100%);
         }
+        
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #a855f7, #6366f1);
+            width: 0%;
+            z-index: 100;
+            transition: width 0.1s linear;
+        }
 
         /* --- Timeline --- */
         .timeline-container { position: relative; width: 100%; margin: auto; }
@@ -68,7 +79,7 @@
         .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: border-color 0.5s ease, box-shadow 0.5s ease; }
+        .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: border-color 0.5s ease, box-shadow 0.5s ease, animation 0.5s ease; }
         .timeline-icon img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         @media (min-width: 768px) { .timeline-line, .timeline-line-progress { left: 50%; transform: translateX(-50%); } .timeline-item { width: 50%; padding-left: 0; margin-bottom: 4rem; } .timeline-item:nth-child(odd) { left: 0; padding-right: 3rem; text-align: right; } .timeline-item:nth-child(even) { left: 50%; padding-left: 3rem; text-align: left; } .timeline-icon { top: 0; left: 50%; } .timeline-item:nth-child(odd) .timeline-icon { left: auto; right: -1.75rem; transform: translateX(50%); } .timeline-item:nth-child(even) .timeline-icon { left: -1.75rem; transform: translateX(-50%); } }
@@ -119,26 +130,34 @@
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
-        #mobile-alert-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        #mobile-alert-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         #mobile-alert-container.show { opacity: 1; visibility: visible; }
         #mobile-alert { background: linear-gradient(145deg, #333, #111); color: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center; max-width: 90%; }
         #contact-modal { transition: opacity 0.3s ease; }
         #contact-modal.visible { opacity: 1; pointer-events: auto; }
         #contact-modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
         
-        .device-animation { font-size: 4rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
-        .device-animation .fa-laptop { color: #34c759; }
-        .device-animation .fa-long-arrow-alt-right { opacity: 0; transition: opacity 1s ease 1s; }
-        .device-animation.animated .fa-long-arrow-alt-right { opacity: 1; }
-        .device-animation .fa-laptop { transform: scale(0.5); opacity: 0; transition: all 1s ease 2s; }
-        .device-animation.animated .fa-laptop { transform: scale(1); opacity: 1; }
-        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(0,0,0,0.2); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; }
-        .close-btn:hover { background-color: rgba(0,0,0,0.4); }
+        .device-animation { font-size: 3rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+        #mobile-alert .device-animation > i, #mobile-alert > p { opacity: 0; }
+
+        @keyframes mobile-in { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes arrow-in { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+        @keyframes laptop-in { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes text-in { from { opacity: 0; } to { opacity: 1; } }
+
+        #mobile-alert-container.show .fa-mobile-alt { animation: mobile-in 0.5s ease-out forwards; }
+        #mobile-alert-container.show .fa-long-arrow-alt-right { animation: arrow-in 0.5s ease-out 0.5s forwards; transform-origin: left; }
+        #mobile-alert-container.show .fa-laptop { animation: laptop-in 0.5s ease-out 1s forwards; }
+        #mobile-alert-container.show #mobile-alert > p { animation: text-in 0.5s ease-out 1.5s forwards; }
+
+        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(255,255,255,0.1); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; z-index: 10; }
+        .close-btn:hover { background-color: rgba(255,255,255,0.2); }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
+        .light-mode #progress-bar { background: linear-gradient(90deg, #f97316, #f59e0b); }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); }
+        .light-mode .glass-effect:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2); }
         .light-mode .nav-container { background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.7)); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
@@ -150,7 +169,7 @@
         .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(249, 115, 22, 0.2); }
         .light-mode .timeline-line { background-color: #d1d5db; }
         .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
-        .light-mode .timeline-icon { border-color: #f97316; }
+        .light-mode .timeline-icon { border-color: #f97316; animation: none; box-shadow: 0 0 15px rgba(249, 115, 22, 0.5); }
         .light-mode .bg-indigo-600 { background-color: #f59e0b; }
         .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
         .light-mode .case-button {
@@ -162,15 +181,20 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
         .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
-        .light-mode .close-btn { color: #1f2937; }
-        .light-mode #home-contact-form { background: linear-gradient(145deg, #FFFFFF, #E6E6E6); }
-        .light-mode #home-contact-form h3, .light-mode #home-contact-form p { color: #1d1d1f !important; }
-        .light-mode #home-contact-form .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
-        .light-mode #home-contact-form .hover\:bg-gray-600:hover { background-color: #d1d5db; }
+        .light-mode .close-btn { background-color: rgba(0,0,0,0.1); color: #1f2937; }
+        .light-mode .close-btn:hover { background-color: rgba(0,0,0,0.2); }
+        .light-mode .form-container { background: linear-gradient(145deg, #FFFFFF, #E6E6E6); }
+        .light-mode .form-container h3, .light-mode .form-container p { color: #1d1d1f !important; }
+        .light-mode .form-container .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
+        .light-mode .form-container .hover\:bg-gray-600:hover { background-color: #d1d5db; }
+        .light-mode .linkedin-btn { background-color: #0077B5 !important; color: white !important; }
+        .light-mode .linkedin-btn:hover { background-color: #005582 !important; }
+        .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
+        .light-mode .download-analysis-btn:hover { background-color: #d97706 !important; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
-
+    <div id="progress-bar"></div>
     <div id="particles-js"></div>
     <div id="success-toast">
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
@@ -253,16 +277,24 @@
                 initParticles(isLight);
             });
 
-            // --- SMOOTH AUTO-HIDE NAVIGATION & BUTTONS ---
+            // --- SCROLL PROGRESS & AUTO-HIDE NAV ---
             let lastScrollTop = 0;
+            const progressBar = document.getElementById('progress-bar');
             window.addEventListener('scroll', function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                // Progress Bar
+                const scrollTop = document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                progressBar.style.width = scrollPercent + '%';
+
+                // Auto-hide Nav
                 if (Math.abs(lastScrollTop - scrollTop) <= 50) return;
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
                 document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
                 document.getElementById('floating-contact-btn').classList.toggle('btn-hidden', isScrollingDown);
                 lastScrollTop = scrollTop;
             }, false);
+
 
             // --- DATA ---
             const portfolioData = {
@@ -291,13 +323,10 @@
 
                 if (pageId === 'projects' && window.innerWidth < 768) {
                     const mobileAlertContainer = document.getElementById('mobile-alert-container');
-                    const deviceAnimation = document.querySelector('.device-animation');
                     mobileAlertContainer.classList.add('show');
-                    deviceAnimation.classList.add('animated');
                     setTimeout(() => {
                         mobileAlertContainer.classList.remove('show');
-                        deviceAnimation.classList.remove('animated');
-                    }, 6000);
+                    }, 5000);
                 }
                 
                 window.scrollTo(0, 0);
@@ -317,7 +346,7 @@
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page active';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a onclick="showPage('${s.link}')" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
-                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><form id="home-contact-form" class="w-full p-8 rounded-lg glass-effect text-center"><h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3><p class="text-gray-300 text-lg">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p><input type="text" name="_honey" style="display:none"><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form></div></div></section>`;
+                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><div id="home-contact-form-container"></div></div></div></section>`;
                 page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-center p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
@@ -339,11 +368,59 @@
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
                     <section class="pt-16"><div class="presentation-container">
-                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
-                        <div class="presentation-page" id="pres-page-4"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4></div><div class="flex justify-center gap-4 mb-6" id="case-buttons-container"><button class="case-button active" data-case="base">Base Case</button><button class="case-button" data-case="bull">Bull Case</button><button class="case-button" data-case="bear">Bear Case</button></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><div id="case-selector-container" class="p-6 rounded-lg glass-effect"><div id="base-case-content" class="case-content active"><img src="Graph-3.jpg" alt="Base Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Base case interpretation text goes here.</p></div><div id="bull-case-content" class="case-content"><img src="Graph-4.jpg" alt="Bull Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Bull case interpretation text goes here.</p></div><div id="bear-case-content" class="case-content"><img src="Graph-5.jpg" alt="Bear Case Chart" class="rounded-lg w-full h-auto"><p class="text-gray-400 mt-4 text-sm text-center">Bear case interpretation text goes here.</p></div></div></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Valuation Overview</h5><p class="text-gray-400 mt-4 leading-relaxed">A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p></div></div></div>
-                        <div class="presentation-page" id="pres-page-5"> <div class="text-center max-w-3xl mx-auto presentation-content"> <h5 class="text-3xl md:text-4xl font-bold text-white"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5> <p class="text-gray-400 mt-6 text-base md:text-lg leading-relaxed">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p> <div class="mt-8"> <a href="#" download class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"> <i class="fas fa-file-excel"></i> Download Full Analysis </a> </div> </div> </div>
+                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="https://i.imgur.com/SXa3B5V.png" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/u7e91P1.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="https://i.imgur.com/0Ie6m2e.png" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
+                        <div class="presentation-page" id="pres-page-4">
+                            <div class="text-center">
+                                <p class="text-gray-400 mb-4 text-center presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
+                                <h4 class="text-xl font-bold text-white mb-8 presentation-content">Future trajectory & valuation levers: how Starbucks could perform</h4>
+                            </div>
+                            <div class="max-w-4xl mx-auto presentation-content">
+                                <div class="flex justify-center gap-4 mb-6" id="case-buttons-container">
+                                    <button class="case-button active" data-case="base">Base Case</button>
+                                    <button class="case-button" data-case="bull">Bull Case</button>
+                                    <button class="case-button" data-case="bear">Bear Case</button>
+                                </div>
+                                <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
+                                    <div id="base-case-content" class="case-content active">
+                                        <h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5>
+                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                            <p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p>
+                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul>
+                                        </div>
+                                    </div>
+                                    <div id="bull-case-content" class="case-content">
+                                        <h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5>
+                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                            <p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p>
+                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul>
+                                        </div>
+                                    </div>
+                                    <div id="bear-case-content" class="case-content">
+                                        <h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5>
+                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                            <p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p>
+                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="presentation-page" id="pres-page-5">
+                            <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
+                                <div class="text-center"><img src="https://i.imgur.com/A5P1z4j.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto max-w-sm mx-auto"></div>
+                                <div class="text-center md:text-left">
+                                    <h5 class="text-3xl md:text-4xl font-bold text-white">Starbucks at a Crossroads: What Matters Going Forward</h5>
+                                    <p class="text-gray-400 mt-6 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p>
+                                    <div class="mt-8">
+                                        <a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
+                                            <i class="fas fa-file-excel"></i> Download Full Analysis
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div></section>
                 `;
                 mainContainer.appendChild(page);
@@ -360,6 +437,75 @@
 
             createHomePage(); createExperiencePage(); createProjectsPage(); createCertificationsPage(); createResumePage();
             
+            // --- CONTACT FORM LOGIC ---
+            const contactFormHTML = `
+                <form id="contact-form" class="w-full p-8 rounded-lg glass-effect text-center form-container">
+                    <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3>
+                    <p class="text-gray-300 text-lg">Have a question or want to work together?</p>
+                    <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
+                    <input type="text" name="_honey" style="display:none">
+                    <div class="space-y-4 text-left">
+                        <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                        <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                        <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea>
+                    </div>
+                    <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect">
+                            <i class="fas fa-paper-plane"></i>Send Message
+                        </button>
+                        <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="linkedin-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
+                            <i class="fab fa-linkedin"></i>Connect on LinkedIn
+                        </a>
+                    </div>
+                </form>`;
+            
+            document.getElementById('home-contact-form-container').innerHTML = contactFormHTML;
+
+            const successToast = document.getElementById('success-toast');
+            const handleFormSubmit = (event) => {
+                event.preventDefault();
+                successToast.classList.add('show');
+                setTimeout(() => successToast.classList.remove('show'), 4000);
+                event.target.reset();
+                if(contactModal.classList.contains('visible')) closeModal();
+            };
+
+            document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
+
+            // --- MODAL LOGIC ---
+            const floatingContactBtn = document.getElementById('floating-contact-btn');
+            const contactModal = document.getElementById('contact-modal');
+            const contactModalContent = document.getElementById('contact-modal-content');
+            
+            const modalFormContainer = document.createElement('div');
+            modalFormContainer.innerHTML = contactFormHTML;
+            modalFormContainer.querySelector('form').id = 'modal-contact-form';
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.className = 'close-btn';
+            modalFormContainer.querySelector('form').prepend(closeBtn);
+            contactModalContent.appendChild(modalFormContainer);
+            
+            modalFormContainer.querySelector('#modal-contact-form').addEventListener('submit', handleFormSubmit);
+
+            const openModal = () => {
+                contactModal.classList.add('visible');
+                setTimeout(() => {
+                    contactModalContent.style.transform = 'scale(1)';
+                    contactModalContent.style.opacity = '1';
+                }, 10);
+            };
+
+            const closeModal = () => {
+                contactModalContent.style.transform = 'scale(0.95)';
+                contactModalContent.style.opacity = '0';
+                setTimeout(() => contactModal.classList.remove('visible'), 300);
+            };
+
+            floatingContactBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(); });
+
             // --- DYNAMIC LISTENERS & OBSERVERS ---
             const timelineContainer = document.getElementById('experience-container');
             if (timelineContainer) {
@@ -381,12 +527,9 @@
                 });
             });
 
-            const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.4 });
+            const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.2 });
             document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
         });
     </script>
 </body>
 </html>
-
-
-
