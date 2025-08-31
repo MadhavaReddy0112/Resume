@@ -283,13 +283,11 @@
             let lastScrollTop = 0;
             const progressBar = document.getElementById('progress-bar');
             window.addEventListener('scroll', function() {
-                // Progress Bar
                 const scrollTop = document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
 
-                // Auto-hide Nav
                 if (Math.abs(lastScrollTop - scrollTop) <= 50) return;
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
                 document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
@@ -303,7 +301,7 @@
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35, and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
                 educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' } ],
@@ -323,18 +321,12 @@
                     if (link.dataset.pageId === pageId) link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 });
 
-                if (pageId === 'projects') {
-                     if (window.innerWidth < 768) {
-                        const mobileAlertContainer = document.getElementById('mobile-alert-container');
-                        mobileAlertContainer.classList.add('show');
-                        setTimeout(() => {
-                            mobileAlertContainer.classList.remove('show');
-                        }, 5000);
-                    } else {
-                        requestAnimationFrame(() => {
-                            drawProjectConnector();
-                        });
-                    }
+                if (pageId === 'projects' && window.innerWidth < 768) {
+                    const mobileAlertContainer = document.getElementById('mobile-alert-container');
+                    mobileAlertContainer.classList.add('show');
+                    setTimeout(() => {
+                        mobileAlertContainer.classList.remove('show');
+                    }, 5000);
                 }
                 
                 window.scrollTo(0, 0);
@@ -377,7 +369,6 @@
                 page.innerHTML = `
                     <section class="pt-16">
                         <div class="presentation-container relative">
-                        <svg id="project-connector-line" class="hidden md:block absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 1;"></svg>
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
                         <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
@@ -391,7 +382,7 @@
                                 <h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
-                                <div class="presentation-content relative">
+                                <div class="presentation-content relative flex items-center justify-center">
                                     <img id="base-case-chart" src="Graph-3.jpg" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
                                     <img id="bull-case-chart" src="Graph-4.jpg" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
                                     <img id="bear-case-chart" src="Graph-5.jpg" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
@@ -433,7 +424,7 @@
                                 <h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
-                                <div class="text-center"><img src="Graph-6.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto max-w-sm mx-auto"></div>
+                                <div class="text-center"><img src="Graph-6.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto max-w-sm mx-auto opacity-75"></div>
                                 <div class="text-center md:text-left">
                                     <p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p>
                                 </div>
@@ -558,110 +549,6 @@
 
             const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.2 });
             document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
-        
-            // --- PROJECT CONNECTOR LINE LOGIC ---
-            const drawProjectConnector = () => {
-                const svg = document.getElementById('project-connector-line');
-                if (!svg || window.innerWidth < 768) {
-                    if (svg) svg.innerHTML = '';
-                    return;
-                }
-
-                // Clear previous drawings
-                svg.innerHTML = '';
-
-                const logo = document.getElementById('pres-logo');
-                const h1 = document.getElementById('project-heading-1');
-                const h2 = document.getElementById('project-heading-2');
-                const h3 = document.getElementById('project-heading-3');
-                const h4 = document.getElementById('project-heading-4');
-
-                if (!logo || !h1 || !h2 || !h3 || !h4) return;
-                
-                const container = document.querySelector('.presentation-container');
-                const containerRect = container.getBoundingClientRect();
-                
-                // Helper to get coordinates relative to the SVG container
-                const getRelativeCoords = (el, xOffset, yOffset) => {
-                    const elRect = el.getBoundingClientRect();
-                    const x = elRect.left - containerRect.left + xOffset;
-                    const y = elRect.top - containerRect.top + yOffset;
-                    return { x, y };
-                };
-                
-                // Define the anchor points for our line
-                const points = [
-                    getRelativeCoords(logo, -20, logo.offsetHeight / 2), // Start left of logo
-                    getRelativeCoords(h1, -20, h1.offsetHeight / 2),
-                    getRelativeCoords(h2, -20, h2.offsetHeight / 2),
-                    getRelativeCoords(h3, -20, h3.offsetHeight / 2),
-                    getRelativeCoords(h4, -20, h4.offsetHeight / 2),
-                ];
-
-                // Build the SVG path data with curves
-                let pathData = `M ${points[0].x} ${points[0].y}`;
-                for (let i = 0; i < points.length - 1; i++) {
-                    const p0 = points[i];
-                    const p1 = points[i+1];
-                    // Control points for a smooth vertical curve
-                    const cp1x = p0.x;
-                    const cp1y = p0.y + (p1.y - p0.y) * 0.55;
-                    const cp2x = p1.x;
-                    const cp2y = p1.y - (p1.y - p0.y) * 0.55;
-                    pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`;
-                }
-
-                // Create the path element
-                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path.setAttribute("d", pathData);
-                path.setAttribute("stroke", "#2d9a69");
-                path.setAttribute("stroke-width", "2");
-                path.setAttribute("fill", "none");
-                path.classList.add("connector-path");
-
-                // Add path to SVG
-                svg.appendChild(path);
-                
-                // Add dots at each heading
-                points.slice(1).forEach(p => {
-                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    circle.setAttribute("cx", p.x);
-                    circle.setAttribute("cy", p.y);
-                    circle.setAttribute("r", "5");
-                    circle.setAttribute("fill", "#2d9a69");
-                    svg.appendChild(circle);
-                });
-
-                // Animate the path drawing
-                const pathLength = path.getTotalLength();
-                path.style.strokeDasharray = pathLength;
-                path.style.strokeDashoffset = pathLength;
-                
-                // Trigger the animation by changing the dash offset after a short delay
-                setTimeout(() => {
-                    path.style.strokeDashoffset = '0';
-                }, 100);
-            };
-            
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            };
-            
-            const debouncedOnResize = debounce(() => {
-                if (document.getElementById('page-projects').classList.contains('active')) {
-                    drawProjectConnector();
-                }
-            }, 250);
-
-            window.addEventListener('resize', debouncedOnResize);
         });
     </script>
 </body>
