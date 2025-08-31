@@ -314,6 +314,11 @@
             const mainContainer = document.querySelector('main');
             
             const showPage = (pageId) => {
+                const oldPage = document.querySelector('.page.active');
+                if (oldPage && oldPage.id === 'page-projects') {
+                    window.removeEventListener('scroll', updateLineOnScroll);
+                }
+
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
                 if (newPage) newPage.classList.add('active');
@@ -331,14 +336,18 @@
                             mobileAlertContainer.classList.remove('show');
                         }, 5000);
                     } else {
-                        setTimeout(() => {
+                        // Use requestAnimationFrame to ensure layout is stable
+                        requestAnimationFrame(() => {
                             drawProjectConnector();
                             updateLineOnScroll();
-                        }, 200);
+                            window.addEventListener('scroll', updateLineOnScroll);
+                        });
                     }
                 }
                 
-                window.scrollTo(0, 0);
+                if (oldPage && oldPage.id !== newPage.id) {
+                    window.scrollTo(0, 0);
+                }
             };
 
             portfolioData.pages.forEach(page => {
@@ -623,14 +632,14 @@
                 }
 
                 const container = document.querySelector('.presentation-container');
-                const containerTop = container.offsetTop;
-                const containerHeight = container.offsetHeight;
-                const viewportHeight = window.innerHeight;
+                const containerRect = container.getBoundingClientRect();
                 const scrollY = window.scrollY;
-
-                const scrollStart = containerTop - viewportHeight * 0.7; // Start drawing when container is 70% from top
-                const scrollEnd = containerTop + containerHeight - viewportHeight;
                 
+                // The top of the scrollable area for the animation
+                const scrollStart = container.offsetTop - (window.innerHeight * 0.5);
+                // The bottom of the scrollable area for the animation
+                const scrollEnd = container.offsetTop + containerRect.height - window.innerHeight;
+
                 const totalScrollDist = scrollEnd - scrollStart;
                 const currentScroll = scrollY - scrollStart;
 
@@ -661,7 +670,6 @@
                 }
             }, 250);
 
-            window.addEventListener('scroll', updateLineOnScroll);
             window.addEventListener('resize', debouncedOnResize);
         });
     </script>
