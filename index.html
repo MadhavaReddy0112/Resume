@@ -128,13 +128,6 @@
         ul.list-disc { padding-left: 1.25rem; }
         .case-chart.hidden { display: none; }
 
-        /* --- Project Connector Line --- */
-        .connector-path {
-            stroke-dasharray: 1;
-            stroke-dashoffset: 1;
-            transition: stroke-dashoffset 3s ease-out;
-        }
-
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
@@ -310,7 +303,7 @@
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 365 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Maintaining and validating client data, performing conflict-of-interest reviews, and collaborating on risk-mitigation programs.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35, and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
                 educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)' } ],
@@ -321,11 +314,6 @@
             const mainContainer = document.querySelector('main');
             
             const showPage = (pageId) => {
-                const oldPage = document.querySelector('.page.active');
-                if (oldPage && oldPage.id === 'page-projects') {
-                    window.removeEventListener('scroll', updateLineOnScroll);
-                }
-
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
                 if (newPage) newPage.classList.add('active');
@@ -349,9 +337,7 @@
                     }
                 }
                 
-                if (oldPage && oldPage.id !== newPage.id) {
-                    window.scrollTo(0, 0);
-                }
+                window.scrollTo(0, 0);
             };
 
             portfolioData.pages.forEach(page => {
@@ -581,6 +567,9 @@
                     return;
                 }
 
+                // Clear previous drawings
+                svg.innerHTML = '';
+
                 const logo = document.getElementById('pres-logo');
                 const h1 = document.getElementById('project-heading-1');
                 const h2 = document.getElementById('project-heading-2');
@@ -592,6 +581,7 @@
                 const container = document.querySelector('.presentation-container');
                 const containerRect = container.getBoundingClientRect();
                 
+                // Helper to get coordinates relative to the SVG container
                 const getRelativeCoords = (el, xOffset, yOffset) => {
                     const elRect = el.getBoundingClientRect();
                     const x = elRect.left - containerRect.left + xOffset;
@@ -599,35 +589,55 @@
                     return { x, y };
                 };
                 
+                // Define the anchor points for our line
                 const points = [
-                    getRelativeCoords(logo, logo.offsetWidth / 2, logo.offsetHeight),
+                    getRelativeCoords(logo, -20, logo.offsetHeight / 2), // Start left of logo
                     getRelativeCoords(h1, -20, h1.offsetHeight / 2),
                     getRelativeCoords(h2, -20, h2.offsetHeight / 2),
                     getRelativeCoords(h3, -20, h3.offsetHeight / 2),
                     getRelativeCoords(h4, -20, h4.offsetHeight / 2),
                 ];
 
+                // Build the SVG path data with curves
                 let pathData = `M ${points[0].x} ${points[0].y}`;
                 for (let i = 0; i < points.length - 1; i++) {
                     const p0 = points[i];
                     const p1 = points[i+1];
+                    // Control points for a smooth vertical curve
                     const cp1x = p0.x;
-                    const cp1y = p0.y + (p1.y - p0.y) * 0.5;
+                    const cp1y = p0.y + (p1.y - p0.y) * 0.55;
                     const cp2x = p1.x;
-                    const cp2y = p1.y - (p1.y - p0.y) * 0.5;
+                    const cp2y = p1.y - (p1.y - p0.y) * 0.55;
                     pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`;
                 }
 
-                svg.innerHTML = `<path class="connector-path" d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" />`;
-                
-                const path = svg.querySelector('.connector-path');
-                if (!path) return;
+                // Create the path element
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathData);
+                path.setAttribute("stroke", "#2d9a69");
+                path.setAttribute("stroke-width", "2");
+                path.setAttribute("fill", "none");
+                path.classList.add("connector-path");
 
+                // Add path to SVG
+                svg.appendChild(path);
+                
+                // Add dots at each heading
+                points.slice(1).forEach(p => {
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", p.x);
+                    circle.setAttribute("cy", p.y);
+                    circle.setAttribute("r", "5");
+                    circle.setAttribute("fill", "#2d9a69");
+                    svg.appendChild(circle);
+                });
+
+                // Animate the path drawing
                 const pathLength = path.getTotalLength();
                 path.style.strokeDasharray = pathLength;
                 path.style.strokeDashoffset = pathLength;
                 
-                // Trigger the animation
+                // Trigger the animation by changing the dash offset after a short delay
                 setTimeout(() => {
                     path.style.strokeDashoffset = '0';
                 }, 100);
