@@ -90,10 +90,21 @@
         /* --- Theme Toggle --- */
         #theme-toggle { flex-shrink: 0; margin-right: 0.25rem; margin-left: 0.25rem; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); transition: background-color 0.3s ease; }
         #theme-toggle:hover { background: rgba(255,255,255,0.2); }
+        #theme-toggle:focus { outline: none; }
+
 
         /* --- Financial Presentation --- */
         .presentation-container { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem 1rem; }
-        .presentation-svg-connector { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .presentation-svg-connector {
+            display: none; /* Hiding the flowing line as requested */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
         .presentation-svg-connector path { transition: stroke-dashoffset 0.1s linear; }
         .presentation-page { min-height: calc(100vh - 6rem); display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; padding: 2rem 0; }
         #pres-page-1 { min-height: auto; justify-content: flex-start; }
@@ -108,10 +119,28 @@
         
         .grad-stop-1 { stop-color: #a855f7; transition: stop-color 0.5s ease; }
         .grad-stop-2 { stop-color: #10b981; transition: stop-color 0.5s ease; }
+        
+        .case-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .case-button.active {
+            background-color: rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+            color: #fff;
+        }
+        
+        .case-content { display: none; }
+        .case-content.active { display: block; }
 
         /* --- Toasts, Modals & Floating Button --- */
-        #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
-        #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+        #success-toast, #mobile-alert { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
+        #success-toast.show, #mobile-alert.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+        #mobile-alert { background-color: #374151; }
         #contact-modal { transition: opacity 0.3s ease; }
         #contact-modal.visible { opacity: 1; pointer-events: auto; }
         #contact-modal.visible #contact-modal-content { transform: scale(1); opacity: 1; }
@@ -155,6 +184,11 @@
         .light-mode .grad-stop-2 { stop-color: #f59e0b; }
         .light-mode .bg-gray-700 { background-color: #374151; color: white !important; }
         .light-mode .hover\:bg-gray-600:hover { background-color: #1f2937; }
+        .light-mode .case-button.active {
+            background-color: rgba(249, 115, 22, 0.1);
+            border-color: #f97316;
+            color: #111827;
+        }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -163,15 +197,16 @@
     <div id="success-toast">
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
     </div>
+    <div id="mobile-alert">
+        <i class="fas fa-mobile-alt mr-2"></i> For the best experience, please view this page on a larger screen.
+    </div>
 
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
         <div class="container mx-auto flex justify-center items-center px-4">
             <div class="nav-container">
                 <nav id="main-nav">
-                    <!-- Nav links injected by JS -->
-                </nav>
-                <!-- Theme Toggle Button -->
-                <button id="theme-toggle" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white flex items-center justify-center">
+                    </nav>
+                <button id="theme-toggle" class="p-2 rounded-full focus:outline-none flex items-center justify-center">
                     <svg id="theme-toggle-dark-icon" class="h-6 w-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     <svg id="theme-toggle-light-icon" class="h-6 w-6 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 </button>
@@ -180,19 +215,15 @@
     </header>
 
     <main class="pt-24 relative z-10">
-        <!-- All pages will be injected here by JS -->
-    </main>
+        </main>
     
-    <!-- Floating Contact Button -->
     <button id="floating-contact-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg glass-effect">
         <i class="fas fa-envelope text-2xl text-gray-300"></i>
     </button>
 
-    <!-- Contact Modal -->
     <div id="contact-modal" class="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div id="contact-modal-content" class="w-full max-w-xl mx-auto">
-            <!-- Contact form is injected here by JS -->
-        </div>
+            </div>
     </div>
 
 
@@ -211,7 +242,7 @@
             
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
-            const particlesLightConfig = { particles: { number: { value: 100, density: { enable: true, value_area: 800 } }, color: { value: "#f97316" }, shape: { type: "circle" }, opacity: { value: 0.4, random: true }, size: { value: 2, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 0.8, direction: "none", random: true, straight: false, out_mode: "out", bounce: false } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 4, duration: 2, opacity: 0.8 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: ["#F59E0B", "#F97316", "#D97706"] }, shape: { type: "circle" }, opacity: { value: 0.6, random: true }, size: { value: 4, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 1.5, direction: "bottom", random: true, straight: false, out_mode: "out", bounce: false } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -281,10 +312,12 @@
 
             const mainContainer = document.querySelector('main');
             const navContainer = document.getElementById('main-nav');
+            const mobileAlert = document.getElementById('mobile-alert');
 
             const showPage = (pageId) => {
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                document.getElementById(`page-${pageId}`)?.classList.add('active');
+                const newPage = document.getElementById(`page-${pageId}`);
+                if (newPage) newPage.classList.add('active');
                 
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.toggle('active', link.dataset.pageId === pageId);
@@ -292,6 +325,12 @@
                         link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                     }
                 });
+
+                if (pageId === 'projects' && window.innerWidth < 768) {
+                    mobileAlert.classList.add('show');
+                    setTimeout(() => mobileAlert.classList.remove('show'), 4000);
+                }
+                
                 window.scrollTo(0, 0);
             };
 
@@ -333,32 +372,89 @@
                                     </linearGradient>
                                 </defs>
                             </svg>
-                            <!-- Page 1: Overview -->
                             <div class="presentation-page" id="pres-page-1">
                                 <div class="max-w-4xl mx-auto presentation-content text-center">
-                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-8">Financial Analysis Project</h3>
                                     <div class="flex flex-col items-center gap-8">
                                         <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left">
-                                            <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-28 w-28 flex-shrink-0 rounded-full bg-white p-1 object-contain">
+                                            <img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain">
                                             <div>
                                                 <h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4>
                                                 <p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p>
                                             </div>
                                         </div>
                                         <div class="stagger-3">
-                                            <p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance (FY21–FY24) and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
+                                            <p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p>
                                             <p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Page 2: Revenue -->
-                            <div class="presentation-page" id="pres-page-2"> <div class="grid md:grid-cols-2 gap-12 items-center"> <div class="presentation-content stagger-1"> <img id="pres-chart-1" src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full"> </div> <div class="presentation-content text-center md:text-left stagger-2"> <h5 class="text-2xl font-bold text-white" data-section-title>Revenue & Profitability Trends</h5> <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>Analysis of historical revenue growth, identifying key drivers such as store expansion and menu pricing strategies. A deep dive into gross and net profit margins reveals the company's operational efficiency and cost control measures over recent fiscal periods.</p> </div> </div> </div>
-                            <!-- Page 3: Cash Flow -->
-                            <div class="presentation-page" id="pres-page-3"> <div class="grid md:grid-cols-2 gap-12 items-center"> <div class="presentation-content text-center md:text-right stagger-2 md:order-2"> <h5 class="text-2xl font-bold text-white" data-section-title>Cash Flow & Capital Structure</h5> <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>Examination of operating, investing, and financing cash flows to assess liquidity and solvency. The capital structure analysis reviews the balance of debt and equity, highlighting the company's financial leverage and risk profile.</p> </div> <div class="presentation-content stagger-1 md:order-1"> <img id="pres-chart-2" src="https://i.imgur.com/sA2Gv5E.png" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full"> </div> </div> </div>
-                            <!-- Page 4: Valuation -->
-                            <div class="presentation-page" id="pres-page-4"> <div class="grid md:grid-cols-2 gap-12 items-center"> <div class="presentation-content stagger-1"> <img id="pres-chart-3" src="https://i.imgur.com/yB8J0fN.png" alt="Valuation Chart" class="rounded-lg chart-placeholder w-full"> </div> <div class="presentation-content text-center md:text-left stagger-2"> <h5 class="text-2xl font-bold text-white" data-section-title>Valuation Overview</h5> <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p> </div> </div> </div>
-                            <!-- Page 5: Takeaways -->
+                            <div class="presentation-page" id="pres-page-2">
+                                <div class="text-center mb-8">
+                                    <h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content stagger-1">
+                                        <img id="pres-chart-1" src="https://i.imgur.com/3Z4P5vG.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto">
+                                    </div>
+                                    <div class="presentation-content text-center md:text-left stagger-2">
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Revenue vs. profitability — margin-driven earnings volatility</h5>
+                                        <div class="text-gray-300 mt-4 leading-relaxed" data-section-content>
+                                            <p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p>
+                                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                                <li>The chart indicates earnings moved largely because margins changed more than revenue did.</li>
+                                                <li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="presentation-page" id="pres-page-3">
+                                <div class="text-center mb-8">
+                                    <h4 class="text-xl font-bold text-white">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content text-center md:text-right stagger-2 md:order-2">
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Cash Flow & Capital Structure</h5>
+                                        <div class="text-gray-300 mt-4 leading-relaxed" data-section-content>
+                                            <p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p>
+                                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                                <li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li>
+                                                <li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="presentation-content stagger-1 md:order-1">
+                                        <img id="pres-chart-2" src="https://i.imgur.com/sA2Gv5E.png" alt="Cash Flow Chart" class="rounded-lg chart-placeholder w-full h-auto">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="presentation-page" id="pres-page-4">
+                                <div class="grid md:grid-cols-2 gap-12 items-center">
+                                    <div class="presentation-content stagger-1">
+                                        <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
+                                            <div class="flex justify-center gap-2 mb-4">
+                                                <button class="case-button active" data-case="base">Base Case</button>
+                                                <button class="case-button" data-case="bull">Bull Case</button>
+                                                <button class="case-button" data-case="bear">Bear Case</button>
+                                            </div>
+                                            <div id="base-case-content" class="case-content active">
+                                                 <img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto">
+                                            </div>
+                                            <div id="bull-case-content" class="case-content">
+                                                 <img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto">
+                                            </div>
+                                            <div id="bear-case-content" class="case-content">
+                                                 <img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="presentation-content text-center md:text-left stagger-2">
+                                        <h5 class="text-2xl font-bold text-white" data-section-title>Valuation Overview</h5>
+                                        <p class="text-gray-300 mt-4 leading-relaxed" data-section-content>A multi-faceted valuation approach using Discounted Cash Flow (DCF) analysis and comparable company analysis (Comps). This provides an intrinsic value estimate and compares CMG's market multiples against its industry peers.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="presentation-page" id="pres-page-5"> <div class="text-center max-w-3xl mx-auto presentation-content"> <h5 id="pres-takeaways" class="text-3xl md:text-4xl font-bold text-white stagger-1"><span id="pres-takeaways-k">K</span>ey Takeaways & Strategic Outlook</h5> <p id="takeaways-content" class="text-gray-300 mt-6 text-base md:text-lg leading-relaxed stagger-2">Summary of key findings, including strengths in brand loyalty and operational efficiency, alongside potential risks from market competition and supply chain volatility. The strategic outlook provides recommendations for sustainable long-term growth.</p> <div class="mt-8"> <a href="#" download class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"> <i class="fas fa-file-excel"></i> Download Full Analysis </a> </div> </div> </div>
                         </div>
                     </section>
@@ -400,6 +496,24 @@
                 window.addEventListener('scroll', () => { const r = presentationContainer.getBoundingClientRect(); if (r.top > window.innerHeight || r.bottom < 0) return; const percent = Math.max(0, Math.min(1, (window.scrollY - presentationContainer.offsetTop) / (presentationContainer.scrollHeight - window.innerHeight))); const len = path.getTotalLength(); if (len > 0) path.style.strokeDashoffset = len - (len * percent); });
                 new ResizeObserver(updatePath).observe(presentationContainer); requestAnimationFrame(() => setTimeout(updatePath, 100));
             }
+
+            // --- CASE SELECTOR LOGIC ---
+            const caseSelectorContainer = document.getElementById('case-selector-container');
+            if (caseSelectorContainer) {
+                const caseButtons = caseSelectorContainer.querySelectorAll('.case-button');
+                const caseContents = caseSelectorContainer.querySelectorAll('.case-content');
+                caseButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        caseButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        const caseName = button.dataset.case;
+                        caseContents.forEach(content => {
+                            content.classList.toggle('active', content.id === `${caseName}-case-content`);
+                        });
+                    });
+                });
+            }
+
 
             // --- Contact Modal & Form Logic ---
             const contactModal = document.getElementById('contact-modal');
