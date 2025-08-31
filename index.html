@@ -17,7 +17,7 @@
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
 
-            --bg-light: #f8f7ff; /* Light Pastel Lavender */
+            --bg-light: #f8f7ff;
             --text-light: #1d1d1f;
             --glass-bg-light: rgba(245, 245, 247, 0.7);
             --glass-border-light: rgba(0, 0, 0, 0.1);
@@ -102,6 +102,10 @@
         #theme-toggle { flex-shrink: 0; margin-right: 0.25rem; margin-left: 0.25rem; width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); transition: background-color 0.3s ease; }
         #theme-toggle:hover { background: rgba(255,255,255,0.2); }
         #theme-toggle:focus { outline: none; }
+        #theme-transition-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9998; background-color: var(--bg-light); transform: scale(0); border-radius: 50%; }
+        body.light-mode #theme-transition-overlay { background-color: var(--bg-dark); }
+        @keyframes reveal-theme { from { transform: scale(0); } to { transform: scale(1); } }
+        .theme-transition-animation { animation: reveal-theme 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
         /* --- Financial Presentation --- */
         .presentation-container { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem 1rem; }
@@ -113,16 +117,8 @@
         .chart-placeholder { background-color: rgba(255, 255, 255, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; position: relative; z-index: 3; }
         .chart-placeholder:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(99, 102, 241, 0.3); }
         .text-justify { text-align: justify; }
-        
-        .case-button {
-            padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid transparent; transition: all 0.3s ease; font-weight: 500;
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
-        }
-        .case-button.active {
-            background-color: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
-        }
+        .case-button { padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid transparent; transition: all 0.3s ease; font-weight: 500; background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1); }
+        .case-button.active { background-color: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         .case-content { display: none; }
         .case-content.active { display: block; animation: fadeIn 0.5s; }
         ul.list-disc { padding-left: 1.25rem; }
@@ -137,20 +133,23 @@
         #contact-modal { transition: opacity 0.3s ease; }
         #contact-modal.visible { opacity: 1; pointer-events: auto; }
         #contact-modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
+        #floating-contact-btn { transition: transform 0.3s ease, opacity 0.3s ease; }
+        #floating-contact-btn.btn-hidden { transform: scale(0.8); opacity: 0; }
+        #floating-contact-btn .icon-container { transition: transform 0.4s ease; }
+        #floating-contact-btn .icon-container.show-contact { transform: rotateY(0deg); }
+        #floating-contact-btn .icon-container.show-arrow { transform: rotateY(180deg); }
+        #floating-contact-btn i { position: absolute; backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: opacity 0.2s; }
         
         .device-animation { font-size: 3rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
         #mobile-alert .device-animation > i, #mobile-alert > p { opacity: 0; }
-
         @keyframes mobile-in { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes arrow-in { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
         @keyframes laptop-in { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes text-in { from { opacity: 0; } to { opacity: 1; } }
-
         #mobile-alert-container.show .fa-mobile-alt { animation: mobile-in 0.5s ease-out forwards; }
         #mobile-alert-container.show .fa-long-arrow-alt-right { animation: arrow-in 0.5s ease-out 0.5s forwards; transform-origin: left; }
         #mobile-alert-container.show .fa-laptop { animation: laptop-in 0.5s ease-out 1s forwards; }
         #mobile-alert-container.show #mobile-alert > p { animation: text-in 0.5s ease-out 1.5s forwards; }
-
         .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(255,255,255,0.1); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; z-index: 10; }
         .close-btn:hover { background-color: rgba(255,255,255,0.2); }
 
@@ -173,14 +172,8 @@
         .light-mode .timeline-icon { border-color: #f97316; animation: none; box-shadow: 0 0 15px rgba(249, 115, 22, 0.5); }
         .light-mode .bg-indigo-600 { background-color: #f59e0b; }
         .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
-        .light-mode .case-button {
-            background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
-        }
-        .light-mode .case-button.active {
-            background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
-        }
+        .light-mode .case-button { background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff; }
+        .light-mode .case-button.active { background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
         .light-mode .close-btn { background-color: rgba(0,0,0,0.1); color: #1f2937; }
         .light-mode .close-btn:hover { background-color: rgba(0,0,0,0.2); }
@@ -196,6 +189,7 @@
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
+    <div id="theme-transition-overlay"></div>
     <div id="progress-bar"></div>
     <div id="particles-js"></div>
     <div id="success-toast">
@@ -226,8 +220,11 @@
 
     <main class="pt-24 relative z-10"></main>
     
-    <button id="floating-contact-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg glass-effect">
-        <i class="fas fa-envelope text-2xl text-gray-300"></i>
+    <button id="floating-contact-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg glass-effect" style="perspective: 1000px;">
+        <div class="icon-container relative w-full h-full flex items-center justify-center" style="transform-style: preserve-3d;">
+            <i id="contact-icon" class="fas fa-envelope text-2xl text-gray-300"></i>
+            <i id="arrow-icon" class="fas fa-arrow-down text-2xl text-gray-300" style="transform: rotateY(180deg);"></i>
+        </div>
     </button>
 
     <div id="contact-modal" class="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-4 opacity-0 pointer-events-none">
@@ -260,6 +257,7 @@
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const overlay = document.getElementById('theme-transition-overlay');
             
             const prefersLight = localStorage.getItem('theme') === 'light';
 
@@ -271,28 +269,59 @@
             initParticles(prefersLight);
 
             themeToggleBtn.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                darkIcon.classList.toggle('hidden');
-                lightIcon.classList.toggle('hidden');
-                const isLight = body.classList.contains('light-mode');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                initParticles(isLight);
+                const rect = themeToggleBtn.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                overlay.style.transformOrigin = `${x}px ${y}px`;
+
+                overlay.classList.add('theme-transition-animation');
+                
+                setTimeout(() => {
+                    body.classList.toggle('light-mode');
+                    darkIcon.classList.toggle('hidden');
+                    lightIcon.classList.toggle('hidden');
+                    const isLight = body.classList.contains('light-mode');
+                    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                    initParticles(isLight);
+                }, 300); // Wait for half of the animation to toggle class for smoother color transition
+
+                overlay.onanimationend = () => {
+                    overlay.classList.remove('theme-transition-animation');
+                };
             });
 
-            // --- SCROLL PROGRESS & AUTO-HIDE NAV ---
+            // --- SCROLL LOGIC & FLOATING BUTTON ---
             let lastScrollTop = 0;
             const progressBar = document.getElementById('progress-bar');
+            const floatingBtn = document.getElementById('floating-contact-btn');
+            const iconContainer = floatingBtn.querySelector('.icon-container');
+            let isArrowVisible = true;
+
+            const updateFloatingButton = () => {
+                const scrollTop = document.documentElement.scrollTop;
+                const shouldShowArrow = scrollTop < window.innerHeight * 0.2; // 20% threshold
+
+                if (shouldShowArrow !== isArrowVisible) {
+                    isArrowVisible = shouldShowArrow;
+                    iconContainer.classList.toggle('show-arrow', isArrowVisible);
+                    iconContainer.classList.toggle('show-contact', !isArrowVisible);
+                }
+            };
+
             window.addEventListener('scroll', function() {
                 const scrollTop = document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
 
-                if (Math.abs(lastScrollTop - scrollTop) <= 50) return;
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
-                document.getElementById('floating-contact-btn').classList.toggle('btn-hidden', isScrollingDown);
-                lastScrollTop = scrollTop;
+                if (Math.abs(lastScrollTop - scrollTop) > 50) {
+                    document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
+                    floatingBtn.classList.toggle('btn-hidden', isScrollingDown);
+                    lastScrollTop = scrollTop;
+                }
+                
+                updateFloatingButton();
             }, false);
 
 
@@ -330,6 +359,8 @@
                 }
                 
                 window.scrollTo(0, 0);
+                // After switching page, immediately check the button state
+                updateFloatingButton();
             };
 
             portfolioData.pages.forEach(page => {
@@ -341,6 +372,9 @@
                 link.onclick = () => showPage(page.id);
                 document.getElementById('main-nav').appendChild(link);
             });
+            
+            // Initial button state setup
+            updateFloatingButton();
 
             // --- PAGE CREATION ---
             const createHomePage = () => {
@@ -372,20 +406,9 @@
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
                         <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
-                        
-                        <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;">
-                            <p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
-                        </div>
-
+                        <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
                         <div class="presentation-page" id="pres-page-4">
-                            <div class="mb-8">
-                                <h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
-                            </div>
-                            <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
-                                <button class="case-button active" data-case="base">Base Case</button>
-                                <button class="case-button" data-case="bull">Bull Case</button>
-                                <button class="case-button" data-case="bear">Bear Case</button>
-                            </div>
+                            <div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
                                 <div class="presentation-content relative flex items-center justify-center">
                                     <img id="base-case-chart" src="Graph-3.jpg" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
@@ -393,48 +416,27 @@
                                     <img id="bear-case-chart" src="Graph-5.jpg" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
                                 </div>
                                 <div class="presentation-content">
+                                    <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
+                                        <button class="case-button active" data-case="base">Base Case</button>
+                                        <button class="case-button" data-case="bull">Bull Case</button>
+                                        <button class="case-button" data-case="bear">Bear Case</button>
+                                    </div>
                                     <div id="case-selector-container">
-                                        <div id="base-case-content" class="case-content active">
-                                            <h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5>
-                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                                <p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p>
-                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul>
-                                            </div>
-                                        </div>
-                                        <div id="bull-case-content" class="case-content">
-                                            <h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5>
-                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                                <p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p>
-                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul>
-                                            </div>
-                                        </div>
-                                        <div id="bear-case-content" class="case-content">
-                                            <h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5>
-                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                                <p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p>
-                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul>
-                                            </div>
-                                        </div>
+                                        <div id="base-case-content" class="case-content active"><h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p><ul class="list-disc mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul></div></div>
+                                        <div id="bull-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p><ul class="list-disc mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul></div></div>
+                                        <div id="bear-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p><ul class="list-disc mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul></div></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="presentation-page" id="pres-page-5">
-                            <div class="mb-8">
-                                <h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4>
-                            </div>
+                            <div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
                                 <div class="text-center"><img src="Graph-6.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75"></div>
-                                <div class="text-center md:text-left">
-                                    <p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p>
-                                </div>
+                                <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
                             </div>
                         </div>
-                        <div class="text-center py-12">
-                            <a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
-                                <i class="fas fa-file-excel"></i> Download Full Analysis
-                            </a>
-                        </div>
+                        <div class="text-center py-12"><a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</a></div>
                     </div>
                     </section>
                 `;
@@ -488,7 +490,6 @@
             document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
 
             // --- MODAL LOGIC ---
-            const floatingContactBtn = document.getElementById('floating-contact-btn');
             const contactModal = document.getElementById('contact-modal');
             const contactModalContent = document.getElementById('contact-modal-content');
             
@@ -516,8 +517,15 @@
                 contactModalContent.style.opacity = '0';
                 setTimeout(() => contactModal.classList.remove('visible'), 300);
             };
+            
+            floatingBtn.addEventListener('click', () => {
+                if (isArrowVisible) {
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } else {
+                    openModal();
+                }
+            });
 
-            floatingContactBtn.addEventListener('click', openModal);
             closeBtn.addEventListener('click', closeModal);
             contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(); });
 
@@ -541,9 +549,7 @@
                     caseButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
                     caseContents.forEach(content => content.classList.toggle('active', content.id === `${activeCase}-case-content`));
-                    caseCharts.forEach(chart => {
-                        chart.classList.toggle('hidden', chart.id !== `${activeCase}-case-chart`);
-                    });
+                    caseCharts.forEach(chart => chart.classList.toggle('hidden', chart.id !== `${activeCase}-case-chart`));
                 });
             });
 
