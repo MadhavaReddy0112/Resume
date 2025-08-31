@@ -128,6 +128,19 @@
         ul.list-disc { padding-left: 1.25rem; }
         .case-chart.hidden { display: none; }
 
+        /* --- Project Connector Line --- */
+        .connector-path {
+            stroke-dasharray: 4000;
+            stroke-dashoffset: 4000;
+            animation: draw-line 4s 0.5s ease-out forwards;
+        }
+        .connector-dot {
+            opacity: 0;
+            animation: fade-in-dot 0.5s ease-out forwards;
+        }
+        @keyframes draw-line { to { stroke-dashoffset: 0; } }
+        @keyframes fade-in-dot { to { opacity: 1; } }
+
         /* --- Toasts, Modals & Floating Button --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
@@ -323,12 +336,17 @@
                     if (link.dataset.pageId === pageId) link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 });
 
-                if (pageId === 'projects' && window.innerWidth < 768) {
-                    const mobileAlertContainer = document.getElementById('mobile-alert-container');
-                    mobileAlertContainer.classList.add('show');
-                    setTimeout(() => {
-                        mobileAlertContainer.classList.remove('show');
-                    }, 5000);
+                if (pageId === 'projects') {
+                     if (window.innerWidth < 768) {
+                        const mobileAlertContainer = document.getElementById('mobile-alert-container');
+                        mobileAlertContainer.classList.add('show');
+                        setTimeout(() => {
+                            mobileAlertContainer.classList.remove('show');
+                        }, 5000);
+                    } else {
+                        // Use a timeout to ensure elements are rendered before drawing
+                        setTimeout(drawProjectConnector, 500);
+                    }
                 }
                 
                 window.scrollTo(0, 0);
@@ -369,18 +387,20 @@
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
                 page.innerHTML = `
-                    <section class="pt-16"><div class="presentation-container">
+                    <section class="pt-16">
+                        <div class="presentation-container relative">
+                        <svg id="project-connector-line" class="hidden md:block absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 1;"></svg>
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
                         
-                        <div class="presentation-page flex-col !justify-center" style="min-height: 40vh;">
+                        <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;">
                             <p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
                         </div>
 
                         <div class="presentation-page" id="pres-page-4">
                             <div class="mb-8">
-                                <h4 class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
+                                <h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
                                 <div class="presentation-content relative">
@@ -422,7 +442,7 @@
                         </div>
                         <div class="presentation-page" id="pres-page-5">
                             <div class="mb-8">
-                                <h4 class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4>
+                                <h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4>
                             </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
                                 <div class="text-center"><img src="Graph-6.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto max-w-sm mx-auto"></div>
@@ -431,11 +451,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center py-12">
-                         <a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
-                            <i class="fas fa-file-excel"></i> Download Full Analysis
-                        </a>
+                        <div class="text-center py-12">
+                            <a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
+                                <i class="fas fa-file-excel"></i> Download Full Analysis
+                            </a>
+                        </div>
                     </div>
                     </section>
                 `;
@@ -550,8 +570,71 @@
 
             const pageObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('is-visible', e.isIntersecting)); }, { threshold: 0.2 });
             document.querySelectorAll('.presentation-page').forEach(page => pageObserver.observe(page));
+        
+            // --- PROJECT CONNECTOR LINE LOGIC ---
+            const drawProjectConnector = () => {
+                const svg = document.getElementById('project-connector-line');
+                if (!svg || window.innerWidth < 768) {
+                    if(svg) svg.innerHTML = '';
+                    return;
+                }
+
+                const logo = document.getElementById('pres-logo');
+                const h1 = document.getElementById('project-heading-1');
+                const h2 = document.getElementById('project-heading-2');
+                const h3 = document.getElementById('project-heading-3');
+                const h4 = document.getElementById('project-heading-4');
+
+                if (!logo || !h1 || !h2 || !h3 || !h4) return;
+                
+                const getCoords = (el, xOffset = -20, yOffset = 0) => {
+                    const y = el.parentElement.offsetTop + el.offsetTop + (el.offsetHeight / 2) + yOffset;
+                    const x = el.parentElement.offsetLeft + el.offsetLeft + xOffset;
+                    return { x, y };
+                };
+                
+                const startY = logo.parentElement.offsetTop + logo.offsetTop + logo.offsetHeight;
+                const startX = logo.parentElement.offsetLeft + logo.offsetLeft + (logo.offsetWidth / 2);
+
+                const points = [
+                    { x: startX, y: startY },
+                    getCoords(h1),
+                    getCoords(h2),
+                    getCoords(h3),
+                    getCoords(h4),
+                ];
+
+                let pathData = `M ${points[0].x} ${points[0].y}`;
+                for (let i = 0; i < points.length - 1; i++) {
+                    const p0 = points[i];
+                    const p1 = points[i+1];
+                    const cp1x = p0.x;
+                    const cp1y = p0.y + (p1.y - p0.y) * 0.5;
+                    const cp2x = p1.x;
+                    const cp2y = p1.y - (p1.y - p0.y) * 0.5;
+                    pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p1.x},${p1.y}`;
+                }
+
+                svg.innerHTML = `
+                    <path d="${pathData}" stroke="#2d9a69" stroke-width="2" fill="none" class="connector-path" />
+                    ${points.slice(1).map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="5" fill="#2d9a69" class="connector-dot" style="animation-delay: ${0.8 + i*0.6}s;" />`).join('')}
+                `;
+            };
+            
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            };
+            
+            window.addEventListener('resize', debounce(drawProjectConnector, 250));
         });
     </script>
 </body>
 </html>
-
