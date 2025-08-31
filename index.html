@@ -64,10 +64,10 @@
         
         #progress-bar {
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             height: 4px;
-            background: linear-gradient(90deg, #a855f7, #6366f1);
+            background: rgba(99, 102, 241, 0.6);
             width: 0%;
             z-index: 100;
             transition: width 0.1s linear;
@@ -155,7 +155,7 @@
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
-        .light-mode #progress-bar { background: linear-gradient(90deg, #f97316, #f59e0b); }
+        .light-mode #progress-bar { background: rgba(249, 115, 22, 0.6); }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .light-mode .glass-effect:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2); }
         .light-mode .nav-container { background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.7)); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -187,8 +187,8 @@
         .light-mode .form-container h3, .light-mode .form-container p { color: #1d1d1f !important; }
         .light-mode .form-container .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
         .light-mode .form-container .hover\:bg-gray-600:hover { background-color: #d1d5db; }
-        .light-mode .linkedin-btn { background-color: #0077B5 !important; color: white !important; }
-        .light-mode .linkedin-btn:hover { background-color: #005582 !important; }
+        .light-mode .linkedin-btn { background-color: #6b7280 !important; color: white !important; }
+        .light-mode .linkedin-btn:hover { background-color: #4b5563 !important; }
         .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
         .light-mode .download-analysis-btn:hover { background-color: #d97706 !important; }
     </style>
@@ -369,50 +369,57 @@
                 page.innerHTML = `
                     <section class="pt-16"><div class="presentation-container">
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="https://i.imgur.com/SXa3B5V.png" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="text-center mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/u7e91P1.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="https://i.imgur.com/u7e91P1.png" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content text-center md:text-right md:order-2"><h5 class="text-2xl font-bold text-white heading-left-align">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div><div class="presentation-content md:order-1"><img src="https://i.imgur.com/0Ie6m2e.png" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div></div></div>
                         <div class="presentation-page" id="pres-page-4">
-                            <div class="text-center">
-                                <p class="text-gray-400 mb-4 text-center presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
-                                <h4 class="text-xl font-bold text-white mb-8 presentation-content">Future trajectory & valuation levers: how Starbucks could perform</h4>
+                            <div class="mb-8">
+                                <p class="text-gray-400 mb-4 text-center">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p>
+                                <h4 class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4>
                             </div>
-                            <div class="max-w-4xl mx-auto presentation-content">
-                                <div class="flex justify-center gap-4 mb-6" id="case-buttons-container">
-                                    <button class="case-button active" data-case="base">Base Case</button>
-                                    <button class="case-button" data-case="bull">Bull Case</button>
-                                    <button class="case-button" data-case="bear">Bear Case</button>
+                            <div class="grid md:grid-cols-2 gap-12 items-center">
+                                <div class="presentation-content">
+                                    <img src="https://i.imgur.com/u7e91P1.png" alt="Forecast Chart" class="rounded-lg chart-placeholder w-full h-auto">
                                 </div>
-                                <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
-                                    <div id="base-case-content" class="case-content active">
-                                        <h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5>
-                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                            <p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p>
-                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul>
-                                        </div>
+                                <div class="presentation-content">
+                                    <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
+                                        <button class="case-button active" data-case="base">Base Case</button>
+                                        <button class="case-button" data-case="bull">Bull Case</button>
+                                        <button class="case-button" data-case="bear">Bear Case</button>
                                     </div>
-                                    <div id="bull-case-content" class="case-content">
-                                        <h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5>
-                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                            <p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p>
-                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul>
+                                    <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
+                                        <div id="base-case-content" class="case-content active">
+                                            <h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5>
+                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                                <p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p>
+                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="bear-case-content" class="case-content">
-                                        <h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5>
-                                        <div class="text-gray-400 mt-4 leading-relaxed text-justify">
-                                            <p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p>
-                                            <ul class="list-disc mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul>
+                                        <div id="bull-case-content" class="case-content">
+                                            <h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5>
+                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                                <p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p>
+                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul>
+                                            </div>
+                                        </div>
+                                        <div id="bear-case-content" class="case-content">
+                                            <h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5>
+                                            <div class="text-gray-400 mt-4 leading-relaxed text-justify">
+                                                <p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p>
+                                                <ul class="list-disc mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="presentation-page" id="pres-page-5">
+                            <div class="mb-8">
+                                <h4 class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4>
+                            </div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
                                 <div class="text-center"><img src="https://i.imgur.com/A5P1z4j.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto max-w-sm mx-auto"></div>
                                 <div class="text-center md:text-left">
-                                    <h5 class="text-3xl md:text-4xl font-bold text-white">Starbucks at a Crossroads: What Matters Going Forward</h5>
-                                    <p class="text-gray-400 mt-6 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p>
+                                    <p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p>
                                     <div class="mt-8">
                                         <a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
                                             <i class="fas fa-file-excel"></i> Download Full Analysis
