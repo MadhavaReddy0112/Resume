@@ -17,9 +17,9 @@
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
 
-            --bg-light: #f8f7ff; /* Softer pastel lavender */
-            --text-light: #1f2937;
-            --glass-bg-light: rgba(255, 255, 255, 0.8);
+            --bg-light: #f5f5f7;
+            --text-light: #1d1d1f;
+            --glass-bg-light: rgba(245, 245, 247, 0.7);
             --glass-border-light: rgba(0, 0, 0, 0.1);
             --nav-bg-light: rgba(249, 250, 251, 0.7);
         }
@@ -121,26 +121,35 @@
         .grad-stop-2 { stop-color: #10b981; transition: stop-color 0.5s ease; }
         
         .case-button {
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
             border: 1px solid transparent;
             transition: all 0.3s ease;
             font-weight: 500;
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
         }
         
         .case-button.active {
             background-color: rgba(99, 102, 241, 0.2);
             border-color: #6366f1;
             color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
         
         .case-content { display: none; }
         .case-content.active { display: block; }
+        
+        ul.list-disc {
+            padding-left: 1.25rem;
+        }
 
         /* --- Toasts, Modals & Floating Button --- */
-        #success-toast, #mobile-alert { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
-        #success-toast.show, #mobile-alert.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
-        #mobile-alert { background-color: #374151; }
+        #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
+        #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+        #mobile-alert-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        #mobile-alert-container.show { opacity: 1; visibility: visible; }
+        #mobile-alert { background: linear-gradient(145deg, #333, #111); color: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center; max-width: 90%; }
         #contact-modal { transition: opacity 0.3s ease; }
         #contact-modal.visible { opacity: 1; pointer-events: auto; }
         #contact-modal.visible #contact-modal-content { transform: scale(1); opacity: 1; }
@@ -150,6 +159,34 @@
         .close-btn:hover { background-color: rgba(0,0,0,0.4); }
         #floating-contact-btn { transition: transform 0.5s ease, opacity 0.5s ease, background-color 0.5s ease, border-color 0.5s ease; opacity: 1; }
         #floating-contact-btn.btn-hidden { opacity: 0; transform: translateY(calc(100% + 1.5rem)); pointer-events: none; }
+        
+        .device-animation {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .phone-to-laptop .fa-laptop {
+            display: none;
+        }
+
+        .phone-to-laptop.animated .fa-mobile-alt {
+            animation: hide-phone 1s forwards;
+        }
+
+        .phone-to-laptop.animated .fa-laptop {
+            animation: show-laptop 1s 1s forwards;
+            display: inline-block;
+        }
+        
+        @keyframes hide-phone {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.5); opacity: 0; }
+        }
+
+        @keyframes show-laptop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
         /* --- Global Scrollbar --- */
         #global-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; background-color: rgba(85, 79, 153, 0.2); z-index: 100; }
@@ -158,15 +195,15 @@
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
-        .light-mode .nav-container { background: var(--nav-bg-light); border: 1px solid var(--glass-border-light); }
+        .light-mode .glass-effect:hover { box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); }
+        .light-mode .nav-container { background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.7)); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
         .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4, .light-mode h5, .light-mode .text-white { color: #111827 !important; }
         .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer { color: #4b5563 !important; }
-        .light-mode .border-indigo-500 { border-color: #f59e0b; }
-        .light-mode .text-indigo-400 { color: #f97316 !important; }
+        .light-mode .border-indigo-500 { border-color: #007aff; }
+        .light-mode .text-indigo-400 { color: #007aff !important; }
         .light-mode input, .light-mode textarea { background-color: #e5e7eb; border-color: #d1d5db; color: #111827; }
         .light-mode input::placeholder, .light-mode textarea::placeholder { color: #6b7280; }
         .light-mode .timeline-line { background-color: #d1d5db; }
@@ -175,19 +212,25 @@
         .light-mode .close-btn { background-color: rgba(255,255,255,0.5); color: #111827; }
         .light-mode .close-btn:hover { background-color: rgba(255,255,255,0.8); }
         .light-mode .chart-placeholder { background-color: rgba(0,0,0,0.03); }
-        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5), 0 0 30px rgba(249, 115, 22, 0.3); }
-        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
-        .light-mode .timeline-icon { border-color: #f97316; }
-        .light-mode .bg-indigo-600 { background-color: #f59e0b; }
-        .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
-        .light-mode .grad-stop-1 { stop-color: #f97316; }
-        .light-mode .grad-stop-2 { stop-color: #f59e0b; }
+        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(0, 122, 255, 0.5), 0 0 30px rgba(0, 122, 255, 0.3); }
+        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #007aff, #34c759); }
+        .light-mode .timeline-icon { border-color: #007aff; }
+        .light-mode .bg-indigo-600 { background-color: #007aff; }
+        .light-mode .hover\:bg-indigo-700:hover { background-color: #0056b3; }
+        .light-mode .grad-stop-1 { stop-color: #007aff; }
+        .light-mode .grad-stop-2 { stop-color: #34c759; }
         .light-mode .bg-gray-700 { background-color: #374151; color: white !important; }
         .light-mode .hover\:bg-gray-600:hover { background-color: #1f2937; }
+        .light-mode .case-button {
+            background: linear-gradient(145deg, #fefefe, #e6e6e6);
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff;
+        }
         .light-mode .case-button.active {
-            background-color: rgba(249, 115, 22, 0.1);
-            border-color: #f97316;
-            color: #111827;
+            background: linear-gradient(145deg, #007aff, #0056b3);
+            border-color: #007aff;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -197,8 +240,16 @@
     <div id="success-toast">
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
     </div>
-    <div id="mobile-alert">
-        <i class="fas fa-mobile-alt mr-2"></i> For the best experience, please view this page on a larger screen.
+    <div id="mobile-alert-container">
+        <div id="mobile-alert">
+            <div class="device-animation">
+                <span class="phone-to-laptop">
+                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas fa-laptop"></i>
+                </span>
+            </div>
+            <p>For the best experience, please view this page on a larger screen.</p>
+        </div>
     </div>
 
     <header class="fixed top-0 left-0 right-0 z-50 py-4">
@@ -241,8 +292,8 @@
             const body = document.body;
             
             // --- PARTICLES.JS BACKGROUND ---
-            const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
-            const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: ["#F59E0B", "#F97316", "#D97706"] }, shape: { type: "circle" }, opacity: { value: 0.6, random: true }, size: { value: 4, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 1.5, direction: "bottom", random: true, straight: false, out_mode: "out", bounce: false } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 6, duration: 2, opacity: 0.8 } } }, retina_detect: true };
+            const particlesDarkConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#ffffff" }, shape: { type: "circle", stroke: { width: 0, color: "#000000" }, polygon: { nb_sides: 5 } }, opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } }, size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 }, move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: "#007aff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: true, rotateX: 600, rotateY: 1200 } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 }, push: { particles_nb: 4 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -312,7 +363,8 @@
 
             const mainContainer = document.querySelector('main');
             const navContainer = document.getElementById('main-nav');
-            const mobileAlert = document.getElementById('mobile-alert');
+            const mobileAlertContainer = document.getElementById('mobile-alert-container');
+            const deviceAnimation = document.querySelector('.phone-to-laptop');
 
             const showPage = (pageId) => {
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -327,8 +379,12 @@
                 });
 
                 if (pageId === 'projects' && window.innerWidth < 768) {
-                    mobileAlert.classList.add('show');
-                    setTimeout(() => mobileAlert.classList.remove('show'), 4000);
+                    mobileAlertContainer.classList.add('show');
+                    deviceAnimation.classList.add('animated');
+                    setTimeout(() => {
+                        mobileAlertContainer.classList.remove('show');
+                        deviceAnimation.classList.remove('animated');
+                    }, 4000);
                 }
                 
                 window.scrollTo(0, 0);
@@ -399,9 +455,9 @@
                                     </div>
                                     <div class="presentation-content text-center md:text-left stagger-2">
                                         <h5 class="text-2xl font-bold text-white" data-section-title>Revenue vs. profitability — margin-driven earnings volatility</h5>
-                                        <div class="text-gray-300 mt-4 leading-relaxed" data-section-content>
+                                        <div class="text-gray-300 mt-4 leading-relaxed text-justify" data-section-content>
                                             <p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p>
-                                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                            <ul class="list-disc mt-4 space-y-2">
                                                 <li>The chart indicates earnings moved largely because margins changed more than revenue did.</li>
                                                 <li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li>
                                             </ul>
@@ -416,9 +472,9 @@
                                 <div class="grid md:grid-cols-2 gap-12 items-center">
                                     <div class="presentation-content text-center md:text-right stagger-2 md:order-2">
                                         <h5 class="text-2xl font-bold text-white" data-section-title>Cash Flow & Capital Structure</h5>
-                                        <div class="text-gray-300 mt-4 leading-relaxed" data-section-content>
+                                        <div class="text-gray-300 mt-4 leading-relaxed text-justify" data-section-content>
                                             <p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p>
-                                            <ul class="list-disc list-inside mt-4 space-y-2">
+                                            <ul class="list-disc mt-4 space-y-2">
                                                 <li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li>
                                                 <li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li>
                                             </ul>
@@ -430,6 +486,9 @@
                                 </div>
                             </div>
                             <div class="presentation-page" id="pres-page-4">
+                                <div class="text-center mb-8">
+                                    <h4 class="text-xl font-bold text-white">Further performance & operational levers: what moved Starbucks’ numbers</h4>
+                                </div>
                                 <div class="grid md:grid-cols-2 gap-12 items-center">
                                     <div class="presentation-content stagger-1">
                                         <div id="case-selector-container" class="p-6 rounded-lg glass-effect">
@@ -440,12 +499,15 @@
                                             </div>
                                             <div id="base-case-content" class="case-content active">
                                                  <img src="https://i.imgur.com/yB8J0fN.png" alt="Base Case Chart" class="rounded-lg w-full h-auto">
+                                                 <p class="text-gray-300 mt-4 text-sm text-center">Base case interpretation text goes here.</p>
                                             </div>
                                             <div id="bull-case-content" class="case-content">
                                                  <img src="https://i.imgur.com/3Z4P5vG.png" alt="Bull Case Chart" class="rounded-lg w-full h-auto">
+                                                 <p class="text-gray-300 mt-4 text-sm text-center">Bull case interpretation text goes here.</p>
                                             </div>
                                             <div id="bear-case-content" class="case-content">
                                                  <img src="https://i.imgur.com/sA2Gv5E.png" alt="Bear Case Chart" class="rounded-lg w-full h-auto">
+                                                 <p class="text-gray-300 mt-4 text-sm text-center">Bear case interpretation text goes here.</p>
                                             </div>
                                         </div>
                                     </div>
