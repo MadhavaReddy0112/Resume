@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Preloading certificate sites for faster access -->
+    <link rel="prefetch" href="https://coursera.org/share/c1febfb9a590b3f7bec6b352854ac947">
+    <link rel="prefetch" href="https://www.credential.net/ea420c61-f351-45d4-b6a4-38373730d7ef#acc.O3qfk4pe">
     <style>
         :root {
             --bg-dark: #0a0a0a;
@@ -52,7 +55,7 @@
         }
         .glass-effect:hover {
             transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
         .glow-effect {
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3);
@@ -115,7 +118,7 @@
         .presentation-content { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .presentation-page.is-visible .presentation-content { opacity: 1; transform: translateY(0); }
         .chart-placeholder { background-color: rgba(255, 255, 255, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s ease; position: relative; z-index: 3; }
-        .chart-placeholder:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(99, 102, 241, 0.3); }
+        .chart-placeholder:hover { transform: scale(1.03); box-shadow: 0 0 25px rgba(139, 92, 246, 0.4); }
         .text-justify { text-align: justify; }
         .case-button { padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid transparent; transition: all 0.3s ease; font-weight: 500; background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1); }
         .case-button.active { background-color: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
@@ -159,9 +162,24 @@
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
         .light-mode #progress-bar { background: rgba(249, 115, 22, 0.6); }
-        .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-        .light-mode .glass-effect:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2); }
-        .light-mode .nav-container { background: linear-gradient(145deg, rgba(255,255,255,0.7), rgba(240,240,240,0.7)); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .light-mode .glass-effect {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .glass-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2);
+        }
+        .light-mode .nav-container {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
         .light-mode .nav-link { color: #374151; }
         .light-mode .nav-link.active { background-color: rgba(0, 0, 0, 0.1); color: #111827; }
         .light-mode .nav-link:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); color: #111827; }
@@ -169,9 +187,8 @@
         .light-mode .text-gray-300, .light-mode .text-gray-400, .light-mode footer, .light-mode .text-gray-500, .light-mode p, .light-mode li { color: #4b5563 !important; }
         .light-mode .border-indigo-500 { border-color: #f59e0b; }
         .light-mode .text-indigo-400 { color: #f97316 !important; }
-        .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(249, 115, 22, 0.2); }
+        .light-mode .glow-effect { box-shadow: 0 0 10px rgba(245, 158, 11, 0.3), 0 0 20px rgba(249, 115, 22, 0.15); }
         .light-mode .timeline-line { background-color: #d1d5db; }
-        /* CHANGE 2: Updated light mode timeline gradient */
         .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #fb923c, #facc15); }
         .light-mode .timeline-icon { border-color: #f97316; animation: none; box-shadow: 0 0 15px rgba(249, 115, 22, 0.5); }
         .light-mode .bg-indigo-600, .light-mode .view-cert-btn { background-color: #f59e0b; }
@@ -190,6 +207,7 @@
         .light-mode .linkedin-btn:hover { background-color: #4b5563 !important; }
         .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
         .light-mode .download-analysis-btn:hover { background-color: #d97706 !important; }
+        .light-mode .chart-placeholder:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -213,7 +231,7 @@
     <div id="contact-modal" class="modal-container fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div id="contact-modal-content" class="modal-content w-full max-w-xl mx-auto"></div>
     </div>
-    <!-- CHANGE 5: Certificate popup modal -->
+    <!-- Certificate popup modal -->
     <div id="certificate-modal" class="modal-container fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-gray-900 rounded-lg shadow-2xl">
             <button id="close-cert-modal" class="close-btn">&times;</button>
@@ -258,8 +276,8 @@
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             
-            // CHANGE 3: New finance-themed background for light mode
-            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#f59e0b", "#eab308"] }, shape: { type: "char", stroke: { width: 0 }, character: { value: ['$', '₹', '€', '£', '¥', '📈'], font: 'Verdana', style: '', weight: '400' } }, opacity: { value: 0.5, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false } }, size: { value: 16, random: true, anim: { enable: false } }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "top", random: true, straight: false, out_mode: "out", bounce: false, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: false }, onclick: { enable: false }, resize: true } }, retina_detect: true };
+            // CHANGE 2: Updated light mode background animation
+            const particlesLightConfig = { particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: "#ff9a00" }, shape: { type: "circle" }, opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } }, size: { value: 10, random: true, anim: { enable: true, speed: 3, size_min: 5, sync: false } }, line_linked: { enable: false }, move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out", bounce: false, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 15, duration: 2, opacity: 0.8 }, push: { particles_nb: 2 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -342,7 +360,6 @@
                 progressBar.style.width = scrollPercent + '%';
 
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                // CHANGE 1: Removed logic that hides the button on scroll
                 if (Math.abs(lastScrollTop - scrollTop) > 50) {
                     document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
                     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
@@ -360,11 +377,11 @@
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
                 educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)', logoPlaceholder: 'GITAM' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)', logoPlaceholder: 'DSI' } ],
-                // CHANGE 4 & 5: Updated certifications data
+                // CHANGE 3: Updated certifications data with imgur placeholders
                 certifications: [ 
-                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoPlaceholder: 'MS', url: 'https://images.credly.com/images/13f89de7-9e12-4e01-81d4-25a5e351179f/image.png' }, 
-                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoPlaceholder: 'CFI', url: 'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~P54Q7G36862D/CERTIFICATE_LANDING_PAGE~P54Q7G36862D.jpeg' },
-                    { name: 'Placeholder Certificate', issuer: 'Awarding Institution', date: 'Issued: Month Year', logoPlaceholder: 'CERT', url: 'https://placehold.co/1200x900/0a0a0a/e5e5e5?text=Certificate' } 
+                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: 'https://i.imgur.com/su1c14I.png', url: 'https://coursera.org/share/c1febfb9a590b3f7bec6b352854ac947', type: 'direct' }, 
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: 'https://i.imgur.com/s6f4a2z.png', url: 'https://www.credential.net/ea420c61-f351-45d4-b6a4-38373730d7ef#acc.O3qfk4pe', type: 'modal' },
+                    { name: 'Placeholder Certificate', issuer: 'Awarding Institution', date: 'Issued: Month Year', logoUrl: 'https://i.imgur.com/c1Xf1aU.png', url: 'https://placehold.co/1200x900/0a0a0a/e5e5e5?text=Certificate', type: 'modal' } 
                 ],
                 resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
@@ -397,11 +414,11 @@
             };
             const createCertificationsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page';
-                // CHANGE 5: New layout for certifications
+                // CHANGE 4: Updated certifications layout
                 const certificationsHTML = portfolioData.certifications.map(cert => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
-                             <img src="https://placehold.co/100x100/f8f7ff/1d1d1f?text=${cert.logoPlaceholder}" alt="${cert.name} Logo" class="rounded-full p-1 object-contain">
+                        <div class="flex-shrink-0 w-16 h-16 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30 p-2">
+                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain">
                         </div>
                         <div class="flex-grow">
                             <h4 class="text-xl font-bold text-white">${cert.name}</h4>
@@ -409,7 +426,7 @@
                             <p class="text-gray-400 text-sm">${cert.date}</p>
                         </div>
                         <div class="sm:ml-auto mt-4 sm:mt-0">
-                            <button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 glow-effect" data-url="${cert.url}">
+                            <button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 glow-effect" data-url="${cert.url}" data-type="${cert.type || 'modal'}">
                                 View
                             </button>
                         </div>
@@ -417,8 +434,8 @@
                 `).join('');
                 const educationsHTML = portfolioData.educations.map(edu => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
-                            <img src="https://placehold.co/100x100/f8f7ff/1d1d1f?text=${edu.logoPlaceholder}" alt="${edu.school} Logo" class="rounded-full p-1 object-cover">
+                        <div class="flex-shrink-0 w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
+                            <span class="text-2xl font-bold text-white">${edu.logoPlaceholder}</span>
                         </div>
                         <div class="flex-grow">
                             <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
@@ -445,6 +462,7 @@
                         <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
                         <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
+                        <!-- CHANGE 1: Reverted project layout to original -->
                         <div class="presentation-page" id="pres-page-4">
                             <div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -485,7 +503,7 @@
                 const today = new Date();
                 const dayOfWeek = today.getDay();
                 const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek));
-                const formattedDate = lastSunday.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const formattedDate = lastSunday.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
@@ -591,9 +609,14 @@
                 const certButton = e.target.closest('.view-cert-btn');
                 if (certButton) {
                     const url = certButton.dataset.url;
+                    const type = certButton.dataset.type;
                     if (url && url !== '#') {
-                        certIframe.src = url;
-                        openModal(certModal);
+                        if (type === 'direct') {
+                            window.open(url, '_blank', 'noopener,noreferrer');
+                        } else {
+                            certIframe.src = url;
+                            openModal(certModal);
+                        }
                     }
                 }
             });
