@@ -24,7 +24,9 @@
             --nav-bg-light: rgba(249, 250, 251, 0.7);
         }
 
-        /* CHANGE 1: Smoother theme transition with longer duration */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
@@ -78,7 +80,7 @@
         /* --- Timeline --- */
         .timeline-container { position: relative; width: 100%; margin: auto; }
         .timeline-line { position: absolute; width: 2px; background-color: #374151; top: 0; bottom: 0; left: 1rem; transition: background-color 0.5s ease; }
-        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease; }
+        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease-in-out; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
         .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
@@ -118,7 +120,6 @@
         .case-button { padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid transparent; transition: all 0.3s ease; font-weight: 500; background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1); }
         .case-button.active { background-color: rgba(99, 102, 241, 0.2); border-color: #6366f1; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         
-        /* CHANGE 3: Smooth transition for case content */
         .case-content { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
         .case-content:not(.active) { opacity: 0; transform: translateY(10px); display: none; }
         .case-content.active { display: block; animation: fadeInCase 0.5s ease-in-out forwards; }
@@ -128,40 +129,35 @@
         .case-chart { transition: opacity 0.4s ease-in-out; }
         .case-chart.hidden { display: none; opacity: 0; }
 
-        /* --- Toasts, Modals & Floating Button --- */
+        /* --- Modals, Toasts, & Buttons --- */
         #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
         #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
-        #mobile-alert-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        #mobile-alert-container.show { opacity: 1; visibility: visible; }
-        #mobile-alert { background: linear-gradient(145deg, #333, #111); color: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center; max-width: 90%; }
-        #contact-modal { transition: opacity 0.3s ease; }
-        #contact-modal.visible { opacity: 1; pointer-events: auto; }
-        #contact-modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
+        #mobile-alert-container, #contact-modal, #certificate-modal { transition: opacity 0.3s ease; }
+        .modal-container.visible { opacity: 1; pointer-events: auto; }
+        .modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
+        .modal-container.visible .modal-content { transform: scale(1); opacity: 1; }
         
-        /* CHANGE 2: New flip-style button */
+        /* Floating Button */
         #floating-contact-btn { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; perspective: 1000px; }
-        #floating-contact-btn.btn-hidden { transform: scale(0.8) translateY(20px); opacity: 0; }
+        #floating-contact-btn.btn-hidden { transform: scale(0.8) translateY(20px); opacity: 0; pointer-events: none; }
         #floating-btn-flipper { transition: transform 0.6s; transform-style: preserve-3d; }
         #floating-contact-btn.is-contact #floating-btn-flipper { transform: rotateY(180deg); }
         .floating-btn-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .floating-btn-face.is-back { transform: rotateY(180deg); }
         
+        /* Mobile Alert */
         .device-animation { font-size: 3rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
         #mobile-alert .device-animation > i, #mobile-alert > p { opacity: 0; }
         @keyframes mobile-in { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes arrow-in { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
         @keyframes laptop-in { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes text-in { from { opacity: 0; } to { opacity: 1; } }
-        #mobile-alert-container.show .fa-mobile-alt { animation: mobile-in 0.5s ease-out forwards; }
-        #mobile-alert-container.show .fa-long-arrow-alt-right { animation: arrow-in 0.5s ease-out 0.5s forwards; transform-origin: left; }
-        #mobile-alert-container.show .fa-laptop { animation: laptop-in 0.5s ease-out 1s forwards; }
-        #mobile-alert-container.show #mobile-alert > p { animation: text-in 0.5s ease-out 1.5s forwards; }
-        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(255,255,255,0.1); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease; font-size: 1.5rem; line-height: 1; z-index: 10; }
-        .close-btn:hover { background-color: rgba(255,255,255,0.2); }
+
+        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(255,255,255,0.1); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease, transform 0.2s ease; font-size: 1.5rem; line-height: 1; z-index: 10; }
+        .close-btn:hover { background-color: rgba(255,255,255,0.2); transform: scale(1.1); }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
-        /* CHANGE 5: Made progress bar semi-transparent */
         .light-mode #progress-bar { background: rgba(249, 115, 22, 0.6); }
         .light-mode .glass-effect { background: var(--glass-bg-light); border: 1px solid var(--glass-border-light); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
         .light-mode .glass-effect:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2); }
@@ -175,10 +171,11 @@
         .light-mode .text-indigo-400 { color: #f97316 !important; }
         .light-mode .glow-effect { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4), 0 0 30px rgba(249, 115, 22, 0.2); }
         .light-mode .timeline-line { background-color: #d1d5db; }
-        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #f59e0b, #eab308); }
+        /* CHANGE 2: Updated light mode timeline gradient */
+        .light-mode .timeline-line-progress { background: linear-gradient(to bottom, #f97316, #fb923c, #facc15); }
         .light-mode .timeline-icon { border-color: #f97316; animation: none; box-shadow: 0 0 15px rgba(249, 115, 22, 0.5); }
-        .light-mode .bg-indigo-600 { background-color: #f59e0b; }
-        .light-mode .hover\:bg-indigo-700:hover { background-color: #d97706; }
+        .light-mode .bg-indigo-600, .light-mode .view-cert-btn { background-color: #f59e0b; }
+        .light-mode .hover\:bg-indigo-700:hover, .light-mode .view-cert-btn:hover { background-color: #d97706; }
         .light-mode .case-button { background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff; }
         .light-mode .case-button.active { background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
@@ -189,7 +186,6 @@
         .light-mode .form-container .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
         .light-mode .form-container .hover\:bg-gray-600:hover { background-color: #d1d5db; }
         .light-mode .linkedin-btn { background-color: #6b7280 !important; }
-        /* CHANGE 8: Ensure LinkedIn button text is white */
         .light-mode .linkedin-btn { color: #ffffff !important; }
         .light-mode .linkedin-btn:hover { background-color: #4b5563 !important; }
         .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
@@ -202,14 +198,26 @@
     <div id="success-toast">
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
     </div>
-    <div id="mobile-alert-container">
-        <div id="mobile-alert">
-            <div class="device-animation">
+
+    <!-- Modals -->
+    <div id="mobile-alert-container" class="modal-container fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div id="mobile-alert" class="modal-content glass-effect p-8 rounded-xl text-center max-w-sm w-full">
+            <div class="device-animation text-indigo-400">
                 <i class="fas fa-mobile-alt"></i>
                 <i class="fas fa-long-arrow-alt-right"></i>
                 <i class="fas fa-laptop"></i>
             </div>
-            <p>For the best experience, please view this page on a larger screen.</p>
+            <p class="text-gray-300">For the best experience, please view this page on a larger screen.</p>
+        </div>
+    </div>
+    <div id="contact-modal" class="modal-container fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div id="contact-modal-content" class="modal-content w-full max-w-xl mx-auto"></div>
+    </div>
+    <!-- CHANGE 5: Certificate popup modal -->
+    <div id="certificate-modal" class="modal-container fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
+        <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-gray-900 rounded-lg shadow-2xl">
+            <button id="close-cert-modal" class="close-btn">&times;</button>
+            <iframe id="certificate-iframe" src="" class="w-full h-full border-0 rounded-lg" title="Certificate Viewer"></iframe>
         </div>
     </div>
 
@@ -227,23 +235,16 @@
 
     <main class="pt-24 relative z-10"></main>
     
-    <!-- CHANGE 2: New HTML structure for the flip button -->
     <button id="floating-contact-btn" class="fixed bottom-6 right-6 z-50 w-14 h-14">
         <div id="floating-btn-flipper" class="relative w-full h-full">
-            <!-- Arrow Down (Front Face) -->
             <div class="floating-btn-face absolute w-full h-full rounded-full flex items-center justify-center shadow-lg glass-effect text-gray-300">
                 <i class="fas fa-arrow-down text-2xl"></i>
             </div>
-            <!-- Mailbox Icon (Back Face) -->
             <div class="floating-btn-face is-back absolute w-full h-full rounded-full flex items-center justify-center shadow-lg glass-effect text-gray-300">
                 <i class="fas fa-envelope text-2xl"></i>
             </div>
         </div>
     </button>
-
-    <div id="contact-modal" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
-        <div id="contact-modal-content" class="w-full max-w-xl mx-auto"></div>
-    </div>
 
     <footer class="py-6 text-center text-gray-500 relative z-10">
         <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
@@ -257,8 +258,8 @@
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             
-            // CHANGE 7: New finance-themed background for light mode
-            const particlesLightConfig = { particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: "#f97316" }, shape: { type: "circle" }, opacity: { value: 0.6, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 200, color: "#f59e0b", opacity: 0.3, width: 1 }, move: { enable: true, speed: 1.5, direction: "top-right", random: false, straight: true, out_mode: "out", bounce: false } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "grab" }, resize: true }, modes: { grab: { distance: 140, line_opacity: 0.5 } } }, retina_detect: true };
+            // CHANGE 3: New finance-themed background for light mode
+            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#f59e0b", "#eab308"] }, shape: { type: "char", stroke: { width: 0 }, character: { value: ['$', '₹', '€', '£', '¥', '📈'], font: 'Verdana', style: '', weight: '400' } }, opacity: { value: 0.5, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0.1, sync: false } }, size: { value: 16, random: true, anim: { enable: false } }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "top", random: true, straight: false, out_mode: "out", bounce: false, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: false }, onclick: { enable: false }, resize: true } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -310,8 +311,8 @@
 
                 if (pageId === 'projects' && window.innerWidth < 768) {
                     const mobileAlertContainer = document.getElementById('mobile-alert-container');
-                    mobileAlertContainer.classList.add('show');
-                    setTimeout(() => mobileAlertContainer.classList.remove('show'), 5000);
+                    mobileAlertContainer.classList.add('visible');
+                    setTimeout(() => mobileAlertContainer.classList.remove('visible'), 5000);
                 }
                 
                 window.scrollTo({top: 0, behavior: 'smooth'});
@@ -341,15 +342,14 @@
                 progressBar.style.width = scrollPercent + '%';
 
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
+                // CHANGE 1: Removed logic that hides the button on scroll
                 if (Math.abs(lastScrollTop - scrollTop) > 50) {
                     document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
-                    floatingBtn.classList.toggle('btn-hidden', isScrollingDown);
-                    lastScrollTop = scrollTop;
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
                 }
                 
                 updateFloatingButton();
             }, false);
-
 
             // --- DATA ---
             const portfolioData = {
@@ -360,7 +360,12 @@
                 experiences: [ { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: ['Maintained and validated client data to ensure compliance with regulations.', 'Performed conflict-of-interest reviews and due diligence.', 'Collaborated on confidentiality and privacy risk-mitigation programs.'], logoUrl: 'Deloitte.png' }, { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' }, { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' } ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
                 educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)', logoPlaceholder: 'GITAM' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)', logoPlaceholder: 'DSI' } ],
-                certifications: [ { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera' }, { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'CFI' }, { name: 'New Certification Title', issuer: 'Awarding Institution' } ],
+                // CHANGE 4 & 5: Updated certifications data
+                certifications: [ 
+                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoPlaceholder: 'MS', url: 'https://images.credly.com/images/13f89de7-9e12-4e01-81d4-25a5e351179f/image.png' }, 
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoPlaceholder: 'CFI', url: 'https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~P54Q7G36862D/CERTIFICATE_LANDING_PAGE~P54Q7G36862D.jpeg' },
+                    { name: 'Placeholder Certificate', issuer: 'Awarding Institution', date: 'Issued: Month Year', logoPlaceholder: 'CERT', url: 'https://placehold.co/1200x900/0a0a0a/e5e5e5?text=Certificate' } 
+                ],
                 resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
@@ -392,7 +397,24 @@
             };
             const createCertificationsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page';
-                const certificationsHTML = portfolioData.certifications.map(cert => `<div class="p-6 rounded-lg glass-effect"><h4 class="text-lg font-bold text-white">${cert.name}</h4><p class="text-indigo-400">${cert.issuer}</p></div>`).join('');
+                // CHANGE 5: New layout for certifications
+                const certificationsHTML = portfolioData.certifications.map(cert => `
+                    <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
+                             <img src="https://placehold.co/100x100/f8f7ff/1d1d1f?text=${cert.logoPlaceholder}" alt="${cert.name} Logo" class="rounded-full p-1 object-contain">
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="text-xl font-bold text-white">${cert.name}</h4>
+                            <p class="text-lg text-indigo-400 mb-2">${cert.issuer}</p>
+                            <p class="text-gray-400 text-sm">${cert.date}</p>
+                        </div>
+                        <div class="sm:ml-auto mt-4 sm:mt-0">
+                            <button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 glow-effect" data-url="${cert.url}">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
                 const educationsHTML = portfolioData.educations.map(edu => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                         <div class="flex-shrink-0 w-24 h-24 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
@@ -403,7 +425,7 @@
                             <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
                             <p class="text-gray-400 text-sm">${edu.date}</p>
                         </div>
-                        <div class="sm:ml-auto mt-4 sm:mt-0">
+                        <div class="sm:ml-auto mt-4 sm:mt-0 text-center">
                             <div class="bg-indigo-500/10 text-indigo-300 rounded-lg px-4 py-2 ring-1 ring-inset ring-indigo-500/20">
                                 <p class="text-xs font-semibold uppercase tracking-wider">CGPA</p>
                                 <p class="text-2xl font-bold">${edu.details.replace('CGPA: ', '').replace(' (A+ Grade)', '+').replace(' (1st Year)','')}</p>
@@ -411,7 +433,7 @@
                         </div>
                     </div>
                 `).join('');
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${educationsHTML}</div></div></section>`;
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${educationsHTML}</div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createProjectsPage = () => {
@@ -519,8 +541,19 @@
 
             // --- MODAL LOGIC ---
             const contactModal = document.getElementById('contact-modal');
+            const certModal = document.getElementById('certificate-modal');
+            const certIframe = document.getElementById('certificate-iframe');
+
+            const openModal = (modal) => {
+                modal.classList.add('visible');
+            };
+
+            const closeModal = (modal) => {
+                modal.classList.remove('visible');
+            };
+
+            // Contact Modal
             const contactModalContent = document.getElementById('contact-modal-content');
-            
             const modalFormContainer = document.createElement('div');
             modalFormContainer.innerHTML = contactFormHTML;
             modalFormContainer.querySelector('form').id = 'modal-contact-form';
@@ -529,26 +562,22 @@
             closeBtn.className = 'close-btn';
             modalFormContainer.querySelector('form').prepend(closeBtn);
             contactModalContent.appendChild(modalFormContainer);
-            
             modalFormContainer.querySelector('#modal-contact-form').addEventListener('submit', handleFormSubmit);
-
-            const openModal = () => {
-                contactModal.classList.add('visible');
-                setTimeout(() => {
-                    contactModalContent.style.transform = 'scale(1)';
-                    contactModalContent.style.opacity = '1';
-                }, 10);
-            };
-
-            const closeModal = () => {
-                contactModalContent.style.transform = 'scale(0.95)';
-                contactModalContent.style.opacity = '0';
-                setTimeout(() => contactModal.classList.remove('visible'), 300);
-            };
+            closeBtn.addEventListener('click', () => closeModal(contactModal));
+            contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(contactModal); });
             
+            // Certificate Modal
+            const closeCertModalBtn = document.getElementById('close-cert-modal');
+            closeCertModalBtn.addEventListener('click', () => {
+                closeModal(certModal);
+                certIframe.src = ''; // Stop video/content from loading in background
+            });
+            certModal.addEventListener('click', (e) => { if (e.target === certModal) { closeModal(certModal); certIframe.src = ''; } });
+            
+            // Floating Button Click
             floatingBtn.addEventListener('click', () => {
                 if (isContactState) {
-                    openModal();
+                    openModal(contactModal);
                 } else {
                     const aboutSection = document.getElementById('about-section');
                     if (aboutSection) {
@@ -557,10 +586,19 @@
                 }
             });
 
-            closeBtn.addEventListener('click', closeModal);
-            contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(); });
+            // Certificate Button Click (Event Delegation)
+            document.addEventListener('click', (e) => {
+                const certButton = e.target.closest('.view-cert-btn');
+                if (certButton) {
+                    const url = certButton.dataset.url;
+                    if (url && url !== '#') {
+                        certIframe.src = url;
+                        openModal(certModal);
+                    }
+                }
+            });
 
-            // --- DYNAMIC LISTENERS & OBSERVERS ---
+            // --- DYNAMIC OBSERVERS ---
             const timelineContainer = document.getElementById('experience-container');
             if (timelineContainer) {
                 const timelineProgress = document.getElementById('timeline-progress');
