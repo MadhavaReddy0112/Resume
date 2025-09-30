@@ -86,7 +86,7 @@
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
         .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
-        .timeline-icon img { width: 100%; height: 100%; object-fit: cover; } /* Changed to cover for zoom effect */
+        .timeline-icon img { width: 100%; height: 100%; object-fit: contain; } /* Reverted from cover to contain */
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         
         /* Mobile fixes for Timeline */
@@ -140,9 +140,10 @@
         .case-chart.hidden { display: none; opacity: 0; }
 
         /* --- Modals, Toasts, & Buttons --- */
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
+        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
         #success-toast { background-color: #22c55e; }
-        #error-toast { background-color: #ef4444; }
+        #error-toast { background-color: #374151; border: 1px solid #6366f1; }
+        #error-toast .fa-exclamation-circle { color: #818cf8; }
         .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
         
         #contact-modal, #certificate-modal { transition: opacity 0.3s ease; }
@@ -158,11 +159,11 @@
         .floating-btn-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .floating-btn-face.is-back { transform: rotateY(180deg); }
         
-        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(0,0,0,0.3); color: var(--text-dark); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease, transform 0.2s ease; font-size: 1.5rem; line-height: 1; z-index: 10; font-weight: bold;}
-        .close-btn:hover { background-color: rgba(0,0,0,0.5); transform: scale(1.1); }
+        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(30, 30, 30, 0.9); color: var(--text-dark); border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease, transform 0.2s ease; font-size: 1.5rem; line-height: 1; z-index: 10; font-weight: bold;}
+        .close-btn:hover { background-color: rgba(50, 50, 50, 0.9); transform: scale(1.1); }
         
         /* Logo background helpers */
-        .logo-bg-gitam { background-color: #006a62; }
+        .logo-bg-gitam { background-color: #017069; }
         .logo-bg-bloomberg { background-color: #000000; }
         .logo-bg-white { background-color: #ffffff; }
 
@@ -203,8 +204,8 @@
         .light-mode .case-button { background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff; }
         .light-mode .case-button.active { background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
-        .light-mode .close-btn { background-color: rgba(0,0,0,0.2); color: #1f2937; border-color: rgba(0,0,0,0.1); }
-        .light-mode .close-btn:hover { background-color: rgba(0,0,0,0.3); }
+        .light-mode .close-btn { background-color: rgba(240, 240, 240, 0.9); color: #1f2937; border-color: rgba(0,0,0,0.2); }
+        .light-mode .close-btn:hover { background-color: rgba(220, 220, 220, 0.9); }
         .light-mode #home-contact-form .glass-effect { background-color: var(--glass-bg-light); } /* Change Connect card color */
         .light-mode .form-container .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
         .light-mode .form-container .hover\:bg-gray-600:hover { background-color: #d1d5db; }
@@ -215,6 +216,8 @@
         .light-mode #download-analysis-btn:hover { background-color: #d97706 !important; }
         .light-mode .chart-placeholder:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
+        .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
+        .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -272,6 +275,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
+            let currentPageId = '';
             
             // --- IMAGE URLS (for preloading and easy replacement) ---
             const imageUrls = {
@@ -319,7 +323,7 @@
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             
-            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#fb923c", "#facc15", "#f59e0b"] }, shape: { type: "circle" }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#fb923c", "#facc15", "#f59e0b"] }, shape: { type: "circle" }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -360,6 +364,7 @@
             let isContactState = false;
             
             const showPage = (pageId) => {
+                currentPageId = pageId;
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
                 if (newPage) newPage.classList.add('active');
@@ -395,10 +400,19 @@
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
 
-                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                if (Math.abs(lastScrollTop - scrollTop) > 50) {
-                    document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
-                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+                const isMobile = window.innerWidth < 768;
+                const isExperiencePage = currentPageId === 'experience';
+
+                // Conditionally hide nav on scroll, except for experience page on mobile
+                if (!isMobile || !isExperiencePage) {
+                    const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
+                    if (Math.abs(lastScrollTop - scrollTop) > 50) {
+                        document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
+                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+                    }
+                } else {
+                    // On mobile experience tab, ensure header is always visible
+                    document.querySelector('header').classList.remove('nav-hidden');
                 }
                 
                 updateFloatingButton();
@@ -508,7 +522,7 @@
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
-                const experiencesHTML = portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
+                const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'visible' : ''}"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
                 const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
@@ -624,9 +638,9 @@
             // --- CONTACT FORM LOGIC ---
             const contactFormHTML = `
                 <form id="contact-form" class="w-full p-8 rounded-lg glass-effect form-container">
-                    <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3>
-                    <p class="text-gray-300 text-lg">Have a question or want to work together?</p>
-                    <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
+                    <h3 class="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3>
+                    <p class="text-gray-300 text-lg text-center">Have a question or want to work together?</p>
+                    <p class="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
                     <input type="text" name="_honey" style="display:none">
                     <div class="space-y-4 text-left">
                         <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
