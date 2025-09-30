@@ -453,7 +453,7 @@
             };
 
             const showPage = (pageId) => {
-                // Validate pageId to prevent errors from bad hashes or old localStorage values
+                // Validate pageId to prevent errors from bad hashes
                 if (!portfolioData.pages.map(p => p.id).includes(pageId)) {
                     console.warn(`Attempted to navigate to invalid page: ${pageId}. Defaulting to home.`);
                     pageId = 'home';
@@ -466,7 +466,6 @@
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.toggle('active', link.dataset.pageId === pageId);
                     if (link.dataset.pageId === pageId) {
-                        // Check if nav is visible before scrolling into view to avoid errors
                         if (link.offsetParent !== null) {
                             link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                         }
@@ -474,9 +473,8 @@
                 });
                 
                 // --- MODIFICATION: State Persistence ---
-                // Save the currently active page to the browser's local storage
-                localStorage.setItem('lastActivePage', pageId);
-                // Update the URL hash in the address bar without reloading the page
+                // Update the URL hash. This serves as the single source of truth for the
+                // active page, allowing state to be preserved on refresh.
                 if (window.location.hash !== `#${pageId}`) {
                      history.pushState(null, null, `#${pageId}`);
                 }
@@ -689,11 +687,11 @@
             });
 
             // --- MODIFICATION: Initialize page based on saved state ---
-            const lastPage = localStorage.getItem('lastActivePage');
             const hashPage = window.location.hash.substring(1);
             const validPages = portfolioData.pages.map(p => p.id);
-            // Priority: URL Hash > Local Storage > Default ('home')
-            const initialPage = validPages.includes(hashPage) ? hashPage : (validPages.includes(lastPage) ? lastPage : 'home');
+            // On page load, prioritize the URL hash. If no valid hash, default to 'home'.
+            // This ensures that refreshing a page keeps you there, but a fresh visit always starts at home.
+            const initialPage = validPages.includes(hashPage) ? hashPage : 'home';
             showPage(initialPage);
             
             // --- CONTACT FORM LOGIC ---
