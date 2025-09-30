@@ -82,7 +82,7 @@
         /* --- Timeline --- */
         .timeline-container { position: relative; width: 100%; margin: auto; }
         .timeline-line { position: absolute; width: 2px; background-color: #374151; top: 0; bottom: 0; left: 1rem; transition: background-color 0.5s ease; }
-        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 0.2s linear, background 0.6s ease-in-out; }
+        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: background 0.6s ease-in-out; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
         .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
@@ -133,7 +133,7 @@
         .case-content.active { display: block; animation: fadeInCase 0.5s ease-in-out forwards; }
         @keyframes fadeInCase { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        ul.list-disc, ol.list-decimal { padding-left: 1.25rem; }
+        .timeline-item ul.list-disc, .timeline-item ol.list-decimal { padding-left: 1.25rem; }
         .timeline-item ul.list-disc { text-indent: -1.25rem; padding-left: 2.5rem; }
         .timeline-item ol.list-decimal { text-indent: -1.25rem; padding-left: 2.5rem; }
         .timeline-item ul.list-disc li strong { color: var(--text-dark); }
@@ -396,37 +396,45 @@
                     floatingBtn.classList.toggle('is-contact', isContactState);
                 }
             };
-
-            window.addEventListener('scroll', function() {
+            
+            let rafId = null;
+            const handleScroll = () => {
                 const scrollTop = document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
 
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                if (Math.abs(lastScrollTop - scrollTop) > 50) { // Threshold to prevent jitter
+                if (Math.abs(lastScrollTop - scrollTop) > 50) { 
                     document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
                     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
                 }
                 
                 updateFloatingButton();
-                 // Timeline animation logic
+                
                 const timelineProgress = document.getElementById('timeline-progress');
                 if (timelineProgress) {
                     const experienceContainer = document.getElementById('experience-container');
-                    const containerTop = experienceContainer.offsetTop;
-                    const containerHeight = experienceContainer.offsetHeight;
+                    const containerRect = experienceContainer.getBoundingClientRect();
                     const viewportHeight = window.innerHeight;
 
-                    let start = containerTop - viewportHeight + (viewportHeight / 4);
-                    let end = containerTop + containerHeight - viewportHeight;
-                    
-                    let progress = (scrollTop - start) / (containerHeight - (viewportHeight / 2));
+                    const startPoint = viewportHeight * 0.75; 
+                    const endPoint = viewportHeight * 0.25;
+
+                    let progress = (startPoint - containerRect.top) / (startPoint - endPoint + containerRect.height);
                     progress = Math.max(0, Math.min(1, progress));
                     
                     timelineProgress.style.height = `${progress * 100}%`;
                 }
-            }, false);
+            };
+            
+            window.addEventListener('scroll', () => {
+                if (rafId) {
+                    window.cancelAnimationFrame(rafId);
+                }
+                rafId = window.requestAnimationFrame(handleScroll);
+            }, { passive: true });
+
 
             // --- DATA ---
             const portfolioData = {
@@ -442,7 +450,7 @@
                         duties: [
                            `
                               <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                              <ol class="list-decimal list-outside pl-5 space-y-2">
+                              <ol class="list-decimal list-outside space-y-2">
                                 <li><strong>Strategic finance & valuation readiness&nbsp;—&nbsp;</strong> Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
                                 <li><strong>Regulatory independence & risk modelling&nbsp;—&nbsp;</strong> Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
                                 <li><strong>Process redesign, automation & ISQM alignment&nbsp;—&nbsp;</strong> Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li>
@@ -450,7 +458,7 @@
                                 <li><strong>Stakeholder leadership & recognition&nbsp;—&nbsp;</strong> Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
                               </ol>
                               <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                              <ul class="list-disc list-outside pl-5">
+                              <ul class="list-disc list-outside">
                                 <li><strong>Financial Modeling & Automation:</strong> Advanced Excel, VBA/Macros, Scenario Analysis.</li>
                                 <li><strong>Data Analytics & Platforms:</strong> Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
                                 <li><strong>Emerging Tech & Innovation:</strong> Vibe-Code Scripting, Prompt engineering, Vercel.</li>
@@ -466,14 +474,14 @@
                         duties: [
                             `
                                 <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                                <ol class="list-decimal list-outside pl-5 space-y-2">
+                                <ol class="list-decimal list-outside space-y-2">
                                     <li><strong>Credit Analysis & Financial Due Diligence&nbsp;—&nbsp;</strong> Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
                                     <li><strong>Investment & Performance Modeling&nbsp;—&nbsp;</strong> Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
                                     <li><strong>Portfolio Monitoring & Covenant Analysis&nbsp;—&nbsp;</strong> Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
                                     <li><strong>Fintech & Process Automation&nbsp;—&nbsp;</strong> Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
                                 </ol>
                                 <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                                <ul class="list-disc list-outside pl-5">
+                                <ul class="list-disc list-outside">
                                     <li><strong>Financial Modeling & Analysis:</strong> Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
                                     <li><strong>Fintech & Automation:</strong> Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
                                 </ul>
@@ -488,12 +496,12 @@
                         duties: [
                             `
                                 <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                                <ol class="list-decimal list-outside pl-5 space-y-2">
+                                <ol class="list-decimal list-outside space-y-2">
                                     <li><strong>Commercial & Financial Risk Management&nbsp;—&nbsp;</strong> Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
                                     <li><strong>Data-Driven Sourcing & Due Diligence&nbsp;—&nbsp;</strong> Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
                                 </ol>
                                 <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                                <ul class="list-disc list-outside pl-5">
+                                <ul class="list-disc list-outside">
                                     <li><strong>Risk Management & Talent Acquisition:</strong> Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
                                 </ul>
                             `
@@ -541,8 +549,8 @@
                     'Risk Management': 'fas fa-shield-alt',
                     'Regulatory Compliance': 'fas fa-balance-scale',
                     'Data Analytics': 'fas fa-chart-pie',
-                    'Workflow Reengineering': 'fas fa-lightbulb',
-                    'Excel & Power BI Automation': 'fas fa-file-excel',
+                    'Workflow Reengineering': 'fas fa-cogs',
+                    'Excel & Power BI Automation': 'fas fa-bolt',
                     'Vibe Coding': 'fas fa-code'
                 };
                 const skillsHTML = portfolioData.skills.map(skill => `
