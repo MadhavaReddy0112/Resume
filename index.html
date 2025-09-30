@@ -34,7 +34,6 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-dark);
-            /* overflow-x: hidden; <-- This was removed to fix content disappearing on small screens */
             transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out;
         }
         #particles-js {
@@ -86,10 +85,17 @@
         .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease-in-out; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-icon { position: absolute; width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
-        .timeline-icon img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+        .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
+        .timeline-icon img { width: 100%; height: 100%; object-fit: cover; } /* Changed to cover for zoom effect */
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         
+        /* Mobile fixes for Timeline */
+        @media (max-width: 640px) {
+            .timeline-item { padding-left: 2.5rem; }
+            .timeline-icon { width: 3rem; height: 3rem; left: 0.75rem; }
+            .timeline-line, .timeline-line-progress { left: 0.75rem; }
+        }
+
         /* --- Page Transitions --- */
         .page { display: none; animation: fadeIn 0.5s ease-in-out forwards; }
         .page.active { display: block; }
@@ -134,9 +140,12 @@
         .case-chart.hidden { display: none; opacity: 0; }
 
         /* --- Modals, Toasts, & Buttons --- */
-        #success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #22c55e; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
-        #success-toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
-        #mobile-alert-container, #contact-modal, #certificate-modal { transition: opacity 0.3s ease; }
+        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; }
+        #success-toast { background-color: #22c55e; }
+        #error-toast { background-color: #ef4444; }
+        .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
+        
+        #contact-modal, #certificate-modal { transition: opacity 0.3s ease; }
         .modal-container.visible { opacity: 1; pointer-events: auto; }
         .modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
         .modal-container.visible .modal-content { transform: scale(1); opacity: 1; }
@@ -149,16 +158,13 @@
         .floating-btn-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .floating-btn-face.is-back { transform: rotateY(180deg); }
         
-        /* Mobile Alert */
-        .device-animation { font-size: 3rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1rem; }
-        #mobile-alert .device-animation > i, #mobile-alert > p { opacity: 0; }
-        @keyframes mobile-in { from { transform: translateX(-30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes arrow-in { from { transform: scaleX(0); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
-        @keyframes laptop-in { from { transform: translateX(30px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes text-in { from { opacity: 0; } to { opacity: 1; } }
-
-        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(255,255,255,0.1); color: var(--text-dark); border-radius: 9999px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease, transform 0.2s ease; font-size: 1.5rem; line-height: 1; z-index: 10; }
-        .close-btn:hover { background-color: rgba(255,255,255,0.2); transform: scale(1.1); }
+        .close-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 2.5rem; height: 2.5rem; background-color: rgba(0,0,0,0.3); color: var(--text-dark); border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.5s ease, transform 0.2s ease; font-size: 1.5rem; line-height: 1; z-index: 10; font-weight: bold;}
+        .close-btn:hover { background-color: rgba(0,0,0,0.5); transform: scale(1.1); }
+        
+        /* Logo background helpers */
+        .logo-bg-gitam { background-color: #006a62; }
+        .logo-bg-bloomberg { background-color: #000000; }
+        .logo-bg-white { background-color: #ffffff; }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
@@ -197,17 +203,16 @@
         .light-mode .case-button { background: linear-gradient(145deg, #fefefe, #e6e6e6); color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1), inset 0 1px 0 #fff; }
         .light-mode .case-button.active { background: linear-gradient(145deg, #f97316, #f59e0b); border-color: #f97316; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(0,0,0,0.1); }
         .light-mode input, .light-mode textarea { background-color: rgba(255,255,255,0.8); border-color: #d1d5db; color: #1f2937; }
-        .light-mode .close-btn { background-color: rgba(0,0,0,0.1); color: #1f2937; }
-        .light-mode .close-btn:hover { background-color: rgba(0,0,0,0.2); }
-        .light-mode .form-container { background: linear-gradient(145deg, #FFFFFF, #E6E6E6); }
-        .light-mode .form-container h3, .light-mode .form-container p { color: #1d1d1f !important; }
+        .light-mode .close-btn { background-color: rgba(0,0,0,0.2); color: #1f2937; border-color: rgba(0,0,0,0.1); }
+        .light-mode .close-btn:hover { background-color: rgba(0,0,0,0.3); }
+        .light-mode #home-contact-form .glass-effect { background-color: var(--glass-bg-light); } /* Change Connect card color */
         .light-mode .form-container .bg-gray-700 { background-color: #e5e7eb; color: #374151 !important; }
         .light-mode .form-container .hover\:bg-gray-600:hover { background-color: #d1d5db; }
         .light-mode .linkedin-btn { background-color: #6b7280 !important; }
         .light-mode .linkedin-btn { color: #ffffff !important; }
         .light-mode .linkedin-btn:hover { background-color: #4b5563 !important; }
-        .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
-        .light-mode .download-analysis-btn:hover { background-color: #d97706 !important; }
+        .light-mode #download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
+        .light-mode #download-analysis-btn:hover { background-color: #d97706 !important; }
         .light-mode .chart-placeholder:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
     </style>
@@ -215,21 +220,14 @@
 <body class="antialiased" oncontextmenu="return false;">
     <div id="progress-bar"></div>
     <div id="particles-js"></div>
-    <div id="success-toast">
+    <div id="success-toast" class="toast">
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
+    </div>
+    <div id="error-toast" class="toast">
+        <i class="fas fa-exclamation-circle mr-2"></i> Something went wrong. Please try again later.
     </div>
 
     <!-- Modals -->
-    <div id="mobile-alert-container" class="modal-container fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
-        <div id="mobile-alert" class="modal-content glass-effect p-8 rounded-xl text-center max-w-sm w-full">
-            <div class="device-animation text-indigo-400">
-                <i class="fas fa-mobile-alt"></i>
-                <i class="fas fa-long-arrow-alt-right"></i>
-                <i class="fas fa-laptop"></i>
-            </div>
-            <p class="text-gray-300">For the best experience, please view this page on a larger screen.</p>
-        </div>
-    </div>
     <div id="contact-modal" class="modal-container fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div id="contact-modal-content" class="modal-content w-full max-w-xl mx-auto"></div>
     </div>
@@ -275,25 +273,53 @@
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
             
-            // --- IMAGE URLS (for easy replacement) ---
+            // --- IMAGE URLS (for preloading and easy replacement) ---
             const imageUrls = {
-                // Certificate Logos
+                // Logos
                 microsoftLogo: 'Microsoft Logo.jpg',
                 fmvaLogo: 'CGI Logo.jpg',
                 bloombergLogo: 'Bloomberg Logo.jpg',
                 gitamLogo: 'Gitam Logo.jpg',
                 dsiLogo: 'DSI Logo.png',
+                deloitteLogo: 'Deloitte.png',
+                oxaneLogo: 'Oxane Partners.png',
+                ssiLogo: 'SSI People.png',
+                starbucksLogo: 'Starbucks.jpg',
 
                 // Certificate Images (for modal view)
                 fmvaCert: 'Certificate 1.png',
                 bloombergCert: 'Certificate 2.png',
-                microsoftCert: 'Certificate 3.png'
+                microsoftCert: 'Certificate 3.png',
+
+                // Other Images
+                profile: 'Profile.jpg',
+                resume: 'Resume.jpg',
+                graph1: 'Graph-1.jpg',
+                graph2: 'Graph-2.jpg',
+                graph3: 'Graph-3.jpg',
+                graph4: 'Graph-4.jpg',
+                graph5: 'Graph-5.jpg',
+                graph6: 'Graph-6.png',
             };
+
+            // --- IMAGE PRELOADING ---
+            // This function preloads all critical images as soon as the page loads,
+            // ensuring they are cached by the browser. This prevents lag when a user
+            // navigates to a new tab, as the images will already be available.
+            const preloadImages = (urls) => {
+                for (const key in urls) {
+                    if (urls.hasOwnProperty(key)) {
+                        const img = new Image();
+                        img.src = urls[key];
+                    }
+                }
+            };
+            preloadImages(imageUrls);
 
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             
-            const particlesLightConfig = { particles: { number: { value: 40, density: { enable: true, value_area: 800 } }, color: { value: "#ff9a00" }, shape: { type: "circle" }, opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false } }, size: { value: 10, random: true, anim: { enable: true, speed: 3, size_min: 5, sync: false } }, line_linked: { enable: false }, move: { enable: true, speed: 1, direction: "none", random: true, straight: false, out_mode: "out", bounce: false, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { bubble: { distance: 200, size: 15, duration: 2, opacity: 0.8 }, push: { particles_nb: 2 } } }, retina_detect: true };
+            const particlesLightConfig = { particles: { number: { value: 50, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#fb923c", "#facc15", "#f59e0b"] }, shape: { type: "circle" }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
                 if(window.pJSDom && window.pJSDom.length > 0) {
@@ -342,12 +368,6 @@
                     link.classList.toggle('active', link.dataset.pageId === pageId);
                     if (link.dataset.pageId === pageId) link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 });
-
-                if (pageId === 'projects' && window.innerWidth < 768) {
-                    const mobileAlertContainer = document.getElementById('mobile-alert-container');
-                    mobileAlertContainer.classList.add('visible');
-                    setTimeout(() => mobileAlertContainer.classList.remove('visible'), 5000);
-                }
                 
                 window.scrollTo({top: 0, behavior: 'smooth'});
                 setTimeout(updateFloatingButton, 100);
@@ -387,9 +407,9 @@
             // --- DATA ---
             const portfolioData = {
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
-                home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
+                home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: imageUrls.profile,},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project Case Study →" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications →" } ],
                 experiences: [
                     {
                         date: 'Jun 2024 - Present',
@@ -397,7 +417,7 @@
                         company: 'Deloitte, Hyderabad',
                         duties: [
                            `
-                              <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                              <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
                               <ol class="list-decimal list-outside pl-5 space-y-2">
                                 <li><strong>Strategic finance & valuation readiness</strong> — Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
                                 <li><strong>Regulatory independence & risk modelling</strong> — Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
@@ -405,7 +425,7 @@
                                 <li><strong>Prompt engineering & operational acceleration</strong> — Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li>
                                 <li><strong>Stakeholder leadership & recognition</strong> — Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
                               </ol>
-                              <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                              <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
                               <ul class="list-disc list-outside pl-5">
                                 <li>Financial Modeling & Automation: Advanced Excel, VBA/Macros, Scenario Analysis.</li>
                                 <li>Data Analytics & Platforms: Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
@@ -413,7 +433,7 @@
                               </ul>
                            `
                         ],
-                        logoUrl: 'Deloitte.png'
+                        logoUrl: imageUrls.deloitteLogo
                     },
                     { 
                         date: 'Jun 2023 - Jul 2023', 
@@ -421,21 +441,21 @@
                         company: 'Oxane Partners, Hyderabad', 
                         duties: [
                             `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
                                 <ol class="list-decimal list-outside pl-5 space-y-2">
                                     <li><strong>Credit Analysis & Financial Due Diligence</strong>&nbsp;—&nbsp;Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
                                     <li><strong>Investment & Performance Modeling</strong>&nbsp;—&nbsp;Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
                                     <li><strong>Portfolio Monitoring & Covenant Analysis</strong>&nbsp;—&nbsp;Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
                                     <li><strong>Fintech & Process Automation</strong>&nbsp;—&nbsp;Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
                                 </ol>
-                                <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
                                 <ul class="list-disc list-outside pl-5">
                                     <li>Financial Modeling & Analysis: Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
                                     <li>Fintech & Automation: Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
                                 </ul>
                             `
                         ], 
-                        logoUrl: 'Oxane Partners.png' 
+                        logoUrl: imageUrls.oxaneLogo
                     },
                     { 
                         date: 'Jan 2022 - Aug 2022', 
@@ -443,28 +463,28 @@
                         company: 'SSi People, Bangalore', 
                         duties: [
                             `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
                                 <ol class="list-decimal list-outside pl-5 space-y-2">
                                     <li><strong>Commercial & Financial Risk Management</strong>&nbsp;—&nbsp;Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
                                     <li><strong>Data-Driven Sourcing & Due Diligence</strong>&nbsp;—&nbsp;Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
                                 </ol>
-                                <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
                                 <ul class="list-disc list-outside pl-5">
                                     <li>Risk Management & Talent Acquisition: Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
                                 </ul>
                             `
                         ], 
-                        logoUrl: 'SSI People.png' 
+                        logoUrl: imageUrls.ssiLogo
                     }
                 ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
-                educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.6 (1st Year)', logoUrl: imageUrls.gitamLogo }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0', logoUrl: imageUrls.dsiLogo } ],
+                educations: [ { degree: 'Masters of Business Administration (MBA) - Finance & Marketing', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.6 (1st Year)', logoUrl: imageUrls.gitamLogo, logoBg: 'logo-bg-gitam' }, { degree: 'Bachelor of Business Administration (BBA) - Finance', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0', logoUrl: imageUrls.dsiLogo, logoBg: 'logo-bg-white' } ],
                 certifications: [
-                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal' },
-                    { name: 'Bloomberg Market Concepts', issuer: 'Bloomberg', date: 'Issued: September 2025', logoUrl: imageUrls.bloombergLogo, url: imageUrls.bloombergCert, type: 'modal' },
-                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: imageUrls.microsoftLogo, url: imageUrls.microsoftCert, type: 'modal' }
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal', logoBg: 'logo-bg-white' },
+                    { name: 'Bloomberg Market Concepts', issuer: 'Bloomberg', date: 'Issued: September 2025', logoUrl: imageUrls.bloombergLogo, url: imageUrls.bloombergCert, type: 'modal', logoBg: 'logo-bg-bloomberg' },
+                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: imageUrls.microsoftLogo, url: imageUrls.microsoftCert, type: 'modal', logoBg: 'logo-bg-white' }
                 ],
-                resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
+                resume: { imageUrl: imageUrls.resume, pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
             const mainContainer = document.querySelector('main');
@@ -482,7 +502,7 @@
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a href="javascript:void(0);" data-link="${s.link}" class="snapshot-link text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText}</a></div></div></div></section>`).join('');
-                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><div id="home-contact-form-container"></div></div></div></section>`;
+                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto" id="home-contact-form"></div></div></section>`;
                 page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
@@ -496,9 +516,9 @@
             const createCertificationsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page';
                 const certificationsHTML = portfolioData.certifications.map(cert => `
-                    <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-16 h-16 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain">
+                    <div class="w-full lg:w-[calc(50%-1rem)] max-w-lg p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                        <div class="flex-shrink-0 w-20 h-20 rounded-full ${cert.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
+                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1">
                         </div>
                         <div class="flex-grow">
                             <h4 class="text-xl font-bold text-white">${cert.name}</h4>
@@ -514,8 +534,8 @@
                 `).join('');
                 const educationsHTML = portfolioData.educations.map(edu => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1">
+                        <div class="flex-shrink-0 w-24 h-24 rounded-full ${edu.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
+                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full">
                         </div>
                         <div class="flex-grow">
                             <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
@@ -530,7 +550,7 @@
                         </div>
                     </div>
                 `).join('');
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${educationsHTML}</div></div></section>`;
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${educationsHTML}</div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createProjectsPage = () => {
@@ -538,17 +558,17 @@
                 page.innerHTML = `
                     <section class="pt-16">
                         <div class="presentation-container relative">
-                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="Starbucks.jpg" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-1.jpg" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="Graph-2.jpg" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-disc mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-disc mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
                         <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
                         <div class="presentation-page" id="pres-page-4">
                             <div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
                                 <div class="presentation-content relative flex items-center justify-center">
-                                    <img id="base-case-chart" src="Graph-3.jpg" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
-                                    <img id="bull-case-chart" src="Graph-4.jpg" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
-                                    <img id="bear-case-chart" src="Graph-5.jpg" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="base-case-chart" src="${imageUrls.graph3}" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="bull-case-chart" src="${imageUrls.graph4}" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="bear-case-chart" src="${imageUrls.graph5}" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
                                 </div>
                                 <div class="presentation-content">
                                     <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
@@ -567,11 +587,11 @@
                         <div class="presentation-page" id="pres-page-5">
                             <div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
-                                <div class="text-center"><img src="Graph-6.png" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75"></div>
+                                <div class="text-center"><img src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75"></div>
                                 <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
                             </div>
                         </div>
-                        <div class="text-center py-12"><a href="SBUX Financial Model - Madhava Reddy Arimanda.xlsx" download class="download-analysis-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</a></div>
+                        <div class="text-center py-12"><button id="download-analysis-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</button></div>
                     </div>
                     </section>
                 `;
@@ -603,7 +623,7 @@
             
             // --- CONTACT FORM LOGIC ---
             const contactFormHTML = `
-                <form id="contact-form" class="w-full p-8 rounded-lg glass-effect text-center form-container">
+                <form id="contact-form" class="w-full p-8 rounded-lg glass-effect form-container">
                     <h3 class="text-3xl font-bold mb-4 text-white">Let's Connect</h3>
                     <p class="text-gray-300 text-lg">Have a question or want to work together?</p>
                     <p class="text-gray-400 mb-6 text-md"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
@@ -623,7 +643,7 @@
                     </div>
                 </form>`;
             
-            document.getElementById('home-contact-form-container').innerHTML = contactFormHTML;
+            document.getElementById('home-contact-form').innerHTML = contactFormHTML;
 
             const successToast = document.getElementById('success-toast');
             const handleFormSubmit = (event) => {
@@ -636,10 +656,11 @@
 
             document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
 
-            // --- MODAL LOGIC ---
+            // --- MODAL LOGIC & TOASTS ---
             const contactModal = document.getElementById('contact-modal');
             const certModal = document.getElementById('certificate-modal');
             const certImage = document.getElementById('certificate-image');
+            const errorToast = document.getElementById('error-toast');
 
             const openModal = (modal) => {
                 modal.classList.add('visible');
@@ -688,8 +709,9 @@
                 }
             });
 
-            // Certificate Button Click (Event Delegation)
+            // --- EVENT DELEGATION FOR DYNAMIC CONTENT ---
             document.addEventListener('click', (e) => {
+                // View Certificate Button
                 const certButton = e.target.closest('.view-cert-btn');
                 if (certButton) {
                     const url = certButton.dataset.url;
@@ -698,6 +720,13 @@
                         openModal(certModal);
                     }
                 }
+
+                // Download Analysis Button
+                const downloadBtn = e.target.closest('#download-analysis-btn');
+                if(downloadBtn) {
+                    errorToast.classList.add('show');
+                    setTimeout(() => errorToast.classList.remove('show'), 1500);
+                }
             });
 
             // --- DYNAMIC OBSERVERS ---
@@ -705,7 +734,7 @@
             if (timelineContainer) {
                 const timelineProgress = document.getElementById('timeline-progress');
                 const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
-                const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)); }, { threshold: 0.5, rootMargin: "0px 0px -50px 0px" });
+                const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)); }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
                 const lineProgressObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) timelineProgress.style.height = `${e.target.offsetTop + (e.target.querySelector('.timeline-icon').offsetHeight / 2)}px`; }); }, { threshold: 0.6 });
                 timelineItems.forEach(item => { itemEntryObserver.observe(item); lineProgressObserver.observe(item); });
                 const timelineEnd = document.getElementById('timeline-end');
@@ -739,4 +768,3 @@
     </script>
 </body>
 </html>
-
