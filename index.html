@@ -135,8 +135,9 @@
         
         ul.list-disc, ol.list-decimal { padding-left: 1.25rem; }
         .timeline-item ul.list-disc li strong { color: var(--text-dark); }
+        .timeline-item ol li strong { font-weight: 700; color: var(--text-dark); }
         body.light-mode .timeline-item ul.list-disc li strong { color: #1f2937 !important; }
-        body.light-mode ol.list-decimal li strong { color: #1f2937 !important; font-weight: 600; }
+        body.light-mode ol.list-decimal li strong { color: #1f2937 !important; font-weight: 700; }
         .case-chart { transition: opacity 0.4s ease-in-out; }
         .case-chart.hidden { display: none; opacity: 0; }
 
@@ -233,8 +234,7 @@
     <div id="error-toast" class="toast">
         <i class="fas fa-exclamation-circle mr-3"></i>
         <div id="error-toast-text">
-            <span>Something went wrong.</span><br>
-            <span>Please try again later.</span>
+            <span>Something went wrong. </span><br class="sm:hidden"><span>Please try again later.</span>
         </div>
     </div>
 
@@ -415,7 +415,7 @@
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "A certified finance professional at Deloitte, focused on leveraging AI-driven insights to transform complex financial data into actionable strategies and forward-thinking business decisions.", imageUrl: imageUrls.profile,},
                 about: { title: "About Me", description: "As a Risk and Brand Protection Analyst at Deloitte, I apply a strong analytical framework to every challenge, building and validating intricate models using advanced Excel, Bloomberg, Tableau and Power BI on datasets from the S&P Capital IQ, Refinitiv and SEC filings. I integrate AI-driven tools and vibe coding to automate analyses, accelerate hypothesis testing, improve forecasting accuracy and uncover hidden insights that tell a clearer story. This enables me to help organizations navigate complex regulatory environments by turning potential risks into strategic advantages. My aspiration is to transition into strategic consulting, where I can help leading organizations forecast trends, mitigate risks and unlock sustainable growth."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Financial Modeling & Valuation Analyst (FMVA)", company: "Corporate Finance Institute (CFI)", description: "Completed a rigorous, hands-on program focused on building sophisticated 3-statement financial models, performing complex DCF and comparable company valuations, and executing advanced scenario and sensitivity analyses.", link: "certifications", linkText: "View All Certifications →" } ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Financial Modeling & Valuation Analyst (FMVA)", company: "Corporate Finance Institute", description: "Earned the FMVA® credential from CFI, demonstrating advanced expertise in 3-statement modeling, DCF and comparable company valuations, and scenario/sensitivity analysis applied to corporate finance and investment decisions.", link: "certifications", linkText: "View All Certifications →" } ],
                 experiences: [
                     {
                         date: 'Jun 2024 - Present',
@@ -484,10 +484,10 @@
                         logoBg: 'logo-bg-ssi'
                     }
                 ],
-                skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
+                skills: ['Financial Analysis & Modeling', 'Portfolio Management', 'Risk Management', 'Regulatory Compliance', 'Data Analytics', 'Workflow Reengineering', 'Excel & Power BI Automation', 'Vibe Coding'],
                 educations: [ { degree: 'Masters of Business Administration (MBA) -<br class="sm:hidden"> Finance & Marketing', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: '8.6', logoUrl: imageUrls.gitamLogo, logoBg: 'logo-bg-gitam' }, { degree: 'Bachelor of Business Administration (BBA) -<br class="sm:hidden"> Finance', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: '9.0', logoUrl: imageUrls.dsiLogo, logoBg: 'logo-bg-white' } ],
                 certifications: [
-                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal', logoBg: 'logo-bg-white' },
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal', logoBg: 'logo-bg-white' },
                     { name: 'Bloomberg Market Concepts', issuer: 'Bloomberg', date: 'Issued: September 2025', logoUrl: imageUrls.bloombergLogo, url: imageUrls.bloombergCert, type: 'modal', logoBg: 'logo-bg-bloomberg' },
                     { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: imageUrls.microsoftLogo, url: imageUrls.microsoftCert, type: 'modal', logoBg: 'logo-bg-white' }
                 ],
@@ -516,8 +516,8 @@
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
                 const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'no-hide visible' : ''}"><div class="timeline-icon ${exp.logoBg || 'bg-white'}"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
-                const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
+                const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center text-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Core Competencies</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
             const createCertificationsPage = () => {
@@ -554,7 +554,7 @@
                         <div class="sm:ml-auto mt-4 sm:mt-0 text-center flex-shrink-0">
                             <div class="bg-indigo-500/10 text-indigo-300 rounded-lg px-4 py-2 ring-1 ring-inset ring-indigo-500/20">
                                 <p class="text-xs font-semibold uppercase tracking-wider">CGPA</p>
-                                <p class="text-2xl font-bold">${edu.details}</p>
+                                <p class="text-3xl font-bold">${edu.details}</p>
                             </div>
                         </div>
                     </div>
