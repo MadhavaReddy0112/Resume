@@ -82,7 +82,7 @@
         /* --- Timeline --- */
         .timeline-container { position: relative; width: 100%; margin: auto; }
         .timeline-line { position: absolute; width: 2px; background-color: #374151; top: 0; bottom: 0; left: 1rem; transition: background-color 0.5s ease; }
-        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease-in-out; }
+        .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 0.2s linear, background 0.6s ease-in-out; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
         .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
@@ -134,6 +134,8 @@
         @keyframes fadeInCase { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         ul.list-disc, ol.list-decimal { padding-left: 1.25rem; }
+        .timeline-item ul.list-disc { text-indent: -1.25rem; padding-left: 2.5rem; }
+        .timeline-item ol.list-decimal { text-indent: -1.25rem; padding-left: 2.5rem; }
         .timeline-item ul.list-disc li strong { color: var(--text-dark); }
         .timeline-item ol li strong { font-weight: 700; color: var(--text-dark); }
         body.light-mode .timeline-item ul.list-disc li strong { color: #1f2937 !important; }
@@ -408,6 +410,22 @@
                 }
                 
                 updateFloatingButton();
+                 // Timeline animation logic
+                const timelineProgress = document.getElementById('timeline-progress');
+                if (timelineProgress) {
+                    const experienceContainer = document.getElementById('experience-container');
+                    const containerTop = experienceContainer.offsetTop;
+                    const containerHeight = experienceContainer.offsetHeight;
+                    const viewportHeight = window.innerHeight;
+
+                    let start = containerTop - viewportHeight + (viewportHeight / 4);
+                    let end = containerTop + containerHeight - viewportHeight;
+                    
+                    let progress = (scrollTop - start) / (containerHeight - (viewportHeight / 2));
+                    progress = Math.max(0, Math.min(1, progress));
+                    
+                    timelineProgress.style.height = `${progress * 100}%`;
+                }
             }, false);
 
             // --- DATA ---
@@ -522,9 +540,9 @@
                     'Portfolio Management': 'fas fa-briefcase',
                     'Risk Management': 'fas fa-shield-alt',
                     'Regulatory Compliance': 'fas fa-balance-scale',
-                    'Data Analytics': 'fas fa-tachometer-alt',
-                    'Workflow Reengineering': 'fas fa-project-diagram',
-                    'Excel & Power BI Automation': 'fas fa-bolt',
+                    'Data Analytics': 'fas fa-chart-pie',
+                    'Workflow Reengineering': 'fas fa-lightbulb',
+                    'Excel & Power BI Automation': 'fas fa-file-excel',
                     'Vibe Coding': 'fas fa-code'
                 };
                 const skillsHTML = portfolioData.skills.map(skill => `
@@ -755,40 +773,16 @@
             });
 
             // --- DYNAMIC OBSERVERS ---
-            const timelineContainer = document.getElementById('experience-container');
-            if (timelineContainer) {
-                const timelineProgress = document.getElementById('timeline-progress');
-                const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
-                
-                const itemEntryObserver = new IntersectionObserver((entries) => {
+            const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
+            if (timelineItems.length > 0) {
+                 const itemEntryObserver = new IntersectionObserver((entries) => {
                     entries.forEach(e => {
-                        if (e.target.classList.contains('no-hide')) {
-                           if(e.isIntersecting) e.target.classList.add('visible');
-                        } else {
-                            e.target.classList.toggle('visible', e.isIntersecting);
-                        }
+                        e.target.classList.toggle('visible', e.isIntersecting);
                     });
                 }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-                const lineProgressObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        if (e.isIntersecting) {
-                            const icon = e.target.querySelector('.timeline-icon');
-                            if (icon) {
-                                timelineProgress.style.height = `${e.target.offsetTop + (icon.offsetHeight / 2)}px`;
-                            }
-                        }
-                    });
-                }, { threshold: 0.1 });
-
-                timelineItems.forEach(item => {
-                    itemEntryObserver.observe(item);
-                    lineProgressObserver.observe(item);
-                });
-
-                const timelineEnd = document.getElementById('timeline-end');
-                if (timelineEnd) { new IntersectionObserver(e => { if (e[0].isIntersecting) timelineProgress.style.height = '100%'; }, { threshold: 1.0 }).observe(timelineEnd); }
+                timelineItems.forEach(item => itemEntryObserver.observe(item));
             }
+
             const caseButtons = document.querySelectorAll('#case-buttons-container .case-button');
             const caseContents = document.querySelectorAll('#case-selector-container .case-content');
             const caseCharts = document.querySelectorAll('.case-chart');
