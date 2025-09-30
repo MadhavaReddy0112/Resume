@@ -85,8 +85,8 @@
         .timeline-line-progress { position: absolute; width: 2px; background: linear-gradient(to bottom, #a855f7, #6366f1, #10b981); top: 0; left: 1rem; height: 0; transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease-in-out; }
         .timeline-item { position: relative; padding-left: 3rem; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 1; }
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #ffffff; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
-        .timeline-icon img { width: 100%; height: 100%; object-fit: contain; } /* Reverted from cover to contain */
+        .timeline-icon { position: absolute; width: 4rem; height: 4rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #4f46e5; box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); z-index: 2; animation: pulse 2s infinite; overflow: hidden; left: 1rem; top: 0; transform: translateX(-50%); transition: all 0.5s ease; }
+        .timeline-icon img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         
         /* Mobile fixes for Timeline */
@@ -144,6 +144,8 @@
         #success-toast { background-color: #22c55e; }
         #error-toast { background-color: #374151; border: 1px solid #6366f1; }
         #error-toast .fa-exclamation-circle { color: #818cf8; }
+        #error-toast-text { text-align: center; }
+        @media (max-width: 640px) { #error-toast-text { text-align: left; } }
         .toast.show { opacity: 1; visibility: visible; transform: translate(-50%, -10px); }
         
         #contact-modal, #certificate-modal { transition: opacity 0.3s ease; }
@@ -166,6 +168,7 @@
         .logo-bg-gitam { background-color: #017069; }
         .logo-bg-bloomberg { background-color: #000000; }
         .logo-bg-white { background-color: #ffffff; }
+        .logo-bg-ssi { background-color: #fbc02d; }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
@@ -227,7 +230,11 @@
         <i class="fas fa-check-circle mr-2"></i> Message sent successfully! I'll get back to you soon.
     </div>
     <div id="error-toast" class="toast">
-        <i class="fas fa-exclamation-circle mr-2"></i> Something went wrong. Please try again later.
+        <i class="fas fa-exclamation-circle mr-3"></i>
+        <div id="error-toast-text">
+            <span>Something went wrong.</span><br>
+            <span>Please try again later.</span>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -275,7 +282,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
-            let currentPageId = '';
             
             // --- IMAGE URLS (for preloading and easy replacement) ---
             const imageUrls = {
@@ -285,8 +291,8 @@
                 bloombergLogo: 'Bloomberg Logo.jpg',
                 gitamLogo: 'Gitam Logo.jpg',
                 dsiLogo: 'DSI Logo.png',
-                deloitteLogo: 'Deloitte.jpg',
-                oxaneLogo: 'Oxane Partners Logo.png',
+                deloitteLogo: 'Deloitte.png',
+                oxaneLogo: 'Oxane Partners.png',
                 ssiLogo: 'SSI People.png',
                 starbucksLogo: 'Starbucks.jpg',
 
@@ -307,9 +313,6 @@
             };
 
             // --- IMAGE PRELOADING ---
-            // This function preloads all critical images as soon as the page loads,
-            // ensuring they are cached by the browser. This prevents lag when a user
-            // navigates to a new tab, as the images will already be available.
             const preloadImages = (urls) => {
                 for (const key in urls) {
                     if (urls.hasOwnProperty(key)) {
@@ -322,7 +325,6 @@
 
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
-            
             const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#fb923c", "#facc15", "#f59e0b"] }, shape: { type: "circle" }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 } } }, retina_detect: true };
 
             const initParticles = (isLight) => {
@@ -364,7 +366,6 @@
             let isContactState = false;
             
             const showPage = (pageId) => {
-                currentPageId = pageId;
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
                 if (newPage) newPage.classList.add('active');
@@ -385,7 +386,6 @@
                 
                 const isPageTooSmall = scrollHeight <= clientHeight + 5;
                 const shouldBeContact = scrollTop > clientHeight * 0.3;
-
                 const newContactState = isPageTooSmall || shouldBeContact;
 
                 if (newContactState !== isContactState) {
@@ -400,19 +400,10 @@
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
 
-                const isMobile = window.innerWidth < 768;
-                const isExperiencePage = currentPageId === 'experience';
-
-                // Conditionally hide nav on scroll, except for experience page on mobile
-                if (!isMobile || !isExperiencePage) {
-                    const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                    if (Math.abs(lastScrollTop - scrollTop) > 50) {
-                        document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
-                        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
-                    }
-                } else {
-                    // On mobile experience tab, ensure header is always visible
-                    document.querySelector('header').classList.remove('nav-hidden');
+                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
+                if (Math.abs(lastScrollTop - scrollTop) > 50) { // Threshold to prevent jitter
+                    document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
                 }
                 
                 updateFloatingButton();
@@ -421,9 +412,9 @@
             // --- DATA ---
             const portfolioData = {
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
-                home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: imageUrls.profile,},
-                about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications →" } ],
+                home: { name: "Madhava Reddy Arimanda", title: "A certified finance professional at Deloitte, focused on leveraging AI-driven insights to transform complex financial data into actionable strategies and forward-thinking business decisions.", imageUrl: imageUrls.profile,},
+                about: { title: "About Me", description: "As a Risk and Brand Protection Analyst at Deloitte, I apply a strong analytical framework to every challenge, building and validating intricate models using advanced Excel, Bloomberg, Tableau and Power BI on datasets from the S&P Capital IQ, Refinitiv and SEC filings. I integrate AI-driven tools and vibe coding to automate analyses, accelerate hypothesis testing, improve forecasting accuracy and uncover hidden insights that tell a clearer story. This enables me to help organizations navigate complex regulatory environments by turning potential risks into strategic advantages. My aspiration is to transition into strategic consulting, where I can help leading organizations forecast trends, mitigate risks and unlock sustainable growth."},
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Financial Modeling & Valuation Analyst (FMVA)", company: "Corporate Finance Institute (CFI)", description: "Completed a rigorous, hands-on program focused on building sophisticated 3-statement financial models, performing complex DCF and comparable company valuations, and executing advanced scenario and sensitivity analyses.", link: "certifications", linkText: "View All Certifications →" } ],
                 experiences: [
                     {
                         date: 'Jun 2024 - Present',
@@ -431,19 +422,19 @@
                         company: 'Deloitte, Hyderabad',
                         duties: [
                            `
-                              <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
+                              <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
                               <ol class="list-decimal list-outside pl-5 space-y-2">
-                                <li><strong>Strategic finance & valuation readiness</strong> — Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
-                                <li><strong>Regulatory independence & risk modelling</strong> — Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
-                                <li><strong>Process redesign, automation & ISQM alignment</strong> — Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li>
-                                <li><strong>Prompt engineering & operational acceleration</strong> — Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li>
-                                <li><strong>Stakeholder leadership & recognition</strong> — Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
+                                <li><strong>Strategic finance & valuation readiness —</strong> Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
+                                <li><strong>Regulatory independence & risk modelling —</strong> Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
+                                <li><strong>Process redesign, automation & ISQM alignment —</strong> Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li>
+                                <li><strong>Prompt engineering & operational acceleration —</strong> Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li>
+                                <li><strong>Stakeholder leadership & recognition —</strong> Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
                               </ol>
-                              <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
+                              <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills:</h5>
                               <ul class="list-disc list-outside pl-5">
-                                <li>Financial Modeling & Automation: Advanced Excel, VBA/Macros, Scenario Analysis.</li>
-                                <li>Data Analytics & Platforms: Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
-                                <li>Emerging Tech & Innovation: Vibe-Code Scripting, Prompt engineering, Vercel.</li>
+                                <li><strong>Financial Modeling & Automation:</strong> Advanced Excel, VBA/Macros, Scenario Analysis.</li>
+                                <li><strong>Data Analytics & Platforms:</strong> Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
+                                <li><strong>Emerging Tech & Innovation:</strong> Vibe-Code Scripting, Prompt engineering, Vercel.</li>
                               </ul>
                            `
                         ],
@@ -455,17 +446,17 @@
                         company: 'Oxane Partners, Hyderabad', 
                         duties: [
                             `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
                                 <ol class="list-decimal list-outside pl-5 space-y-2">
-                                    <li><strong>Credit Analysis & Financial Due Diligence</strong>&nbsp;—&nbsp;Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
-                                    <li><strong>Investment & Performance Modeling</strong>&nbsp;—&nbsp;Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
-                                    <li><strong>Portfolio Monitoring & Covenant Analysis</strong>&nbsp;—&nbsp;Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
-                                    <li><strong>Fintech & Process Automation</strong>&nbsp;—&nbsp;Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
+                                    <li><strong>Credit Analysis & Financial Due Diligence —</strong> Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
+                                    <li><strong>Investment & Performance Modeling —</strong> Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
+                                    <li><strong>Portfolio Monitoring & Covenant Analysis —</strong> Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
+                                    <li><strong>Fintech & Process Automation —</strong> Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
                                 </ol>
-                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills:</h5>
                                 <ul class="list-disc list-outside pl-5">
-                                    <li>Financial Modeling & Analysis: Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
-                                    <li>Fintech & Automation: Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
+                                    <li><strong>Financial Modeling & Analysis:</strong> Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
+                                    <li><strong>Fintech & Automation:</strong> Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
                                 </ul>
                             `
                         ], 
@@ -477,22 +468,23 @@
                         company: 'SSi People, Bangalore', 
                         duties: [
                             `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
                                 <ol class="list-decimal list-outside pl-5 space-y-2">
-                                    <li><strong>Commercial & Financial Risk Management</strong>&nbsp;—&nbsp;Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
-                                    <li><strong>Data-Driven Sourcing & Due Diligence</strong>&nbsp;—&nbsp;Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
+                                    <li><strong>Commercial & Financial Risk Management —</strong> Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
+                                    <li><strong>Data-Driven Sourcing & Due Diligence —</strong> Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
                                 </ol>
-                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills</h5>
+                                <h5 class="text-md font-semibold text-gray-100 mt-8 mb-2">Key Projects & Skills:</h5>
                                 <ul class="list-disc list-outside pl-5">
-                                    <li>Risk Management & Talent Acquisition: Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
+                                    <li><strong>Risk Management & Talent Acquisition:</strong> Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
                                 </ul>
                             `
                         ], 
-                        logoUrl: imageUrls.ssiLogo
+                        logoUrl: imageUrls.ssiLogo,
+                        logoBg: 'logo-bg-ssi'
                     }
                 ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
-                educations: [ { degree: 'Masters of Business Administration (MBA) - Finance & Marketing', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.6 (1st Year)', logoUrl: imageUrls.gitamLogo, logoBg: 'logo-bg-gitam' }, { degree: 'Bachelor of Business Administration (BBA) - Finance', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0', logoUrl: imageUrls.dsiLogo, logoBg: 'logo-bg-white' } ],
+                educations: [ { degree: 'Masters of Business Administration (MBA) -<br class="sm:hidden"> Finance & Marketing', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.6', logoUrl: imageUrls.gitamLogo, logoBg: 'logo-bg-gitam' }, { degree: 'Bachelor of Business Administration (BBA) -<br class="sm:hidden"> Finance', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0', logoUrl: imageUrls.dsiLogo, logoBg: 'logo-bg-white' } ],
                 certifications: [
                     { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal', logoBg: 'logo-bg-white' },
                     { name: 'Bloomberg Market Concepts', issuer: 'Bloomberg', date: 'Issued: September 2025', logoUrl: imageUrls.bloombergLogo, url: imageUrls.bloombergCert, type: 'modal', logoBg: 'logo-bg-bloomberg' },
@@ -522,7 +514,7 @@
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
-                const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'visible' : ''}"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
+                const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'no-hide visible' : ''}"><div class="timeline-icon ${exp.logoBg || 'bg-white'}"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
                 const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
@@ -534,12 +526,12 @@
                         <div class="flex-shrink-0 w-20 h-20 rounded-full ${cert.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
                              <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1">
                         </div>
-                        <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-white">${cert.name}</h4>
-                            <p class="text-lg text-indigo-400 mb-2">${cert.issuer}</p>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="text-lg lg:text-xl font-bold text-white">${cert.name}</h4>
+                            <p class="text-md lg:text-lg text-indigo-400 mb-2">${cert.issuer}</p>
                             <p class="text-gray-400 text-sm">${cert.date}</p>
                         </div>
-                        <div class="sm:ml-auto mt-4 sm:mt-0">
+                        <div class="sm:ml-auto mt-4 sm:mt-0 flex-shrink-0">
                             <button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 glow-effect" data-url="${cert.url}" data-type="${cert.type || 'modal'}">
                                 View
                             </button>
@@ -551,15 +543,15 @@
                         <div class="flex-shrink-0 w-24 h-24 rounded-full ${edu.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
                              <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full">
                         </div>
-                        <div class="flex-grow">
-                            <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
-                            <p class="text-lg text-indigo-400 mb-2">${edu.school}</p>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="text-lg md:text-xl font-bold text-white">${edu.degree}</h4>
+                            <p class="text-md lg:text-lg text-indigo-400 mb-2">${edu.school}</p>
                             <p class="text-gray-400 text-sm">${edu.date}</p>
                         </div>
-                        <div class="sm:ml-auto mt-4 sm:mt-0 text-center">
+                        <div class="sm:ml-auto mt-4 sm:mt-0 text-center flex-shrink-0">
                             <div class="bg-indigo-500/10 text-indigo-300 rounded-lg px-4 py-2 ring-1 ring-inset ring-indigo-500/20">
                                 <p class="text-xs font-semibold uppercase tracking-wider">CGPA</p>
-                                <p class="text-2xl font-bold">${edu.details.replace('CGPA: ', '').replace(' (A+ Grade)', '+').replace(' (1st Year)','')}</p>
+                                <p class="text-2xl font-bold">${edu.details}</p>
                             </div>
                         </div>
                     </div>
@@ -739,7 +731,7 @@
                 const downloadBtn = e.target.closest('#download-analysis-btn');
                 if(downloadBtn) {
                     errorToast.classList.add('show');
-                    setTimeout(() => errorToast.classList.remove('show'), 1500);
+                    setTimeout(() => errorToast.classList.remove('show'), 2000);
                 }
             });
 
@@ -748,9 +740,33 @@
             if (timelineContainer) {
                 const timelineProgress = document.getElementById('timeline-progress');
                 const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
-                const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => e.target.classList.toggle('visible', e.isIntersecting)); }, { threshold: 0.2, rootMargin: "0px 0px -50px 0px" });
-                const lineProgressObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) timelineProgress.style.height = `${e.target.offsetTop + (e.target.querySelector('.timeline-icon').offsetHeight / 2)}px`; }); }, { threshold: 0.6 });
-                timelineItems.forEach(item => { itemEntryObserver.observe(item); lineProgressObserver.observe(item); });
+                
+                const itemEntryObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.target.classList.contains('no-hide')) {
+                           if(e.isIntersecting) e.target.classList.add('visible');
+                        } else {
+                            e.target.classList.toggle('visible', e.isIntersecting);
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+                const lineProgressObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            const icon = e.target.querySelector('.timeline-icon');
+                            if (icon) {
+                                timelineProgress.style.height = `${e.target.offsetTop + (icon.offsetHeight / 2)}px`;
+                            }
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                timelineItems.forEach(item => {
+                    itemEntryObserver.observe(item);
+                    lineProgressObserver.observe(item);
+                });
+
                 const timelineEnd = document.getElementById('timeline-end');
                 if (timelineEnd) { new IntersectionObserver(e => { if (e[0].isIntersecting) timelineProgress.style.height = '100%'; }, { threshold: 1.0 }).observe(timelineEnd); }
             }
@@ -782,5 +798,3 @@
     </script>
 </body>
 </html>
-
-
