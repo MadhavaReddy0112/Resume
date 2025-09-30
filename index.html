@@ -315,43 +315,16 @@
                 graph6: 'Graph-6.png',
             };
 
-            // --- MODIFICATION: Map images to their respective pages for targeted preloading ---
-            const pageAssetMap = {
-                home: ['profile'],
-                experience: ['deloitteLogo', 'oxaneLogo', 'ssiLogo'],
-                projects: ['starbucksLogo', 'graph1', 'graph2', 'graph3', 'graph4', 'graph5', 'graph6'],
-                certifications: ['fmvaLogo', 'bloombergLogo', 'microsoftLogo', 'gitamLogo', 'dsiLogo', 'fmvaCert', 'bloombergCert', 'microsoftCert'],
-                resume: ['resume']
-            };
-
-            // --- IMAGE PRELOADING LOGIC ---
-            const preloadedPages = new Set();
-            const preloadPageAssets = (pageId) => {
-                if (!pageId || preloadedPages.has(pageId) || !pageAssetMap[pageId]) {
-                    return;
-                }
-                
-                // console.log(`Preloading assets for: ${pageId}`);
-                pageAssetMap[pageId].forEach(assetKey => {
-                    if (imageUrls[assetKey]) {
+            // --- IMAGE PRELOADING ---
+            const preloadImages = (urls) => {
+                for (const key in urls) {
+                    if (urls.hasOwnProperty(key)) {
                         const img = new Image();
-                        img.src = imageUrls[assetKey];
+                        img.src = urls[key];
                     }
-                });
-                preloadedPages.add(pageId);
+                }
             };
-
-            // --- MODIFICATION: Function to preload all other pages after the initial one is done ---
-            const startIdlePreloading = () => {
-                const pageIds = Object.keys(pageAssetMap);
-                pageIds.forEach((pageId, index) => {
-                    // Stagger the preloading to avoid a single burst of network requests
-                    setTimeout(() => {
-                        preloadPageAssets(pageId);
-                    }, index * 300);
-                });
-            };
-
+            preloadImages(imageUrls);
 
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
@@ -479,7 +452,7 @@
                 resume: { imageUrl: imageUrls.resume, pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
-            const showPage = (pageId, isPopState = false) => {
+            const showPage = (pageId) => {
                 // Validate pageId to prevent errors from bad hashes or old localStorage values
                 if (!portfolioData.pages.map(p => p.id).includes(pageId)) {
                     console.warn(`Attempted to navigate to invalid page: ${pageId}. Defaulting to home.`);
@@ -500,27 +473,15 @@
                     }
                 });
                 
-                // --- MODIFICATION: State Persistence & Clean URLs using Query Parameters ---
-                sessionStorage.setItem('lastActivePage', pageId);
-                
-                const url = new URL(window.location);
-                if (pageId === 'home') {
-                    url.searchParams.delete('page');
-                } else {
-                    url.searchParams.set('page', pageId);
-                }
-
-                // Only push state if the URL is different and it's not a back/forward navigation
-                if (!isPopState && url.href !== window.location.href) {
-                    // Using query parameters is a safe way to change the URL in sandboxed environments.
-                    history.pushState({ page: pageId }, '', url.href);
+                // --- MODIFICATION: State Persistence ---
+                // Save the currently active page to the browser's local storage
+                localStorage.setItem('lastActivePage', pageId);
+                // Update the URL hash in the address bar without reloading the page
+                if (window.location.hash !== `#${pageId}`) {
+                     history.pushState(null, null, `#${pageId}`);
                 }
                 
-                // Don't scroll to top on popstate, let the browser handle it
-                if (!isPopState) {
-                    window.scrollTo({top: 0, behavior: 'smooth'});
-                }
-
+                window.scrollTo({top: 0, behavior: 'smooth'});
                 setTimeout(updateFloatingButton, 100);
             };
             
@@ -545,9 +506,6 @@
                 const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrollPercent = (scrollTop / scrollHeight) * 100;
                 progressBar.style.width = scrollPercent + '%';
-
-                // --- MODIFICATION: Save scroll position for session restore ---
-                sessionStorage.setItem('lastScrollPosition', scrollTop);
 
                 const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
                 if (Math.abs(lastScrollTop - scrollTop) > 50) { 
@@ -588,8 +546,6 @@
                 link.textContent = page.label;
                 link.dataset.pageId = page.id;
                 link.onclick = () => showPage(page.id);
-                // --- MODIFICATION: Add event listener for hover preloading ---
-                link.addEventListener('mouseenter', () => preloadPageAssets(page.id));
                 document.getElementById('main-nav').appendChild(link);
             });
             
@@ -732,47 +688,13 @@
                 });
             });
 
-            // --- MODIFICATION: Advanced Page Initialization with Query Parameters ---
+            // --- MODIFICATION: Initialize page based on saved state ---
+            const lastPage = localStorage.getItem('lastActivePage');
+            const hashPage = window.location.hash.substring(1);
             const validPages = portfolioData.pages.map(p => p.id);
-            let initialPage = 'home';
-            
-            const urlParams = new URLSearchParams(window.location.search);
-            const queryPage = urlParams.get('page');
-            const sessionPage = sessionStorage.getItem('lastActivePage');
-
-            // Order of priority: URL parameter (for shared links) > Session state (for refresh) > default
-            if (queryPage && validPages.includes(queryPage)) {
-                 initialPage = queryPage;
-            } else if (sessionPage && validPages.includes(sessionPage)) {
-                initialPage = sessionPage;
-            }
-
+            // Priority: URL Hash > Local Storage > Default ('home')
+            const initialPage = validPages.includes(hashPage) ? hashPage : (validPages.includes(lastPage) ? lastPage : 'home');
             showPage(initialPage);
-
-            // Restore scroll position on refresh
-            const lastScrollPosition = sessionStorage.getItem('lastScrollPosition');
-            if (lastScrollPosition) {
-                // Use a timeout to ensure content has rendered before scrolling
-                setTimeout(() => {
-                    window.scrollTo(0, parseInt(lastScrollPosition, 10));
-                }, 100);
-            }
-
-            // --- MODIFICATION: Preload current page assets immediately, then preload the rest when idle ---
-            preloadPageAssets(initialPage);
-            setTimeout(startIdlePreloading, 2500); // Start preloading other pages after 2.5s
-
-            // --- MODIFICATION: Handle browser back/forward buttons with Query Parameters ---
-            window.onpopstate = function(event) {
-                let page = 'home';
-                if (event.state && event.state.page) {
-                    page = event.state.page;
-                } else {
-                    const params = new URLSearchParams(window.location.search);
-                    page = params.get('page') || 'home';
-                }
-                showPage(page, true);
-            };
             
             // --- CONTACT FORM LOGIC ---
             const contactFormHTML = `
