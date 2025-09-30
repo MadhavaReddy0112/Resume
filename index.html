@@ -34,7 +34,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-dark);
-            overflow-x: hidden;
+            /* overflow-x: hidden; <-- This was removed to fix content disappearing on small screens */
             transition: background-color 0.6s ease-in-out, color 0.6s ease-in-out;
         }
         #particles-js {
@@ -127,7 +127,7 @@
         .case-content.active { display: block; animation: fadeInCase 0.5s ease-in-out forwards; }
         @keyframes fadeInCase { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        ul.list-disc { padding-left: 1.25rem; }
+        ul.list-disc, ol.list-decimal { padding-left: 1.25rem; }
         .timeline-item ul.list-disc li strong { color: var(--text-dark); }
         body.light-mode .timeline-item ul.list-disc li strong { color: #1f2937 !important; }
         .case-chart { transition: opacity 0.4s ease-in-out; }
@@ -209,6 +209,7 @@
         .light-mode .download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
         .light-mode .download-analysis-btn:hover { background-color: #d97706 !important; }
         .light-mode .chart-placeholder:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
+        .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -234,9 +235,9 @@
     </div>
     <!-- Certificate popup modal -->
     <div id="certificate-modal" class="modal-container fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
-        <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-gray-900 rounded-lg shadow-2xl">
+        <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-transparent rounded-lg flex items-center justify-center">
             <button id="close-cert-modal" class="close-btn">&times;</button>
-            <iframe id="certificate-iframe" src="" class="w-full h-full border-0 rounded-lg" title="Certificate Viewer"></iframe>
+            <img id="certificate-image" src="" class="w-auto h-auto max-w-full max-h-full object-contain rounded-lg" alt="Certificate Image"/>
         </div>
     </div>
 
@@ -274,6 +275,21 @@
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
             
+            // --- IMAGE URLS (for easy replacement) ---
+            const imageUrls = {
+                // Certificate Logos
+                microsoftLogo: 'https://i.imgur.com/su1c14I.png',
+                fmvaLogo: 'https://i.imgur.com/s6f4a2z.png',
+                bloombergLogo: 'https://i.imgur.com/c1Xf1aU.png',
+                gitamLogo: 'https://i.imgur.com/j8n2a1S.png',
+                dsiLogo: 'https://i.imgur.com/5g2k2aT.png',
+
+                // Certificate Images (for modal view)
+                fmvaCert: 'https://i.imgur.com/s6f4a2z.png',
+                bloombergCert: 'https://i.imgur.com/c1Xf1aU.png',
+                microsoftCert: 'https://i.imgur.com/su1c14I.png'
+            };
+
             // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             
@@ -373,31 +389,80 @@
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "Business management professional skilled in financial analysis, credit-risk assessment, and process governance.", imageUrl: "Profile.jpg",},
                 about: { title: "About Me", description: "I am a dedicated and analytical professional with a strong foundation in finance and business management. My experience at leading firms like Deloitte and Oxane Partners has equipped me with valuable skills in risk assessment, financial modeling, and data analysis. I am passionate about leveraging my expertise to drive strategic decisions and contribute to a dynamic organization. I am eager to deepen my financial-analytics expertise and transition to a strategic leadership track."},
-                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View All Projects" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
+                snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project Case Study →" }, { title: "Certifications Snapshot", position: "Masters of Business Administration", company: "GITAM School of Business", description: "Specialized in Finance & Marketing and certified in Microsoft 35 and Financial Modeling (FMVA).", link: "certifications", linkText: "View All Certifications" } ],
                 experiences: [
                     {
                         date: 'Jun 2024 - Present',
                         title: 'Risk and Brand Protection Analyst',
                         company: 'Deloitte, Hyderabad',
                         duties: [
-                            '<strong>Strategic finance & valuation readiness</strong> — Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Managed normalization of public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.',
-                            '<strong>Regulatory independence & risk modelling</strong> — Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.',
-                            '<strong>Process redesign, automation & ISQM alignment</strong> — Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request action time by ~30%, materially reducing escalation exceptions and slashing the aging-report runtime by ~80%.',
-                            '<strong>Prompt engineering & operational acceleration</strong> — Implemented prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.',
-                            '<strong>Stakeholder leadership & recognition</strong> — Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for increasing throughput and sustaining compliance.',
-                            '<strong>Key Projects & Skills:</strong><ul class="list-disc pl-5 mt-1"><li><strong>Financial Modeling & Automation:</strong> Advanced Excel, VBA/Macros, Scenario Analysis.</li><li><strong>Data Analytics & Platforms:</strong> Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li><li><strong>Emerging Tech & Innovation:</strong> Vibe-Code Scripting, Prompt engineering, Vercel.</li></ul>'
+                           `
+                              <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                              <ol class="list-decimal list-outside pl-5 space-y-2">
+                                <li><strong>Strategic finance & valuation readiness</strong> — Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
+                                <li><strong>Regulatory independence & risk modelling</strong> — Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
+                                <li><strong>Process redesign, automation & ISQM alignment</strong> — Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li>
+                                <li><strong>Prompt engineering & operational acceleration</strong> — Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li>
+                                <li><strong>Stakeholder leadership & recognition</strong> — Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
+                              </ol>
+                              <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                              <ul class="list-disc list-outside pl-5">
+                                <li>Financial Modeling & Automation: Advanced Excel, VBA/Macros, Scenario Analysis.</li>
+                                <li>Data Analytics & Platforms: Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
+                                <li>Emerging Tech & Innovation: Vibe-Code Scripting, Prompt engineering, Vercel.</li>
+                              </ul>
+                           `
                         ],
                         logoUrl: 'Deloitte.png'
                     },
-                    { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: ['Managed financial risks associated with candidate onboarding.', 'Analyzed internal and external databases for potential matches.'], logoUrl: 'Oxane Partners.png' },
-                    { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: ['Conducted analysis of financial statements to identify trends.', 'Developed complex financial models using Microsoft Excel.', 'Analyzed loan agreements for effective portfolio management.'], logoUrl: 'SSI People.png' }
+                    { 
+                        date: 'Jun 2023 - Jul 2023', 
+                        title: 'Portfolio Management Intern', 
+                        company: 'Oxane Partners, Hyderabad', 
+                        duties: [
+                            `
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                                <ol class="list-decimal list-outside pl-5 space-y-2">
+                                    <li><strong>Credit Analysis & Financial Due Diligence</strong>&nbsp;—&nbsp;Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
+                                    <li><strong>Investment & Performance Modeling</strong>&nbsp;—&nbsp;Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
+                                    <li><strong>Portfolio Monitoring & Covenant Analysis</strong>&nbsp;—&nbsp;Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
+                                    <li><strong>Fintech & Process Automation</strong>&nbsp;—&nbsp;Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
+                                </ol>
+                                <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                                <ul class="list-disc list-outside pl-5">
+                                    <li>Financial Modeling & Analysis: Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
+                                    <li>Fintech & Automation: Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
+                                </ul>
+                            `
+                        ], 
+                        logoUrl: 'Oxane Partners.png' 
+                    },
+                    { 
+                        date: 'Jan 2022 - Aug 2022', 
+                        title: 'Talent Acquisition Specialist', 
+                        company: 'SSi People, Bangalore', 
+                        duties: [
+                            `
+                                <h5 class="text-md font-semibold text-gray-100 mb-2">Key Responsibilities</h5>
+                                <ol class="list-decimal list-outside pl-5 space-y-2">
+                                    <li><strong>Commercial & Financial Risk Management</strong>&nbsp;—&nbsp;Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
+                                    <li><strong>Data-Driven Sourcing & Due Diligence</strong>&nbsp;—&nbsp;Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
+                                </ol>
+                                <h5 class="text-md font-semibold text-gray-100 mt-6 mb-2">Key Projects & Skills</h5>
+                                <ul class="list-disc list-outside pl-5">
+                                    <li>Risk Management & Talent Acquisition: Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
+                                </ul>
+                            `
+                        ], 
+                        logoUrl: 'SSI People.png' 
+                    }
                 ],
                 skills: ['Financial Modelling', 'Project Management', 'Excel', 'Tableau', 'SPSS', 'Canva', 'PowerPoint', 'Outlook'],
-                educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.46 (1st Year)', logoPlaceholder: 'GITAM' }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0 (A+ Grade)', logoPlaceholder: 'DSI' } ],
+                educations: [ { degree: 'Masters of Business Administration', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: 'CGPA: 8.6 (1st Year)', logoUrl: imageUrls.gitamLogo }, { degree: 'Bachelor of Business Administration', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: 'CGPA: 9.0', logoUrl: imageUrls.dsiLogo } ],
                 certifications: [
-                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: 'https://i.imgur.com/su1c14I.png', url: 'https://coursera.org/share/c1febfb9a590b3f7bec6b352854ac947', type: 'direct' },
-                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: 'https://i.imgur.com/s6f4a2z.png', url: 'https://www.credential.net/ea420c61-f351-45d4-b6a4-38373730d7ef#acc.O3qfk4pe', type: 'modal' },
-                    { name: 'Placeholder Certificate', issuer: 'Awarding Institution', date: 'Issued: Month Year', logoUrl: 'https://i.imgur.com/c1Xf1aU.png', url: 'https://placehold.co/1200x900/0a0a0a/e5e5e5?text=Certificate', type: 'modal' } 
+                    { name: 'Financial Modeling & Valuation Analyst (FMVA)', issuer: 'Corporate Finance Institute (CFI)', date: 'Issued: April 2024', logoUrl: imageUrls.fmvaLogo, url: imageUrls.fmvaCert, type: 'modal' },
+                    { name: 'Bloomberg Market Concepts', issuer: 'Bloomberg', date: 'Issued: September 2025', logoUrl: imageUrls.bloombergLogo, url: imageUrls.bloombergCert, type: 'modal' },
+                    { name: 'Microsoft 365 Fundamentals', issuer: 'Microsoft in Coursera', date: 'Issued: June 2024', logoUrl: imageUrls.microsoftLogo, url: imageUrls.microsoftCert, type: 'modal' }
                 ],
                 resume: { imageUrl: "Resume.jpg", pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
@@ -416,14 +481,14 @@
             // --- PAGE CREATION ---
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page';
-                const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a href="javascript:void(0);" data-link="${s.link}" class="snapshot-link text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText} &rarr;</a></div></div></div></section>`).join('');
+                const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a href="javascript:void(0);" data-link="${s.link}" class="snapshot-link text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText}</a></div></div></div></section>`).join('');
                 const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto"><div id="home-contact-form-container"></div></div></div></section>`;
                 page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
-                const experiencesHTML = portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><ul class="list-disc list-inside text-gray-400 space-y-2">${exp.duties.map(duty => `<li>${duty}</li>`).join('')}</ul></div></div>`).join('');
+                const experiencesHTML = portfolioData.experiences.map(exp => `<div class="timeline-item"><div class="timeline-icon"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
                 const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex items-center justify-center"><p class="text-lg font-semibold text-white">${skill}</p></div>`).join('');
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Technical Skills</h3><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8 text-center">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
@@ -449,8 +514,8 @@
                 `).join('');
                 const educationsHTML = portfolioData.educations.map(edu => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30">
-                            <span class="text-2xl font-bold text-white">${edu.logoPlaceholder}</span>
+                        <div class="flex-shrink-0 w-20 h-20 rounded-full bg-white/10 flex items-center justify-center border-2 border-indigo-500/30 p-2">
+                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1">
                         </div>
                         <div class="flex-grow">
                             <h4 class="text-xl font-bold text-white">${edu.degree}</h4>
@@ -566,7 +631,7 @@
                 successToast.classList.add('show');
                 setTimeout(() => successToast.classList.remove('show'), 4000);
                 event.target.reset();
-                if(contactModal.classList.contains('visible')) closeModal();
+                if(contactModal.classList.contains('visible')) closeModal(contactModal);
             };
 
             document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
@@ -574,7 +639,7 @@
             // --- MODAL LOGIC ---
             const contactModal = document.getElementById('contact-modal');
             const certModal = document.getElementById('certificate-modal');
-            const certIframe = document.getElementById('certificate-iframe');
+            const certImage = document.getElementById('certificate-image');
 
             const openModal = (modal) => {
                 modal.classList.add('visible');
@@ -602,9 +667,14 @@
             const closeCertModalBtn = document.getElementById('close-cert-modal');
             closeCertModalBtn.addEventListener('click', () => {
                 closeModal(certModal);
-                certIframe.src = ''; // Stop video/content from loading in background
+                certImage.src = ''; 
             });
-            certModal.addEventListener('click', (e) => { if (e.target === certModal) { closeModal(certModal); certIframe.src = ''; } });
+            certModal.addEventListener('click', (e) => { 
+                if (e.target === certModal) { 
+                    closeModal(certModal); 
+                    certImage.src = ''; 
+                } 
+            });
             
             // Floating Button Click
             floatingBtn.addEventListener('click', () => {
@@ -623,14 +693,9 @@
                 const certButton = e.target.closest('.view-cert-btn');
                 if (certButton) {
                     const url = certButton.dataset.url;
-                    const type = certButton.dataset.type;
                     if (url && url !== '#') {
-                        if (type === 'direct') {
-                            window.open(url, '_blank', 'noopener,noreferrer');
-                        } else {
-                            certIframe.src = url;
-                            openModal(certModal);
-                        }
+                        certImage.src = url;
+                        openModal(certModal);
                     }
                 }
             });
@@ -674,4 +739,3 @@
     </script>
 </body>
 </html>
-
