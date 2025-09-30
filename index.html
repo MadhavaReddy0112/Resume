@@ -186,7 +186,7 @@
         }
         .light-mode .glass-effect:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 115, 22, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 15px rgba(249, 158, 22, 0.2);
         }
         .light-mode .nav-container {
             background: rgba(255, 255, 255, 0.65);
@@ -248,7 +248,7 @@
     <div id="certificate-modal" class="modal-container fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-transparent rounded-lg flex items-center justify-center">
             <button id="close-cert-modal" class="close-btn">&times;</button>
-            <img id="certificate-image" src="" class="w-auto h-auto max-w-full max-h-full object-contain rounded-lg" alt="Certificate Image"/>
+            <img id="certificate-image" src="" class="w-auto h-auto max-w-full max-h-full object-contain rounded-lg" alt="Certificate Image" loading="lazy"/>
         </div>
     </div>
 
@@ -281,7 +281,7 @@
         <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
@@ -368,74 +368,6 @@
             const floatingBtn = document.getElementById('floating-contact-btn');
             let isContactState = false;
             
-            const showPage = (pageId) => {
-                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                const newPage = document.getElementById(`page-${pageId}`);
-                if (newPage) newPage.classList.add('active');
-                
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.toggle('active', link.dataset.pageId === pageId);
-                    if (link.dataset.pageId === pageId) link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                });
-                
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                setTimeout(updateFloatingButton, 100);
-            };
-            
-            const updateFloatingButton = () => {
-                const scrollTop = document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight;
-                const clientHeight = document.documentElement.clientHeight;
-                
-                const isPageTooSmall = scrollHeight <= clientHeight + 5;
-                const shouldBeContact = scrollTop > clientHeight * 0.3;
-                const newContactState = isPageTooSmall || shouldBeContact;
-
-                if (newContactState !== isContactState) {
-                    isContactState = newContactState;
-                    floatingBtn.classList.toggle('is-contact', isContactState);
-                }
-            };
-            
-            let rafId = null;
-            const handleScroll = () => {
-                const scrollTop = document.documentElement.scrollTop;
-                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrollPercent = (scrollTop / scrollHeight) * 100;
-                progressBar.style.width = scrollPercent + '%';
-
-                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
-                if (Math.abs(lastScrollTop - scrollTop) > 50) { 
-                    document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
-                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
-                }
-                
-                updateFloatingButton();
-                
-                const timelineProgress = document.getElementById('timeline-progress');
-                if (timelineProgress) {
-                    const experienceContainer = document.getElementById('experience-container');
-                    const containerRect = experienceContainer.getBoundingClientRect();
-                    const viewportHeight = window.innerHeight;
-
-                    const startPoint = viewportHeight * 0.75; 
-                    const endPoint = viewportHeight * 0.25;
-
-                    let progress = (startPoint - containerRect.top) / (startPoint - endPoint + containerRect.height);
-                    progress = Math.max(0, Math.min(1, progress));
-                    
-                    timelineProgress.style.height = `${progress * 100}%`;
-                }
-            };
-            
-            window.addEventListener('scroll', () => {
-                if (rafId) {
-                    window.cancelAnimationFrame(rafId);
-                }
-                rafId = window.requestAnimationFrame(handleScroll);
-            }, { passive: true });
-
-
             // --- DATA ---
             const portfolioData = {
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
@@ -520,6 +452,92 @@
                 resume: { imageUrl: imageUrls.resume, pdfUrl: "Madhava Reddy Arimanda.pdf" }
             };
 
+            const showPage = (pageId) => {
+                // Validate pageId to prevent errors from bad hashes or old localStorage values
+                if (!portfolioData.pages.map(p => p.id).includes(pageId)) {
+                    console.warn(`Attempted to navigate to invalid page: ${pageId}. Defaulting to home.`);
+                    pageId = 'home';
+                }
+
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                const newPage = document.getElementById(`page-${pageId}`);
+                if (newPage) newPage.classList.add('active');
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.dataset.pageId === pageId);
+                    if (link.dataset.pageId === pageId) {
+                        // Check if nav is visible before scrolling into view to avoid errors
+                        if (link.offsetParent !== null) {
+                            link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }
+                    }
+                });
+                
+                // --- MODIFICATION: State Persistence ---
+                // Save the currently active page to the browser's local storage
+                localStorage.setItem('lastActivePage', pageId);
+                // Update the URL hash in the address bar without reloading the page
+                if (window.location.hash !== `#${pageId}`) {
+                     history.pushState(null, null, `#${pageId}`);
+                }
+                
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                setTimeout(updateFloatingButton, 100);
+            };
+            
+            const updateFloatingButton = () => {
+                const scrollTop = document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight;
+                const clientHeight = document.documentElement.clientHeight;
+                
+                const isPageTooSmall = scrollHeight <= clientHeight + 5;
+                const shouldBeContact = scrollTop > clientHeight * 0.3;
+                const newContactState = isPageTooSmall || shouldBeContact;
+
+                if (newContactState !== isContactState) {
+                    isContactState = newContactState;
+                    floatingBtn.classList.toggle('is-contact', isContactState);
+                }
+            };
+            
+            let rafId = null;
+            const handleScroll = () => {
+                const scrollTop = document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercent = (scrollTop / scrollHeight) * 100;
+                progressBar.style.width = scrollPercent + '%';
+
+                const isScrollingDown = scrollTop > lastScrollTop && scrollTop > document.querySelector('header').offsetHeight;
+                if (Math.abs(lastScrollTop - scrollTop) > 50) { 
+                    document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+                }
+                
+                updateFloatingButton();
+                
+                const timelineProgress = document.getElementById('timeline-progress');
+                if (timelineProgress) {
+                    const experienceContainer = document.getElementById('experience-container');
+                    const containerRect = experienceContainer.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight;
+
+                    const startPoint = viewportHeight * 0.75; 
+                    const endPoint = viewportHeight * 0.25;
+
+                    let progress = (startPoint - containerRect.top) / (startPoint - endPoint + containerRect.height);
+                    progress = Math.max(0, Math.min(1, progress));
+                    
+                    timelineProgress.style.height = `${progress * 100}%`;
+                }
+            };
+            
+            window.addEventListener('scroll', () => {
+                if (rafId) {
+                    window.cancelAnimationFrame(rafId);
+                }
+                rafId = window.requestAnimationFrame(handleScroll);
+            }, { passive: true });
+
             const mainContainer = document.querySelector('main');
             
             portfolioData.pages.forEach(page => {
@@ -536,12 +554,12 @@
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a href="javascript:void(0);" data-link="${s.link}" class="snapshot-link text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText}</a></div></div></div></section>`).join('');
                 const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto" id="home-contact-form"></div></div></section>`;
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;" loading="lazy"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
-                const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'no-hide visible' : ''}"><div class="timeline-icon ${exp.logoBg || 'bg-white'}"><img src="${exp.logoUrl}" alt="${exp.company} logo"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
+                const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'no-hide visible' : ''}"><div class="timeline-icon ${exp.logoBg || 'bg-white'}"><img src="${exp.logoUrl}" alt="${exp.company} logo" loading="lazy"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
                 
                 const skillIcons = {
                     'Financial Analysis & Modeling': 'fas fa-chart-line',
@@ -567,7 +585,7 @@
                 const certificationsHTML = portfolioData.certifications.map(cert => `
                     <div class="w-full lg:w-[calc(50%-1rem)] max-w-lg p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                         <div class="flex-shrink-0 w-20 h-20 rounded-full ${cert.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1">
+                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1" loading="lazy">
                         </div>
                         <div class="flex-grow flex flex-col sm:flex-row items-center sm:justify-between w-full">
                             <div class="min-w-0">
@@ -586,7 +604,7 @@
                 const educationsHTML = portfolioData.educations.map(edu => `
                     <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                         <div class="flex-shrink-0 w-24 h-24 rounded-full ${edu.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full">
+                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full" loading="lazy">
                         </div>
                         <div class="flex-grow min-w-0">
                             <h4 class="text-lg md:text-xl font-bold text-white">${edu.degree}</h4>
@@ -609,17 +627,17 @@
                 page.innerHTML = `
                     <section class="pt-16">
                         <div class="presentation-container relative">
-                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-none mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain" loading="lazy"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-none mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
                         <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
                         <div class="presentation-page" id="pres-page-4">
                             <div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center">
                                 <div class="presentation-content relative flex items-center justify-center">
-                                    <img id="base-case-chart" src="${imageUrls.graph3}" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto">
-                                    <img id="bull-case-chart" src="${imageUrls.graph4}" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
-                                    <img id="bear-case-chart" src="${imageUrls.graph5}" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto">
+                                    <img id="base-case-chart" src="${imageUrls.graph3}" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto" loading="lazy">
+                                    <img id="bull-case-chart" src="${imageUrls.graph4}" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy">
+                                    <img id="bear-case-chart" src="${imageUrls.graph5}" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy">
                                 </div>
                                 <div class="presentation-content">
                                     <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
@@ -638,7 +656,7 @@
                         <div class="presentation-page" id="pres-page-5">
                             <div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
-                                <div class="text-center"><img src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75"></div>
+                                <div class="text-center"><img src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75" loading="lazy"></div>
                                 <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
                             </div>
                         </div>
@@ -654,7 +672,7 @@
                 const dayOfWeek = today.getDay();
                 const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek));
                 const formattedDate = lastSunday.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain" loading="lazy"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
 
@@ -670,7 +688,13 @@
                 });
             });
 
-            showPage(window.location.hash.substring(1) || 'home');
+            // --- MODIFICATION: Initialize page based on saved state ---
+            const lastPage = localStorage.getItem('lastActivePage');
+            const hashPage = window.location.hash.substring(1);
+            const validPages = portfolioData.pages.map(p => p.id);
+            // Priority: URL Hash > Local Storage > Default ('home')
+            const initialPage = validPages.includes(hashPage) ? hashPage : (validPages.includes(lastPage) ? lastPage : 'home');
+            showPage(initialPage);
             
             // --- CONTACT FORM LOGIC ---
             const contactFormHTML = `
@@ -843,4 +867,3 @@
     </script>
 </body>
 </html>
-
