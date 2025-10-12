@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Preloading certificate sites for faster access -->
     <link rel="prefetch" href="https://coursera.org/share/c1febfb9a590b3f7bec6b352854ac947">
     <link rel="prefetch" href="https://www.credential.net/ea420c61-f351-45d4-b6a4-38373730d7ef#acc.O3qfk4pe">
     <style>
@@ -240,11 +239,9 @@
         </div>
     </div>
 
-    <!-- Modals -->
     <div id="contact-modal" class="modal-container fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div id="contact-modal-content" class="modal-content w-full max-w-xl mx-auto"></div>
     </div>
-    <!-- Certificate popup modal -->
     <div id="certificate-modal" class="modal-container fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none">
         <div class="modal-content relative w-full h-full max-w-5xl max-h-[85vh] bg-transparent rounded-lg flex items-center justify-center">
             <button id="close-cert-modal" class="close-btn">&times;</button>
@@ -278,12 +275,13 @@
     </button>
 
     <footer class="py-6 text-center text-gray-500 relative z-10">
-        <p>&copy; 2025 Madhava Reddy Arimanda. All Rights Reserved.</p>
+        <p>&copy; <span id="copyright-year">2025</span> Madhava Reddy Arimanda. All Rights Reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('copyright-year').textContent = new Date().getFullYear();
             const body = document.body;
             
             // --- IMAGE URLS (for preloading and easy replacement) ---
