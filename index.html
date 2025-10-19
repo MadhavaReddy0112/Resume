@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+                   font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+                   img-src 'self' data:;
+                   connect-src 'self' https://formspree.io;
+                   frame-ancestors 'none';">
+
     <title>Madhava Reddy Arimanda</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,7 +235,6 @@
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
         
-        /* CORRECTED CHANGE 4: Make specific project image 100% visible in light mode */
         .light-mode #strategic-outlook-img { opacity: 1; }
     </style>
 </head>
@@ -356,28 +365,24 @@
             const lightIcon = document.getElementById('theme-toggle-light-icon');
             
             // Use sessionStorage to remember theme *per session*
-            // This persists on refresh, but clears when tab is closed.
             const prefersLight = sessionStorage.getItem('theme') === 'light';
 
             if (prefersLight) {
-                // Load light mode if it's set in the session
                 body.classList.add('light-mode');
                 darkIcon.classList.add('hidden');
                 lightIcon.classList.remove('hidden');
             } else {
-                // Default to dark mode (new session or explicit dark)
                 body.classList.remove('light-mode');
                 darkIcon.classList.remove('hidden');
                 lightIcon.classList.add('hidden');
             }
-            initParticles(prefersLight); // Init particles based on the loaded theme
+            initParticles(prefersLight);
 
             themeToggleBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
                 darkIcon.classList.toggle('hidden');
                 lightIcon.classList.toggle('hidden');
                 const isLight = body.classList.contains('light-mode');
-                // Save the theme to sessionStorage
                 sessionStorage.setItem('theme', isLight ? 'light' : 'dark'); 
                 initParticles(isLight);
             });
@@ -492,9 +497,6 @@
                     }
                 });
                 
-                // --- MODIFICATION: State Persistence ---
-                // Update the URL hash. This serves as the single source of truth for the
-                // active page, allowing state to be preserved on refresh.
                 if (window.location.hash !== `#${pageId}`) {
                      history.pushState(null, null, `#${pageId}`);
                 }
@@ -709,8 +711,6 @@
             // --- MODIFICATION: Initialize page based on saved state ---
             const hashPage = window.location.hash.substring(1);
             const validPages = portfolioData.pages.map(p => p.id);
-            // On page load, prioritize the URL hash. If no valid hash, default to 'home'.
-            // This ensures that refreshing a page keeps you there, but a fresh visit always starts at home.
             const initialPage = validPages.includes(hashPage) ? hashPage : 'home';
             showPage(initialPage);
             
@@ -740,9 +740,31 @@
 
             const successToast = document.getElementById('success-toast');
             const errorToast = document.getElementById('error-toast');
+            const errorToastText = document.getElementById('error-toast-text');
+            
+            let lastSubmit = 0;
 
             const handleFormSubmit = async (event) => {
                 event.preventDefault();
+                
+                const now = Date.now();
+                if (now - lastSubmit < 10000) { // 10s delay
+                    
+                    // --- CHANGED LINE ---
+                    errorToastText.innerHTML = "<span>Submission limit reached.</span><br class='sm:hidden'><span>Please wait 10 seconds before trying again.</span>";
+                    // --- END CHANGED LINE ---
+
+                    errorToast.classList.add('show');
+                    setTimeout(() => {
+                        errorToast.classList.remove('show');
+                        setTimeout(() => {
+                            errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
+                        }, 300);
+                    }, 4000);
+                    return; 
+                }
+                lastSubmit = now; 
+
                 const form = event.target;
                 const data = new FormData(form);
                 
@@ -763,10 +785,12 @@
                             closeModal(contactModal);
                         }
                     } else {
+                        errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                         errorToast.classList.add('show');
                         setTimeout(() => errorToast.classList.remove('show'), 4000);
                     }
                 } catch (error) {
+                    errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                     errorToast.classList.add('show');
                     setTimeout(() => errorToast.classList.remove('show'), 4000);
                 }
@@ -819,7 +843,6 @@
                 if (isContactState) {
                     openModal(contactModal);
                 } else {
-                    // CHANGE 3: Scroll down 40% of viewport height
                     const scrollAmount = window.innerHeight * 0.40;
                     window.scrollBy({
                         top: scrollAmount,
@@ -844,6 +867,7 @@
                 // Download Analysis Button
                 const downloadBtn = e.target.closest('#download-analysis-btn');
                 if(downloadBtn) {
+                    errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                     errorToast.classList.add('show');
                     setTimeout(() => errorToast.classList.remove('show'), 2000);
                 }
