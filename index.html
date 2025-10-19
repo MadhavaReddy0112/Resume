@@ -224,8 +224,9 @@
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
-        /* CHANGE 4: Hide specific project image in light mode */
-        .light-mode #strategic-outlook-img { opacity: 0; }
+        
+        /* --- CORRECTED CHANGE 4: Make specific project image 100% visible in light mode --- */
+        .light-mode #strategic-outlook-img { opacity: 1; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -354,16 +355,7 @@
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
             
-            // CHANGE 1: Force dark mode on load by removing check for localStorage
-            // const prefersLight = localStorage.getItem('theme') === 'light';
-            // if (prefersLight) {
-            //     body.classList.add('light-mode');
-            //     darkIcon.classList.add('hidden');
-            //     lightIcon.classList.remove('hidden');
-            // }
-            // initParticles(prefersLight);
-            
-            // Force dark mode on initial load
+            // CHANGE 1: Force dark mode on load
             body.classList.remove('light-mode');
             darkIcon.classList.remove('hidden');
             lightIcon.classList.add('hidden');
@@ -815,7 +807,7 @@
                 if (isContactState) {
                     openModal(contactModal);
                 } else {
-                    // CHANGE 3: Scroll down 40% of viewport height instead of to a specific section
+                    // CHANGE 3: Scroll down 40% of viewport height
                     const scrollAmount = window.innerHeight * 0.40;
                     window.scrollBy({
                         top: scrollAmount,
