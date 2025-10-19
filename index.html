@@ -225,7 +225,7 @@
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
         
-        /* --- CORRECTED CHANGE 4: Make specific project image 100% visible in light mode --- */
+        /* CORRECTED CHANGE 4: Make specific project image 100% visible in light mode */
         .light-mode #strategic-outlook-img { opacity: 1; }
     </style>
 </head>
@@ -350,23 +350,35 @@
                 particlesJS("particles-js", config);
             }
 
-            // --- THEME TOGGLE LOGIC ---
+            // --- THEME TOGGLE LOGIC (Corrected) ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
             
-            // CHANGE 1: Force dark mode on load
-            body.classList.remove('light-mode');
-            darkIcon.classList.remove('hidden');
-            lightIcon.classList.add('hidden');
-            initParticles(false); // Always init with dark particles
+            // Use sessionStorage to remember theme *per session*
+            // This persists on refresh, but clears when tab is closed.
+            const prefersLight = sessionStorage.getItem('theme') === 'light';
+
+            if (prefersLight) {
+                // Load light mode if it's set in the session
+                body.classList.add('light-mode');
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            } else {
+                // Default to dark mode (new session or explicit dark)
+                body.classList.remove('light-mode');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            }
+            initParticles(prefersLight); // Init particles based on the loaded theme
 
             themeToggleBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
                 darkIcon.classList.toggle('hidden');
                 lightIcon.classList.toggle('hidden');
                 const isLight = body.classList.contains('light-mode');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                // Save the theme to sessionStorage
+                sessionStorage.setItem('theme', isLight ? 'light' : 'dark'); 
                 initParticles(isLight);
             });
 
