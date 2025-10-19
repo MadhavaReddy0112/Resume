@@ -224,9 +224,21 @@
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
+        /* CHANGE 4: Hide specific project image in light mode */
+        .light-mode #strategic-outlook-img { opacity: 0; }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
+    <noscript>
+        <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0a0a0a; color: #e5e5e5; display: flex; align-items: center; justify-content: center; text-align: center; font-family: 'Inter', sans-serif; padding: 2rem; z-index: 9999;">
+            <p style="font-size: 1.2rem; line-height: 1.6;">
+                This portfolio website requires JavaScript to function. 
+                <br>
+                Please enable it in your browser settings to see my work.
+            </p>
+        </div>
+    </noscript>
+
     <div id="progress-bar"></div>
     <div id="particles-js"></div>
     <div id="success-toast" class="toast">
@@ -342,14 +354,20 @@
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
             
-            const prefersLight = localStorage.getItem('theme') === 'light';
-
-            if (prefersLight) {
-                body.classList.add('light-mode');
-                darkIcon.classList.add('hidden');
-                lightIcon.classList.remove('hidden');
-            }
-            initParticles(prefersLight);
+            // CHANGE 1: Force dark mode on load by removing check for localStorage
+            // const prefersLight = localStorage.getItem('theme') === 'light';
+            // if (prefersLight) {
+            //     body.classList.add('light-mode');
+            //     darkIcon.classList.add('hidden');
+            //     lightIcon.classList.remove('hidden');
+            // }
+            // initParticles(prefersLight);
+            
+            // Force dark mode on initial load
+            body.classList.remove('light-mode');
+            darkIcon.classList.remove('hidden');
+            lightIcon.classList.add('hidden');
+            initParticles(false); // Always init with dark particles
 
             themeToggleBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
@@ -624,7 +642,7 @@
                     <section class="pt-16">
                         <div class="presentation-container relative">
                         <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain" loading="lazy"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
+                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’tcreate a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
                         <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-none mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
                         <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
                         <div class="presentation-page" id="pres-page-4">
@@ -652,7 +670,7 @@
                         <div class="presentation-page" id="pres-page-5">
                             <div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div>
                             <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
-                                <div class="text-center"><img src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75" loading="lazy"></div>
+                                <div class="text-center"><img id="strategic-outlook-img" src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75" loading="lazy"></div>
                                 <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
                             </div>
                         </div>
@@ -797,10 +815,13 @@
                 if (isContactState) {
                     openModal(contactModal);
                 } else {
-                    const aboutSection = document.getElementById('about-section');
-                    if (aboutSection) {
-                        aboutSection.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    // CHANGE 3: Scroll down 40% of viewport height instead of to a specific section
+                    const scrollAmount = window.innerHeight * 0.40;
+                    window.scrollBy({
+                        top: scrollAmount,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
                 }
             });
 
