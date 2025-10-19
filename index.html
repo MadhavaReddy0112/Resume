@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 3. Content Security Policy (CSP) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self' https://formspree.io;">
     <title>Madhava Reddy Arimanda</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- 3. Subresource Integrity (SRI) for Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="prefetch" href="https://coursera.org/share/c1febfb9a590b3f7bec6b352854ac947">
     <link rel="prefetch" href="https://www.credential.net/ea420c61-f351-45d4-b6a4-38373730d7ef#acc.O3qfk4pe">
+    <!-- 6. Deployment Optimization Notes -->
+    <!-- 
+        Deployment Best Practices (Server-Side Configuration):
+        - Enable Brotli/Gzip Compression: Configure your hosting provider (e.g., Vercel, Netlify) to automatically apply Brotli or Gzip compression to text-based assets like HTML, CSS, and JS. This significantly reduces file sizes.
+        - Aggressive Caching for Static Assets: Set long cache-control max-age headers for static assets (images, fonts, CSS, JS) that don't change often. This allows browsers to cache them for longer, improving load times on repeat visits.
+          Example Header: `Cache-Control: public, max-age=31536000, immutable`
+        These settings are typically configured in your hosting platform's settings or via a configuration file (e.g., vercel.json, netlify.toml).
+    -->
     <style>
         :root {
             --bg-dark: #0a0a0a;
@@ -88,7 +99,6 @@
         .timeline-icon img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
         @keyframes pulse { 0% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } 50% { box-shadow: 0 0 25px rgba(99, 102, 241, 1); } 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.7); } }
         
-        /* Mobile fixes for Timeline */
         @media (max-width: 640px) {
             .timeline-item { padding-left: 2.5rem; }
             .timeline-icon { width: 3rem; height: 3rem; left: 0.75rem; }
@@ -156,7 +166,6 @@
         .modal-content { transition: transform 0.3s ease, opacity 0.3s ease; transform: scale(0.95); opacity: 0;}
         .modal-container.visible .modal-content { transform: scale(1); opacity: 1; }
         
-        /* Floating Button */
         #floating-contact-btn { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; perspective: 1000px; }
         #floating-contact-btn.btn-hidden { transform: scale(0.8) translateY(20px); opacity: 0; pointer-events: none; }
         #floating-btn-flipper { transition: transform 0.6s; transform-style: preserve-3d; }
@@ -172,6 +181,20 @@
         .logo-bg-bloomberg { background-color: #000000; }
         .logo-bg-white { background-color: #ffffff; }
         .logo-bg-ssi { background-color: #ffdb00; }
+
+        /* 2. No-JS Fallback Message */
+        .noscript-banner {
+            background-color: #ffc107;
+            color: #333;
+            text-align: center;
+            padding: 1rem;
+            font-weight: 500;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
 
         /* --- Light Mode --- */
         body.light-mode { background-color: var(--bg-light); color: var(--text-light); }
@@ -224,9 +247,22 @@
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
+        
+        /* 8. Project Image Transparency in Light Mode */
+        .light-mode #starbucks-crossroads-image {
+            opacity: 0 !important;
+        }
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
+
+    <!-- 2. No-JS Fallback Message -->
+    <noscript>
+        <div class="noscript-banner">
+            This portfolio website requires JavaScript to function. Please enable it in your browser settings to see my work.
+        </div>
+    </noscript>
+
     <div id="progress-bar"></div>
     <div id="particles-js"></div>
     <div id="success-toast" class="toast">
@@ -277,43 +313,18 @@
     <footer class="py-6 text-center text-gray-500 relative z-10">
         <p>&copy; <span id="copyright-year">2025</span> Madhava Reddy Arimanda. All Rights Reserved.</p>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    
+    <!-- 3. Subresource Integrity (SRI) for particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" integrity="sha256-R9FIOc3qPzZK9C3tGvNkfU2pD/d0J1hVfJ5T2kC/Rbo=" crossorigin="anonymous" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('copyright-year').textContent = new Date().getFullYear();
             const body = document.body;
             
-            // --- IMAGE URLS (for preloading and easy replacement) ---
             const imageUrls = {
-                // Logos
-                microsoftLogo: 'Microsoft Logo.webp',
-                fmvaLogo: 'CGI Logo.webp',
-                bloombergLogo: 'Bloomberg Logo.webp',
-                gitamLogo: 'Gitam Logo.webp',
-                dsiLogo: 'DSI Logo.webp',
-                deloitteLogo: 'Deloitte.webp',
-                oxaneLogo: 'Oxane Partners Logo.webp',
-                ssiLogo: 'SSI People.webp',
-                starbucksLogo: 'Starbucks.webp',
-
-                // Certificate Images (for modal view)
-                fmvaCert: 'Certificate 1.webp',
-                bloombergCert: 'Certificate 2.webp',
-                microsoftCert: 'Certificate 3.webp',
-
-                // Other Images
-                profile: 'Profile.webp',
-                resume: 'Resume.webp',
-                graph1: 'Graph-1.webp',
-                graph2: 'Graph-2.webp',
-                graph3: 'Graph-3.webp',
-                graph4: 'Graph-4.webp',
-                graph5: 'Graph-5.webp',
-                graph6: 'Graph-6.webp',
+                microsoftLogo: 'Microsoft Logo.webp', fmvaLogo: 'CGI Logo.webp', bloombergLogo: 'Bloomberg Logo.webp', gitamLogo: 'Gitam Logo.webp', dsiLogo: 'DSI Logo.webp', deloitteLogo: 'Deloitte.webp', oxaneLogo: 'Oxane Partners Logo.webp', ssiLogo: 'SSI People.webp', starbucksLogo: 'Starbucks.webp', fmvaCert: 'Certificate 1.webp', bloombergCert: 'Certificate 2.webp', microsoftCert: 'Certificate 3.webp', profile: 'Profile.webp', resume: 'Resume.webp', graph1: 'Graph-1.webp', graph2: 'Graph-2.webp', graph3: 'Graph-3.webp', graph4: 'Graph-4.webp', graph5: 'Graph-5.webp', graph6: 'Graph-6.webp',
             };
 
-            // --- IMAGE PRELOADING ---
             const preloadImages = (urls) => {
                 for (const key in urls) {
                     if (urls.hasOwnProperty(key)) {
@@ -324,7 +335,6 @@
             };
             preloadImages(imageUrls);
 
-            // --- PARTICLES.JS BACKGROUND ---
             const particlesDarkConfig = { particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: "#6366f1" }, shape: { type: "circle" }, opacity: { value: 0.5, random: false }, size: { value: 3, random: true }, line_linked: { enable: true, distance: 150, color: "#6366f1", opacity: 0.4, width: 1 }, move: { enable: true, speed: 2, direction: "none", out_mode: "out" } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } } }, retina_detect: true };
             const particlesLightConfig = { particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: ["#f97316", "#fb923c", "#facc15", "#f59e0b"] }, shape: { type: "circle" }, opacity: { value: 0.7, random: true }, size: { value: 5, random: true }, line_linked: { enable: false }, move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: true, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "bubble" }, onclick: { enable: false }, resize: true }, modes: { bubble: { distance: 200, size: 8, duration: 2, opacity: 0.8 } } }, retina_detect: true };
 
@@ -336,20 +346,40 @@
                 const config = isLight ? particlesLightConfig : particlesDarkConfig;
                 particlesJS("particles-js", config);
             }
-
-            // --- THEME TOGGLE LOGIC ---
+            
+            // 1. Default to Dark Mode & Theme Handling
             const themeToggleBtn = document.getElementById('theme-toggle');
             const darkIcon = document.getElementById('theme-toggle-dark-icon');
             const lightIcon = document.getElementById('theme-toggle-light-icon');
             
-            const prefersLight = localStorage.getItem('theme') === 'light';
+            const isInitiallyLight = localStorage.getItem('theme') === 'light';
 
-            if (prefersLight) {
+            if (isInitiallyLight) {
                 body.classList.add('light-mode');
                 darkIcon.classList.add('hidden');
                 lightIcon.classList.remove('hidden');
+            } else {
+                body.classList.remove('light-mode');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+                if (localStorage.getItem('theme') !== 'dark') {
+                    localStorage.setItem('theme', 'dark'); // Set it if not present
+                }
             }
-            initParticles(prefersLight);
+
+            // Function to safely initialize particles.js after it has loaded
+            const setupParticles = () => {
+                if (typeof particlesJS === 'function') {
+                    // It's loaded, initialize with the current theme
+                    initParticles(body.classList.contains('light-mode'));
+                } else {
+                    // If particlesJS is not ready, wait 50ms and try again.
+                    setTimeout(setupParticles, 50);
+                }
+            };
+            
+            // Start checking for particles.js to load
+            setupParticles();
 
             themeToggleBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
@@ -357,88 +387,23 @@
                 lightIcon.classList.toggle('hidden');
                 const isLight = body.classList.contains('light-mode');
                 localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                initParticles(isLight);
+                initParticles(isLight); // Re-initialize with new theme
             });
 
-            // --- SCROLL LOGIC & FLOATING BUTTON ---
             let lastScrollTop = 0;
             const progressBar = document.getElementById('progress-bar');
             const floatingBtn = document.getElementById('floating-contact-btn');
             let isContactState = false;
             
-            // --- DATA ---
             const portfolioData = {
                 pages: [ { id: 'home', label: 'Home' }, { id: 'experience', label: 'Experience' }, { id: 'projects', label: 'Projects' }, { id: 'certifications', label: 'Certifications' }, { id: 'resume', label: 'Resume' } ],
                 home: { name: "Madhava Reddy Arimanda", title: "A certified finance professional at Deloitte, focused on leveraging AI-driven insights to transform complex financial data into actionable strategies and forward-thinking business decisions.", imageUrl: imageUrls.profile,},
                 about: { title: "About Me", description: "As a Risk and Brand Protection Analyst at Deloitte, I apply a strong analytical framework to every challenge, building and validating intricate models using advanced Excel, Bloomberg, Tableau and Power BI on datasets from the S&P Capital IQ, Refinitiv and SEC filings. I integrate AI-driven tools and vibe coding to automate analyses, accelerate hypothesis testing, improve forecasting accuracy and uncover hidden insights that tell a clearer story. This enables me to help organizations navigate complex regulatory environments by turning potential risks into strategic advantages. My aspiration is to transition into strategic consulting, where I can help leading organizations forecast trends, mitigate risks and unlock sustainable growth."},
                 snapshots: [ { title: "Career Snapshot", position: "Risk and Brand Protection Analyst", company: "Deloitte, Hyderabad (Jun 2024 - Present)", description: "Developed a dynamic rate-card model, operationalized SEC/AICPA rules for 100% compliance, and reengineered workflows to cut request times by ~30%.", link: "experience", linkText: "View Detailed Experience →" }, { title: "Project Highlights", position: "Starbucks (SBUX) Financial Forecast & Valuation", company: "Key Skills: Scenario Analysis, DCF Valuation, Financial Modeling", description: "Conducted an FMVA®-level analysis of Starbucks, developing Base, Bull, and Bear case forecasts to assess its financial trajectory and intrinsic value.", link: "projects", linkText: "View Project →" }, { title: "Certifications Snapshot", position: "Financial Modeling & Valuation Analyst (FMVA)", company: "Corporate Finance Institute", description: "Earned the FMVA® credential from CFI, demonstrating advanced expertise in 3-statement modeling, comparable company valuations, and scenario analysis applied to corporate finance and investment decisions.", link: "certifications", linkText: "View All Certifications →" } ],
                 experiences: [
-                    {
-                        date: 'Jun 2024 - Present',
-                        title: 'Risk and Brand Protection Analyst',
-                        company: 'Deloitte, Hyderabad',
-                        duties: [
-                           `
-                              <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                              <ul class="list-none list-outside space-y-2">
-                                <li><strong>1. Strategic finance & valuation readiness&nbsp;—&nbsp;</strong> Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li>
-                                <li><strong>2. Regulatory independence & risk modelling&nbsp;—&nbsp;</strong> Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li>
-                                <li><strong>3. Process redesign, automation & ISQM alignment&nbsp;—&nbsp;</strong> Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li>
-                                <li><strong>4. Prompt engineering & operational acceleration&nbsp;—&nbsp;</strong> Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li>
-                                <li><strong>5. Stakeholder leadership & recognition&nbsp;—&nbsp;</strong> Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li>
-                              </ul>
-                              <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                              <ul class="list-none list-outside">
-                                <li><strong>• Financial Modeling & Automation:</strong> Advanced Excel, VBA/Macros, Scenario Analysis.</li>
-                                <li><strong>• Data Analytics & Platforms:</strong> Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li>
-                                <li><strong>• Emerging Tech & Innovation:</strong> Vibe-Code Scripting, Prompt engineering, Vercel.</li>
-                              </ul>
-                           `
-                        ],
-                        logoUrl: imageUrls.deloitteLogo
-                    },
-                    { 
-                        date: 'Jun 2023 - Jul 2023', 
-                        title: 'Portfolio Management Intern', 
-                        company: 'Oxane Partners, Hyderabad', 
-                        duties: [
-                            `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                                <ul class="list-none list-outside space-y-2">
-                                    <li><strong>1. Credit Analysis & Financial Due Diligence&nbsp;—&nbsp;</strong> Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li>
-                                    <li><strong>2. Investment & Performance Modeling&nbsp;—&nbsp;</strong> Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li>
-                                    <li><strong>3. Portfolio Monitoring & Covenant Analysis&nbsp;—&nbsp;</strong> Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li>
-                                    <li><strong>4. Fintech & Process Automation&nbsp;—&nbsp;</strong> Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li>
-                                </ul>
-                                <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                                <ul class="list-none list-outside">
-                                    <li><strong>• Financial Modeling & Analysis:</strong> Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li>
-                                    <li><strong>• Fintech & Automation:</strong> Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li>
-                                </ul>
-                            `
-                        ], 
-                        logoUrl: imageUrls.oxaneLogo
-                    },
-                    { 
-                        date: 'Jan 2022 - Aug 2022', 
-                        title: 'Talent Acquisition Specialist', 
-                        company: 'SSi People, Bangalore', 
-                        duties: [
-                            `
-                                <h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5>
-                                <ul class="list-none list-outside space-y-2">
-                                    <li><strong>1. Commercial & Financial Risk Management&nbsp;—&nbsp;</strong> Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li>
-                                    <li><strong>2. Data-Driven Sourcing & Due Diligence&nbsp;—&nbsp;</strong> Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li>
-                                </ul>
-                                <h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5>
-                                <ul class="list-none list-outside">
-                                    <li><strong>• Risk Management & Talent Acquisition:</strong> Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li>
-                                </ul>
-                            `
-                        ], 
-                        logoUrl: imageUrls.ssiLogo,
-                        logoBg: 'logo-bg-ssi'
-                    }
+                    { date: 'Jun 2024 - Present', title: 'Risk and Brand Protection Analyst', company: 'Deloitte, Hyderabad', duties: [ `<h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5><ul class="list-none list-outside space-y-2"><li><strong>1. Strategic finance & valuation readiness&nbsp;—&nbsp;</strong> Developed a dynamic rate-card model from detailed cost analysis that supported a targeted 15% regional expansion while preserving project profitability. Normalized public and private financials and ownership data to deliver DCF-ready inputs for M&A and conflict-of-interest reviews.</li><li><strong>2. Regulatory independence & risk modelling&nbsp;—&nbsp;</strong> Operationalized SEC, AICPA, and PCAOB rules into firm workflows; applied ownership classifications (Controlled / Significant Influence) and built scorecards to quantify independence and reputational risk, maintaining 100% auditor-independence compliance across reviewed engagements.</li><li><strong>3. Process redesign, automation & ISQM alignment&nbsp;—&nbsp;</strong> Reengineered workflow allocation and automated routing to meet ISQM standards. Integrated Excel/VBA automations and an Access → Power BI pipeline to enable self-service dashboards, cutting request-action time by ~30%, materially reducing escalation exceptions, and slashing the aging-report runtime by ~80%.</li><li><strong>4. Prompt engineering & operational acceleration&nbsp;—&nbsp;</strong> Applied prompt-based automation and low-code (“vibe”) scripts to eliminate repetitive manual steps, reducing research and solutioning time by an estimated ~40% on priority projects.</li><li><strong>5. Stakeholder leadership & recognition&nbsp;—&nbsp;</strong> Led US stakeholder workshops to translate business needs into technical roadmaps, supported peak-season surge operations, and received two firm-wide awards within 14 months for automation and process improvements.</li></ul><h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5><ul class="list-none list-outside"><li><strong>• Financial Modeling & Automation:</strong> Advanced Excel, VBA/Macros, Scenario Analysis.</li><li><strong>• Data Analytics & Platforms:</strong> Power BI, MS Access, S&P Capital IQ, Refinitiv, Bloomberg.</li><li><strong>• Emerging Tech & Innovation:</strong> Vibe-Code Scripting, Prompt engineering, Vercel.</li></ul>` ], logoUrl: imageUrls.deloitteLogo },
+                    { date: 'Jun 2023 - Jul 2023', title: 'Portfolio Management Intern', company: 'Oxane Partners, Hyderabad', duties: [ `<h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5><ul class="list-none list-outside space-y-2"><li><strong>1. Credit Analysis & Financial Due Diligence&nbsp;—&nbsp;</strong> Conducted comprehensive analysis of financial statements for potential borrowers, utilizing financial spreading and trend analysis to assess creditworthiness and support investment decisions.</li><li><strong>2. Investment & Performance Modeling&nbsp;—&nbsp;</strong> Developed complex financial models in Excel to evaluate the performance of diverse investment opportunities, run scenario analyses, and assist in critical covenant calculations.</li><li><strong>3. Portfolio Monitoring & Covenant Analysis&nbsp;—&nbsp;</strong> Analyzed and abstracted key terms, conditions, and covenants from complex loan agreements to ensure a clear understanding of risk parameters for effective portfolio management.</li><li><strong>4. Fintech & Process Automation&nbsp;—&nbsp;</strong> Contributed to the development of a proprietary in-house OCR (Optical Character Recognition) model designed to automate data extraction from loan documents, supporting a key initiative to improve operational efficiency and data accuracy.</li></ul><h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5><ul class="list-none list-outside"><li><strong>• Financial Modeling & Analysis:</strong> Advanced Excel, Credit Analysis, Covenant & Ratio Calculations.</li><li><strong>• Fintech & Automation:</strong> Proprietary OCR Model Development, Loan Agreement Review, Portfolio Risk Assessment.</li></ul>` ], logoUrl: imageUrls.oxaneLogo },
+                    { date: 'Jan 2022 - Aug 2022', title: 'Talent Acquisition Specialist', company: 'SSi People, Bangalore', duties: [ `<h5 class="text-md font-semibold text-gray-100 mb-2">Core Responsibilities:</h5><ul class="list-none list-outside space-y-2"><li><strong>1. Commercial & Financial Risk Management&nbsp;—&nbsp;</strong> Managed financial risks associated with the recruitment lifecycle by negotiating pre-determined client contract rates, ensuring profitability targets for candidate placements were consistently met.</li><li><strong>2. Data-Driven Sourcing & Due Diligence&nbsp;—&nbsp;</strong> Analyzed large-scale internal and external databases to identify and qualify high-potential candidates. Implemented a due diligence framework that was instrumental in identifying and eliminating fraudulent applicants, safeguarding client interests.</li></ul><h5 class="text-md font-semibold text-gray-100 mt-12 mb-2">Key Projects & Skills:</h5><ul class="list-none list-outside"><li><strong>• Risk Management & Talent Acquisition:</strong> Financial Risk Analysis, Applicant Tracking Systems, Daxtra.</li></ul>` ], logoUrl: imageUrls.ssiLogo, logoBg: 'logo-bg-ssi' }
                 ],
                 skills: ['Financial Analysis & Modeling', 'Portfolio Management', 'Risk Management', 'Regulatory Compliance', 'Data Analytics', 'Workflow Reengineering', 'Excel & Power BI Automation', 'Vibe Coding'],
                 educations: [ { degree: 'Masters of Business Administration (MBA) -<br class="sm:hidden"> Finance & Marketing', school: 'GITAM School of Business, Visakhapatnam', date: 'Aug 2022 - May 2024', details: '8.6', logoUrl: imageUrls.gitamLogo, logoBg: 'logo-bg-gitam' }, { degree: 'Bachelor of Business Administration (BBA) -<br class="sm:hidden"> Finance', school: 'Dayananda Sagar Institutions, Bangalore', date: 'May 2018 - Aug 2021', details: '9.0', logoUrl: imageUrls.dsiLogo, logoBg: 'logo-bg-white' } ],
@@ -451,12 +416,10 @@
             };
 
             const showPage = (pageId) => {
-                // Validate pageId to prevent errors from bad hashes
                 if (!portfolioData.pages.map(p => p.id).includes(pageId)) {
                     console.warn(`Attempted to navigate to invalid page: ${pageId}. Defaulting to home.`);
                     pageId = 'home';
                 }
-
                 document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                 const newPage = document.getElementById(`page-${pageId}`);
                 if (newPage) newPage.classList.add('active');
@@ -469,14 +432,9 @@
                         }
                     }
                 });
-                
-                // --- MODIFICATION: State Persistence ---
-                // Update the URL hash. This serves as the single source of truth for the
-                // active page, allowing state to be preserved on refresh.
                 if (window.location.hash !== `#${pageId}`) {
                      history.pushState(null, null, `#${pageId}`);
                 }
-                
                 window.scrollTo({top: 0, behavior: 'smooth'});
                 setTimeout(updateFloatingButton, 100);
             };
@@ -485,7 +443,6 @@
                 const scrollTop = document.documentElement.scrollTop;
                 const scrollHeight = document.documentElement.scrollHeight;
                 const clientHeight = document.documentElement.clientHeight;
-                
                 const isPageTooSmall = scrollHeight <= clientHeight + 5;
                 const shouldBeContact = scrollTop > clientHeight * 0.3;
                 const newContactState = isPageTooSmall || shouldBeContact;
@@ -508,7 +465,6 @@
                     document.querySelector('header').classList.toggle('nav-hidden', isScrollingDown);
                     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
                 }
-                
                 updateFloatingButton();
                 
                 const timelineProgress = document.getElementById('timeline-progress');
@@ -516,23 +472,14 @@
                     const experienceContainer = document.getElementById('experience-container');
                     const containerRect = experienceContainer.getBoundingClientRect();
                     const viewportHeight = window.innerHeight;
-
                     const startPoint = viewportHeight * 0.75; 
                     const endPoint = viewportHeight * 0.25;
-
                     let progress = (startPoint - containerRect.top) / (startPoint - endPoint + containerRect.height);
                     progress = Math.max(0, Math.min(1, progress));
-                    
                     timelineProgress.style.height = `${progress * 100}%`;
                 }
             };
-            
-            window.addEventListener('scroll', () => {
-                if (rafId) {
-                    window.cancelAnimationFrame(rafId);
-                }
-                rafId = window.requestAnimationFrame(handleScroll);
-            }, { passive: true });
+            window.addEventListener('scroll', () => { if (rafId) { window.cancelAnimationFrame(rafId); } rafId = window.requestAnimationFrame(handleScroll); }, { passive: true });
 
             const mainContainer = document.querySelector('main');
             
@@ -545,293 +492,168 @@
                 document.getElementById('main-nav').appendChild(link);
             });
             
-            // --- PAGE CREATION ---
+            // --- PAGE CREATION (HTML templates are kept concise) ---
             const createHomePage = () => {
                 const page = document.createElement('div'); page.id = 'page-home'; page.className = 'page';
                 const snapshotsHTML = portfolioData.snapshots.map(s => `<section class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">${s.title}</h3><div class="max-w-4xl mx-auto p-8 rounded-lg glass-effect"><div class="border-l-2 border-indigo-500 pl-6"><h4 class="text-xl font-bold text-white">${s.position}</h4><p class="text-lg text-indigo-400 mb-2">${s.company}</p><p class="text-gray-400">${s.description}</p></div><div class="text-center mt-8"><a href="javascript:void(0);" data-link="${s.link}" class="snapshot-link text-indigo-400 hover:text-indigo-300 font-semibold transition-colors duration-300 cursor-pointer">${s.linkText}</a></div></div></div></section>`).join('');
-                const contactSectionHTML = `<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto" id="home-contact-form"></div></div></section>`;
-                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;" loading="lazy"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}${contactSectionHTML}`;
+                page.innerHTML = `<section class="container mx-auto px-6 py-16"><div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center md:text-left"><div class="relative w-48 h-48 md:w-56 md:h-56 flex-shrink-0"><img src="${portfolioData.home.imageUrl}" alt="${portfolioData.home.name}" class="rounded-full w-full h-full object-cover border-4 border-indigo-500 glow-effect bg-gray-900" style="pointer-events: none;" loading="lazy"></div><div><h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight text-white">${portfolioData.home.name}</h2><p class="text-lg md:text-xl text-gray-400 max-w-3xl">${portfolioData.home.title}</p></div></div></section><section id="about-section" class="py-12"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">About Me</h3><div class="max-w-4xl mx-auto text-base md:text-lg text-gray-300 leading-relaxed text-justify p-8 rounded-lg glass-effect">${portfolioData.about.description}</div></div></section>${snapshotsHTML}<section class="py-16"><div class="container mx-auto px-6"><div class="max-w-2xl mx-auto" id="home-contact-form"></div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createExperiencePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-experience'; page.className = 'page';
                 const experiencesHTML = portfolioData.experiences.map((exp, index) => `<div class="timeline-item ${index === 0 ? 'no-hide visible' : ''}"><div class="timeline-icon ${exp.logoBg || 'bg-white'}"><img src="${exp.logoUrl}" alt="${exp.company} logo" loading="lazy"></div><div class="p-6 rounded-lg glass-effect"><h4 class="text-xl font-bold mb-1 text-white">${exp.title}</h4><p class="text-lg font-semibold text-gray-300 mb-2">${exp.company}</p><p class="text-sm text-indigo-400 mb-3">${exp.date}</p><div class="text-gray-400 space-y-2">${exp.duties.join('')}</div></div></div>`).join('');
-                
-                const skillIcons = {
-                    'Financial Analysis & Modeling': 'fas fa-chart-line',
-                    'Portfolio Management': 'fas fa-briefcase',
-                    'Risk Management': 'fas fa-shield-alt',
-                    'Regulatory Compliance': 'fas fa-balance-scale',
-                    'Data Analytics': 'fas fa-chart-pie',
-                    'Workflow Reengineering': 'fas fa-cogs',
-                    'Excel & Power BI Automation': 'fas fa-file-excel',
-                    'Vibe Coding': 'fas fa-code'
-                };
-                const skillsHTML = portfolioData.skills.map(skill => `
-                    <div class="p-6 rounded-lg glass-effect flex flex-col items-center justify-center text-center gap-3">
-                        <i class="${skillIcons[skill] || 'fas fa-check'} text-3xl text-indigo-400"></i>
-                        <p class="text-lg font-semibold text-white mt-2">${skill}</p>
-                    </div>`).join('');
-
+                const skillIcons = { 'Financial Analysis & Modeling': 'fas fa-chart-line', 'Portfolio Management': 'fas fa-briefcase', 'Risk Management': 'fas fa-shield-alt', 'Regulatory Compliance': 'fas fa-balance-scale', 'Data Analytics': 'fas fa-chart-pie', 'Workflow Reengineering': 'fas fa-cogs', 'Excel & Power BI Automation': 'fas fa-file-excel', 'Vibe Coding': 'fas fa-code' };
+                const skillsHTML = portfolioData.skills.map(skill => `<div class="p-6 rounded-lg glass-effect flex flex-col items-center justify-center text-center gap-3"><i class="${skillIcons[skill] || 'fas fa-check'} text-3xl text-indigo-400"></i><p class="text-lg font-semibold text-white mt-2">${skill}</p></div>`).join('');
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20 text-white">Work Experience</h3><div class="max-w-5xl mx-auto"><div class="relative timeline-container" id="experience-container"><div class="timeline-line"></div><div class="timeline-line-progress" id="timeline-progress"></div>${experiencesHTML}<div id="timeline-end" class="h-1"></div></div></div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Core Competencies</h3><div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">${skillsHTML}</div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
             const createCertificationsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-certifications'; page.className = 'page';
-                const certificationsHTML = portfolioData.certifications.map(cert => `
-                    <div class="w-full lg:w-[calc(50%-1rem)] max-w-lg p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-20 h-20 rounded-full ${cert.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1" loading="lazy">
-                        </div>
-                        <div class="flex-grow flex flex-col sm:flex-row items-center sm:justify-between w-full">
-                            <div class="min-w-0">
-                                <h4 class="text-lg lg:text-xl font-bold text-white">${cert.name}</h4>
-                                <p class="text-md lg:text-lg text-indigo-400 mb-2">${cert.issuer}</p>
-                                <p class="text-gray-400 text-sm">${cert.date}</p>
-                            </div>
-                            <div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0">
-                                <button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 glow-effect" data-url="${cert.url}" data-type="${cert.type || 'modal'}">
-                                    View
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                const educationsHTML = portfolioData.educations.map(edu => `
-                    <div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full ${edu.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2">
-                             <img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full" loading="lazy">
-                        </div>
-                        <div class="flex-grow min-w-0">
-                            <h4 class="text-lg md:text-xl font-bold text-white">${edu.degree}</h4>
-                            <p class="text-md lg:text-lg text-indigo-400 mb-2">${edu.school}</p>
-                            <p class="text-gray-400 text-sm">${edu.date}</p>
-                        </div>
-                        <div class="sm:ml-auto mt-4 sm:mt-0 text-center flex-shrink-0">
-                            <div class="bg-indigo-500/10 text-indigo-300 rounded-lg px-4 py-2 ring-1 ring-inset ring-indigo-500/20">
-                                <p class="text-base font-semibold uppercase tracking-wider">CGPA</p>
-                                <p class="text-3xl font-bold">${edu.details}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                const certificationsHTML = portfolioData.certifications.map(cert => `<div class="w-full lg:w-[calc(50%-1rem)] max-w-lg p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left"><div class="flex-shrink-0 w-20 h-20 rounded-full ${cert.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2"><img src="${cert.logoUrl}" alt="${cert.name} Logo" class="object-contain p-1" loading="lazy"></div><div class="flex-grow flex flex-col sm:flex-row items-center sm:justify-between w-full"><div class="min-w-0"><h4 class="text-lg lg:text-xl font-bold text-white">${cert.name}</h4><p class="text-md lg:text-lg text-indigo-400 mb-2">${cert.issuer}</p><p class="text-gray-400 text-sm">${cert.date}</p></div><div class="mt-4 sm:mt-0 sm:ml-4 flex-shrink-0"><button class="view-cert-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 glow-effect" data-url="${cert.url}" data-type="${cert.type || 'modal'}">View</button></div></div></div>`).join('');
+                const educationsHTML = portfolioData.educations.map(edu => `<div class="p-6 rounded-lg glass-effect flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left"><div class="flex-shrink-0 w-24 h-24 rounded-full ${edu.logoBg} flex items-center justify-center border-2 border-indigo-500/30 p-2"><img src="${edu.logoUrl}" alt="${edu.school} Logo" class="object-contain w-full h-full p-1 rounded-full" loading="lazy"></div><div class="flex-grow min-w-0"><h4 class="text-lg md:text-xl font-bold text-white">${edu.degree}</h4><p class="text-md lg:text-lg text-indigo-400 mb-2">${edu.school}</p><p class="text-gray-400 text-sm">${edu.date}</p></div><div class="sm:ml-auto mt-4 sm:mt-0 text-center flex-shrink-0"><div class="bg-indigo-500/10 text-indigo-300 rounded-lg px-4 py-2 ring-1 ring-inset ring-indigo-500/20"><p class="text-base font-semibold uppercase tracking-wider">CGPA</p><p class="text-3xl font-bold">${edu.details}</p></div></div></div>`).join('');
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Certifications</h3><div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">${certificationsHTML}</div></div></section><section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Education</h3><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">${educationsHTML}</div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createProjectsPage = () => {
                 const page = document.createElement('div'); page.id = 'page-projects'; page.className = 'page';
-                page.innerHTML = `
-                    <section class="pt-16">
-                        <div class="presentation-container relative">
-                        <div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain" loading="lazy"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div>
-                        <div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-none mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div>
-                        <div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div>
-                        <div class="presentation-page" id="pres-page-4">
-                            <div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div>
-                            <div class="grid md:grid-cols-2 gap-12 items-center">
-                                <div class="presentation-content relative flex items-center justify-center">
-                                    <img id="base-case-chart" src="${imageUrls.graph3}" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto" loading="lazy">
-                                    <img id="bull-case-chart" src="${imageUrls.graph4}" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy">
-                                    <img id="bear-case-chart" src="${imageUrls.graph5}" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy">
-                                </div>
-                                <div class="presentation-content">
-                                    <div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container">
-                                        <button class="case-button active" data-case="base">Base Case</button>
-                                        <button class="case-button" data-case="bull">Bull Case</button>
-                                        <button class="case-button" data-case="bear">Bear Case</button>
-                                    </div>
-                                    <div id="case-selector-container" class="relative">
-                                        <div id="base-case-content" class="case-content active"><h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul></div></div>
-                                        <div id="bull-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul></div></div>
-                                        <div id="bear-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul></div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="presentation-page" id="pres-page-5">
-                            <div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div>
-                            <div class="grid md:grid-cols-2 gap-12 items-center presentation-content">
-                                <div class="text-center"><img src="${imageUrls.graph6}" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75" loading="lazy"></div>
-                                <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
-                            </div>
-                        </div>
-                        <div class="text-center py-12"><button id="download-analysis-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</button></div>
-                    </div>
-                    </section>
-                `;
+                page.innerHTML = `<section class="pt-16"><div class="presentation-container relative"><div class="presentation-page" id="pres-page-1"><div class="max-w-4xl mx-auto presentation-content text-center"><div class="flex flex-col items-center gap-8"><div class="flex flex-col md:flex-row justify-center items-center gap-6 md:text-left"><img id="pres-logo" src="${imageUrls.starbucksLogo}" alt="Starbucks Company Logo" class="stagger-1 h-32 w-32 flex-shrink-0 rounded-full bg-white p-1 object-contain" loading="lazy"><div><h4 class="text-2xl md:text-3xl font-bold text-white stagger-2">Starbucks Corporation (SBUX)</h4><p class="text-indigo-400 mt-2 text-md md:text-lg stagger-2">FMVA®-level scenario analysis and forecasting, assessing Starbucks’ growth drivers, margins, EPS trajectory, and valuation under Base, Bull, and Bear cases.</p></div></div><div class="stagger-3"><p class="text-gray-300 text-base md:text-lg leading-relaxed text-justify">This project delivers a structured financial analysis of Starbucks Corporation (SBUX), the world’s largest coffeehouse chain with over 40,000 stores globally. Drawing on my FMVA® certification skills, I assessed Starbucks’ historical performance and developed forward-looking forecasts through FY28. The analysis highlights the dynamics between store expansion and same-store sales growth, the evolution of operating and net margins, and the trajectory of earnings per share (EPS).</p><p class="text-gray-300 mt-4 text-base md:text-lg leading-relaxed text-justify">To capture strategic uncertainty, I built Base, Bull, and Bear scenarios, quantifying how shifts in consumer demand, margin efficiency, and capital allocation could shape Starbucks’ financial outcomes and implied share valuation. Beyond the numbers, this project demonstrates my ability to translate financials into actionable insights, reflecting a consulting approach that connects operational levers with shareholder value creation.</p></div></div></div></div><div class="presentation-page" id="pres-page-2"><div class="mb-8"><h4 id="project-heading-1" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (1/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph1}" alt="Revenue Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Revenue vs. profitability — margin-driven earnings volatility</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue recovered after the pandemic but flattened in FY24 (~$36B). Margin swings over the period meant that even modest revenue changes drove meaningful differences in earnings; the net-margin profile shows limited room for downside before profitability is impacted. In short, scale growth alone didn’t create a durable cushion — margin behavior remained the primary driver of short-term earnings variability.</p><ul class="list-none mt-4 space-y-2"><li>The chart indicates earnings moved largely because margins changed more than revenue did.</li><li>The pattern points that cost structure, sales mix, and pricing are the key factors behind this margin variability.</li></ul></div></div></div></div><div class="presentation-page" id="pres-page-3"><div class="mb-8"><h4 id="project-heading-2" class="text-xl font-bold text-white heading-left-align">Past performance & operational levers: what moved Starbucks’ numbers (2/2)</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content"><img src="${imageUrls.graph2}" alt="Comps Chart" class="rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content text-center md:text-left"><h5 class="text-2xl font-bold text-white">Network expansion vs. comps — growth without guaranteed productivity</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Starbucks expanded its store base materially from FY21–FY24, while same-store sales (comps) slowed sharply and turned negative in FY24. This divergence — unit growth alongside weakening like-for-like demand — reduced per-store productivity and explained why scale did not translate directly into margin improvement. The chart underscores the need to distinguish between network expansion and true underlying demand.</p><ul class="list-none mt-4 space-y-2"><li>Comps measure sales growth at existing stores (open >12 months), isolating like-for-like performance from new openings.</li><li>The pattern highlights pressure on per-store returns, showing that headline revenue growth can mask weaker store-level economics.</li></ul></div></div></div></div><div class="presentation-page flex-col !justify-center" style="min-height: 20vh;"><p class="text-gray-400 text-center max-w-3xl mx-auto presentation-content">While historical results highlighted margin sensitivity and comps pressure, the forward cases show how these levers shape Starbucks’ valuation path.</p></div><div class="presentation-page" id="pres-page-4"><div class="mb-8"><h4 id="project-heading-3" class="text-xl font-bold text-white heading-left-align">Future trajectory & valuation levers: how Starbucks could perform</h4></div><div class="grid md:grid-cols-2 gap-12 items-center"><div class="presentation-content relative flex items-center justify-center"><img id="base-case-chart" src="${imageUrls.graph3}" alt="Base Case Forecast Chart" class="case-chart rounded-lg chart-placeholder w-full h-auto" loading="lazy"><img id="bull-case-chart" src="${imageUrls.graph4}" alt="Bull Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy"><img id="bear-case-chart" src="${imageUrls.graph5}" alt="Bear Case Forecast Chart" class="case-chart hidden rounded-lg chart-placeholder w-full h-auto" loading="lazy"></div><div class="presentation-content"><div class="flex justify-center md:justify-start gap-4 mb-6" id="case-buttons-container"><button class="case-button active" data-case="base">Base Case</button><button class="case-button" data-case="bull">Bull Case</button><button class="case-button" data-case="bear">Bear Case</button></div><div id="case-selector-container" class="relative"><div id="base-case-content" class="case-content active"><h5 class="text-xl font-bold text-white mb-2">Base Case — Balanced recovery: measured growth, conservative margins</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Revenue expands steadily, supported by continued store growth, but comparable sales remain muted and margins show little improvement. Earnings grow moderately, yet the implied valuation falls short of Starbucks’ current trading levels. This reflects a deliberately cautious stance after FY24’s slowdown — suggesting that investors are already pricing in stronger profitability, faster comps recovery, or additional optionality beyond this base scenario.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Growth is driven mainly by new stores rather than comps, leaving per-store productivity flat.</li><li>Margins hold steady, so the valuation sits below market levels, underscoring the gap between cautious forecasts and investor optimism.</li></ul></div></div><div id="bull-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bull Case — Upside execution: stronger comps and margin recovery</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales rebound and margins expand, unlocking earnings leverage beyond topline growth. Store additions compound these gains, delivering stronger revenue and profit momentum. The implied valuation aligns more closely with, or even surpasses, today’s market price — reinforcing that investor sentiment already reflects this more optimistic trajectory.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Comp recovery boosts per-store productivity, amplifying scale benefits.</li><li>Margin expansion drives higher earnings, bringing the valuation in line with or above market pricing.</li></ul></div></div><div id="bear-case-content" class="case-content"><h5 class="text-xl font-bold text-white mb-2">Bear Case — Downside pressure: weak comps and margin headwinds</h5><div class="text-gray-400 mt-4 leading-relaxed text-justify"><p>Comparable sales decline further while cost inflation and operating pressures squeeze margins. Store growth continues but does not translate into higher efficiency, leaving earnings capped despite a larger footprint. The resulting valuation lands well below market pricing, highlighting downside risks if Starbucks fails to reignite demand or contain costs.</p><ul class="list-none mt-4 space-y-2 pl-5"><li>Falling comps erode like-for-like performance and per-store returns.</li><li>Rising costs keep margins tight, leaving the valuation materially under current market levels.</li></ul></div></div></div></div></div></div><div class="presentation-page" id="pres-page-5"><div class="mb-8"><h4 id="project-heading-4" class="text-xl font-bold text-white heading-left-align">Starbucks at a Crossroads: What Matters Going Forward</h4></div><div class="grid md:grid-cols-2 gap-12 items-center presentation-content"><div class="text-center"><img src="${imageUrls.graph6}" id="starbucks-crossroads-image" alt="Strategic Outlook Telescope" class="rounded-lg chart-placeholder w-full h-auto mx-auto opacity-75" loading="lazy"></div><div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div></div></div><div class="text-center py-12"><button id="download-analysis-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</button></div></div></section>`;
                 mainContainer.appendChild(page);
             };
             const createResumePage = () => { 
                 const page = document.createElement('div'); page.id = 'page-resume'; page.className = 'page';
-                const today = new Date();
-                const dayOfWeek = today.getDay();
-                const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek));
-                const formattedDate = lastSunday.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const today = new Date(); const dayOfWeek = today.getDay(); const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek)); const formattedDate = lastSunday.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain" loading="lazy"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
 
             createHomePage(); createExperiencePage(); createProjectsPage(); createCertificationsPage(); createResumePage();
             
-            document.querySelectorAll('.snapshot-link').forEach(link => {
-                link.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const pageId = link.dataset.link;
-                    if (pageId) {
-                        showPage(pageId);
-                    }
-                });
-            });
+            document.querySelectorAll('.snapshot-link').forEach(link => { link.addEventListener('click', (event) => { event.preventDefault(); const pageId = link.dataset.link; if (pageId) { showPage(pageId); } }); });
 
-            // --- MODIFICATION: Initialize page based on saved state ---
-            const hashPage = window.location.hash.substring(1);
-            const validPages = portfolioData.pages.map(p => p.id);
-            // On page load, prioritize the URL hash. If no valid hash, default to 'home'.
-            // This ensures that refreshing a page keeps you there, but a fresh visit always starts at home.
-            const initialPage = validPages.includes(hashPage) ? hashPage : 'home';
+            const hashPage = window.location.hash.substring(1); const validPages = portfolioData.pages.map(p => p.id); const initialPage = validPages.includes(hashPage) ? hashPage : 'home';
             showPage(initialPage);
             
-            // --- CONTACT FORM LOGIC ---
-            const contactFormHTML = `
-                <form id="contact-form" action="https://formspree.io/f/mgvzryjy" method="POST" class="w-full p-8 rounded-lg glass-effect form-container">
-                    <h3 class="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3>
-                    <p class="text-gray-300 text-lg text-center">Have a question or want to work together?</p>
-                    <p class="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
-                    <input type="text" name="_honey" style="display:none">
-                    <div class="space-y-4 text-left">
-                        <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
-                        <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
-                        <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea>
-                    </div>
-                    <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect">
-                            <i class="fas fa-paper-plane"></i>Send Message
-                        </button>
-                        <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="linkedin-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
-                            <i class="fab fa-linkedin"></i>Connect on LinkedIn
-                        </a>
-                    </div>
-                </form>`;
-            
+            const contactFormHTML = `<form id="contact-form" action="https://formspree.io/f/mgvzryjy" method="POST" class="w-full p-8 rounded-lg glass-effect form-container"><h3 class="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3><p class="text-gray-300 text-lg text-center">Have a question or want to work together?</p><p class="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p><input type="text" name="_honey" style="display:none"><div class="space-y-4 text-left"><input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"><textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea></div><div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"><button type="submit" class="submit-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect" disabled><i class="fas fa-paper-plane"></i>Send Message</button><a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="linkedin-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fab fa-linkedin"></i>Connect on LinkedIn</a></div></form>`;
             document.getElementById('home-contact-form').innerHTML = contactFormHTML;
 
             const successToast = document.getElementById('success-toast');
             const errorToast = document.getElementById('error-toast');
-
+            
+            // 4 & 5. Form Bot Protection & Rate Limiting
+            let formSubmitAttempts = 0;
             const handleFormSubmit = async (event) => {
                 event.preventDefault();
                 const form = event.target;
+                const submitButton = form.querySelector('.submit-btn');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                if (formSubmitAttempts >= 2) {
+                    showToast(errorToast, 'Too many attempts. Please try again later.');
+                    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                    return;
+                }
+                formSubmitAttempts++;
+
                 const data = new FormData(form);
-                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10-second timeout
+
                 try {
                     const response = await fetch(form.action, {
                         method: form.method,
                         body: data,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
+                        headers: { 'Accept': 'application/json' },
+                        signal: controller.signal
                     });
+                    clearTimeout(timeoutId);
 
                     if (response.ok) {
-                        successToast.classList.add('show');
-                        setTimeout(() => successToast.classList.remove('show'), 4000);
+                        showToast(successToast);
                         form.reset();
-                        if (contactModal.classList.contains('visible')) {
-                            closeModal(contactModal);
-                        }
+                        if (contactModal.classList.contains('visible')) closeModal(contactModal);
                     } else {
-                        errorToast.classList.add('show');
-                        setTimeout(() => errorToast.classList.remove('show'), 4000);
+                        throw new Error('Form submission failed.');
                     }
                 } catch (error) {
-                    errorToast.classList.add('show');
-                    setTimeout(() => errorToast.classList.remove('show'), 4000);
+                    showToast(errorToast, 'Something went wrong. Please try again.');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+                    setTimeout(() => { if (formSubmitAttempts > 0) formSubmitAttempts--; }, 30000); // Reset attempt counter after 30s
+                }
+            };
+            
+            const showToast = (toastEl, message = null) => {
+                if (message) {
+                    const textEl = toastEl.querySelector('#error-toast-text') || toastEl;
+                    textEl.textContent = message;
+                }
+                toastEl.classList.add('show');
+                setTimeout(() => toastEl.classList.remove('show'), 4000);
+            };
+
+            const initializeForm = (formId) => {
+                const form = document.getElementById(formId);
+                if (form) {
+                    form.addEventListener('submit', handleFormSubmit);
+                    const submitButton = form.querySelector('.submit-btn');
+                    // Delay enabling the submit button
+                    setTimeout(() => {
+                        if (submitButton) submitButton.disabled = false;
+                    }, 2500); // 2.5 second delay
                 }
             };
 
-            document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
-
-            // --- MODAL LOGIC & TOASTS ---
             const contactModal = document.getElementById('contact-modal');
             const certModal = document.getElementById('certificate-modal');
             const certImage = document.getElementById('certificate-image');
             
-            const openModal = (modal) => {
-                modal.classList.add('visible');
-            };
+            const openModal = (modal) => { modal.classList.add('visible'); };
+            const closeModal = (modal) => { modal.classList.remove('visible'); };
 
-            const closeModal = (modal) => {
-                modal.classList.remove('visible');
-            };
-
-            // Contact Modal
             const contactModalContent = document.getElementById('contact-modal-content');
             const modalFormContainer = document.createElement('div');
             modalFormContainer.innerHTML = contactFormHTML;
             modalFormContainer.querySelector('form').id = 'modal-contact-form';
             const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '&times;';
-            closeBtn.className = 'close-btn';
+            closeBtn.innerHTML = '&times;'; closeBtn.className = 'close-btn';
             modalFormContainer.querySelector('form').prepend(closeBtn);
             contactModalContent.appendChild(modalFormContainer);
-            modalFormContainer.querySelector('#modal-contact-form').addEventListener('submit', handleFormSubmit);
             closeBtn.addEventListener('click', () => closeModal(contactModal));
             contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeModal(contactModal); });
             
-            // Certificate Modal
-            const closeCertModalBtn = document.getElementById('close-cert-modal');
-            closeCertModalBtn.addEventListener('click', () => {
-                closeModal(certModal);
-                certImage.src = ''; 
-            });
-            certModal.addEventListener('click', (e) => { 
-                if (e.target === certModal) { 
-                    closeModal(certModal); 
-                    certImage.src = ''; 
-                } 
-            });
+            initializeForm('contact-form');
+            initializeForm('modal-contact-form');
             
-            // Floating Button Click
+            const closeCertModalBtn = document.getElementById('close-cert-modal');
+            closeCertModalBtn.addEventListener('click', () => { closeModal(certModal); certImage.src = ''; });
+            certModal.addEventListener('click', (e) => { if (e.target === certModal) { closeModal(certModal); certImage.src = ''; } });
+            
+            // 7. Floating Button Down Arrow Click Action
             floatingBtn.addEventListener('click', () => {
                 if (isContactState) {
                     openModal(contactModal);
                 } else {
-                    const aboutSection = document.getElementById('about-section');
-                    if (aboutSection) {
-                        aboutSection.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    // Smoothly scroll down by 50% of the viewport height
+                    window.scrollBy({
+                        top: window.innerHeight * 0.5,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
                 }
             });
 
-            // --- EVENT DELEGATION FOR DYNAMIC CONTENT ---
             document.addEventListener('click', (e) => {
-                // View Certificate Button
                 const certButton = e.target.closest('.view-cert-btn');
-                if (certButton) {
-                    const url = certButton.dataset.url;
-                    if (url && url !== '#') {
-                        certImage.src = url;
-                        openModal(certModal);
-                    }
-                }
-
-                // Download Analysis Button
+                if (certButton) { const url = certButton.dataset.url; if (url && url !== '#') { certImage.src = url; openModal(certModal); } }
                 const downloadBtn = e.target.closest('#download-analysis-btn');
-                if(downloadBtn) {
-                    errorToast.classList.add('show');
-                    setTimeout(() => errorToast.classList.remove('show'), 2000);
-                }
+                if(downloadBtn) { showToast(errorToast, 'Full analysis document coming soon!'); }
             });
 
-            // --- DYNAMIC OBSERVERS ---
             const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
             if (timelineItems.length > 0) {
-                 const itemEntryObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(e => {
-                        e.target.classList.toggle('visible', e.isIntersecting);
-                    });
-                }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+                 const itemEntryObserver = new IntersectionObserver((entries) => { entries.forEach(e => { e.target.classList.toggle('visible', e.isIntersecting); }); }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
                 timelineItems.forEach(item => itemEntryObserver.observe(item));
             }
 
@@ -841,17 +663,9 @@
             caseButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const activeCase = button.dataset.case;
-                    caseButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    caseContents.forEach(content => {
-                        content.classList.toggle('active', content.id === `${activeCase}-case-content`);
-                    });
-                    caseCharts.forEach(chart => {
-                        const shouldBeHidden = chart.id !== `${activeCase}-case-chart`;
-                        chart.classList.toggle('hidden', shouldBeHidden);
-                        chart.style.opacity = shouldBeHidden ? '0' : '1';
-                    });
+                    caseButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active');
+                    caseContents.forEach(content => { content.classList.toggle('active', content.id === `${activeCase}-case-content`); });
+                    caseCharts.forEach(chart => { const shouldBeHidden = chart.id !== `${activeCase}-case-chart`; chart.classList.toggle('hidden', shouldBeHidden); chart.style.opacity = shouldBeHidden ? '0' : '1'; });
                 });
             });
 
@@ -863,4 +677,3 @@
     </script>
 </body>
 </html>
-
