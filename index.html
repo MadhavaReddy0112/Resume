@@ -769,7 +769,7 @@
                         setTimeout(() => {
                             errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                         }, 300);
-                    }, 4000);
+                    }, 3000); // <-- Shortened delay
                     return; 
                 }
                 lastSubmit = now; 
@@ -777,8 +777,12 @@
                 const data = new FormData(form);
                 data.append('from_name', 'Portfolio Contact Form'); // Optional: for email subject
                 
+                // --- MODIFICATION: Show loading state ---
                 submitButton.disabled = true;
                 submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                const originalButtonContent = submitButton.innerHTML; // Store original content
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Sending...`; // Show loading state
+                // --- End Modification ---
                 
                 try {
                     const response = await fetch(form.action, {
@@ -793,7 +797,7 @@
 
                     if (response.ok && result.success) {
                         successToast.classList.add('show');
-                        setTimeout(() => successToast.classList.remove('show'), 4000);
+                        setTimeout(() => successToast.classList.remove('show'), 3000); // <-- Shortened delay
                         form.reset();
                         if (contactModal.classList.contains('visible')) {
                             closeModal(contactModal);
@@ -802,16 +806,19 @@
                         console.error('Form submission error:', result);
                         errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                         errorToast.classList.add('show');
-                        setTimeout(() => errorToast.classList.remove('show'), 4000);
+                        setTimeout(() => errorToast.classList.remove('show'), 3000); // <-- Shortened delay
                     }
                 } catch (error) {
                     console.error('Form submission fetch error:', error);
                     errorToastText.innerHTML = "<span>Network error. </span><br class='sm:hidden'><span>Please check connection.</span>";
                     errorToast.classList.add('show');
-                    setTimeout(() => errorToast.classList.remove('show'), 4000);
+                    setTimeout(() => errorToast.classList.remove('show'), 3000); // <-- Shortened delay
                 } finally {
+                    // --- MODIFICATION: Restore button state ---
                     submitButton.disabled = false;
                     submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    submitButton.innerHTML = originalButtonContent; // Restore original content
+                    // --- End Modification ---
                 }
             };
 
