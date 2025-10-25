@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Updated Content Security Policy for Web3Forms AND Vercel Analytics -->
+    <!-- Updated Content Security Policy for Web3Forms -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
-                   script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://va.vercel-scripts.com;
+                   script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
                    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
                    img-src 'self' data:;
-                   connect-src 'self' https://api.web3forms.com https://vitals.vercel-insights.com https://va.vercel-scripts.com;
+                   connect-src 'self' https://api.web3forms.com;
                    frame-ancestors 'none';">
 
     <title>Madhava Reddy Arimanda</title>
@@ -238,13 +238,6 @@
         
         .light-mode #strategic-outlook-img { opacity: 1; }
     </style>
-
-    <!-- Vercel Analytics Scripts -->
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script src="/_vercel/insights/script.js"></script>
-    
 </head>
 <body class="antialiased" oncontextmenu="return false;">
     <noscript>
@@ -734,21 +727,21 @@
                     <!-- Honeypot -->
                     <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
-                    <h3 class_bias="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3>
-                    <p class_bias="text-gray-300 text-lg text-center">Have a question or want to work together?</p>
-                    <p class_bias="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
+                    <h3 class="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3>
+                    <p class="text-gray-300 text-lg text-center">Have a question or want to work together?</p>
+                    <p class="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
                     
-                    <div class_bias="space-y-4 text-left">
+                    <div class="space-y-4 text-left">
                         <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
                         <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
                         <textarea name="message" rows="4" placeholder="Your Message" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea>
                     </div>
-                    <div class_bias="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
                         <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect">
-                            <i class_bias="fas fa-paper-plane"></i>Send Message
+                            <i class="fas fa-paper-plane"></i>Send Message
                         </button>
                         <a href="https://www.linkedin.com/in/madhavareddyarimanda/" target="_blank" class="linkedin-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3">
-                            <i class_bias="fab fa-linkedin"></i>Connect on LinkedIn
+                            <i class="fab fa-linkedin"></i>Connect on LinkedIn
                         </a>
                     </div>
                 </form>`;
