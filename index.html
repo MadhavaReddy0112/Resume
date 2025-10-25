@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Updated Content Security Policy for Web3Forms -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
                    script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
                    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
                    img-src 'self' data:;
-                   connect-src 'self' https://formspree.io;
+                   connect-src 'self' https://api.web3forms.com;
                    frame-ancestors 'none';">
 
     <title>Madhava Reddy Arimanda</title>
@@ -306,7 +307,7 @@
             document.getElementById('copyright-year').textContent = new Date().getFullYear();
             const body = document.body;
             
-            // --- IMAGE URLS (for preloading and easy replacement) ---
+            // --- IMAGE & FILE URLS (for preloading and easy replacement) ---
             const imageUrls = {
                 // Logos
                 microsoftLogo: 'Microsoft Logo.webp',
@@ -333,12 +334,16 @@
                 graph4: 'Graph-4.webp',
                 graph5: 'Graph-5.webp',
                 graph6: 'Graph-6.webp',
+
+                // --- NEW --- Downloadable File (Edit filename here)
+                projectAnalysisExcel: 'Starbucks_Financial_Analysis.xlsx',
             };
 
             // --- IMAGE PRELOADING ---
             const preloadImages = (urls) => {
                 for (const key in urls) {
-                    if (urls.hasOwnProperty(key)) {
+                    // Preload images, but skip non-image files like the excel sheet
+                    if (urls.hasOwnProperty(key) && key !== 'projectAnalysisExcel' && !key.endsWith('Pdf')) {
                         const img = new Image();
                         img.src = urls[key];
                     }
@@ -714,13 +719,18 @@
             const initialPage = validPages.includes(hashPage) ? hashPage : 'home';
             showPage(initialPage);
             
-            // --- CONTACT FORM LOGIC ---
+            // --- CONTACT FORM LOGIC (Updated for Web3Forms) ---
             const contactFormHTML = `
-                <form id="contact-form" action="https://formspree.io/f/mgvzryjy" method="POST" class="w-full p-8 rounded-lg glass-effect form-container">
+                <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="w-full p-8 rounded-lg glass-effect form-container">
+                    <!-- Web3Forms Access Key -->
+                    <input type="hidden" name="access_key" value="92e0b220-fadd-42df-a8da-b3f3deb496e8">
+                    <!-- Honeypot -->
+                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
                     <h3 class="text-3xl font-bold mb-4 text-white text-center">Let's Connect</h3>
                     <p class="text-gray-300 text-lg text-center">Have a question or want to work together?</p>
                     <p class="text-gray-400 mb-6 text-md text-center"><i>Feel free to send a message or connect with me on LinkedIn.</i></p>
-                    <input type="text" name="_honey" style="display:none">
+                    
                     <div class="space-y-4 text-left">
                         <input type="text" name="name" placeholder="Your Name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
                         <input type="email" name="email" placeholder="Your Email" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
@@ -744,16 +754,15 @@
             
             let lastSubmit = 0;
 
+            // --- Updated Form Submit Handler ---
             const handleFormSubmit = async (event) => {
                 event.preventDefault();
+                const form = event.target;
+                const submitButton = form.querySelector('button[type="submit"]');
                 
                 const now = Date.now();
                 if (now - lastSubmit < 10000) { // 10s delay
-                    
-                    // --- CHANGED LINE ---
-                    errorToastText.innerHTML = "<span>Submission limit reached.</span><br class='sm:hidden'><span> Please wait 10 seconds before trying again.</span>";
-                    // --- END CHANGED LINE ---
-
+                    errorToastText.innerHTML = "<span>Submission limit reached.</span><br class='sm:hidden'><span> Please wait 10 seconds.</span>";
                     errorToast.classList.add('show');
                     setTimeout(() => {
                         errorToast.classList.remove('show');
@@ -765,8 +774,11 @@
                 }
                 lastSubmit = now; 
 
-                const form = event.target;
                 const data = new FormData(form);
+                data.append('from_name', 'Portfolio Contact Form'); // Optional: for email subject
+                
+                submitButton.disabled = true;
+                submitButton.classList.add('opacity-50', 'cursor-not-allowed');
                 
                 try {
                     const response = await fetch(form.action, {
@@ -776,8 +788,10 @@
                             'Accept': 'application/json'
                         }
                     });
+                    
+                    const result = await response.json();
 
-                    if (response.ok) {
+                    if (response.ok && result.success) {
                         successToast.classList.add('show');
                         setTimeout(() => successToast.classList.remove('show'), 4000);
                         form.reset();
@@ -785,14 +799,19 @@
                             closeModal(contactModal);
                         }
                     } else {
+                        console.error('Form submission error:', result);
                         errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
                         errorToast.classList.add('show');
                         setTimeout(() => errorToast.classList.remove('show'), 4000);
                     }
                 } catch (error) {
-                    errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
+                    console.error('Form submission fetch error:', error);
+                    errorToastText.innerHTML = "<span>Network error. </span><br class='sm:hidden'><span>Please check connection.</span>";
                     errorToast.classList.add('show');
                     setTimeout(() => errorToast.classList.remove('show'), 4000);
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
             };
 
@@ -864,12 +883,15 @@
                     }
                 }
 
-                // Download Analysis Button
+                // --- NEW --- Download Analysis Button
                 const downloadBtn = e.target.closest('#download-analysis-btn');
                 if(downloadBtn) {
-                    errorToastText.innerHTML = "<span>Something went wrong. </span><br class='sm:hidden'><span>Please try again later.</span>";
-                    errorToast.classList.add('show');
-                    setTimeout(() => errorToast.classList.remove('show'), 2000);
+                    const link = document.createElement('a');
+                    link.href = imageUrls.projectAnalysisExcel; // Use the path from our config
+                    link.download = imageUrls.projectAnalysisExcel; // Set the filename for download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                 }
             });
 
@@ -912,4 +934,3 @@
     </script>
 </body>
 </html>
-
