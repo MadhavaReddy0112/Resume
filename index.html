@@ -178,15 +178,15 @@
             white-space: nowrap;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
             z-index: 10;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             pointer-events: none;
         }
-        [data-tooltip]:hover::after {
+        /* [data-tooltip]:hover::after {
             opacity: 1;
             visibility: visible;
-        }
+        } */
         /* Tooltip Arrow */
         [data-tooltip]::before {
             content: '';
@@ -204,9 +204,45 @@
             z-index: 9;
             pointer-events: none;
         }
-        [data-tooltip]:hover::before {
+        /* [data-tooltip]:hover::before {
             opacity: 1;
             visibility: visible;
+        } */
+
+        /* NEW: JS-controlled class for showing tooltip */
+        [data-tooltip].tooltip-show::after,
+        [data-tooltip].tooltip-show::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* NEW: Media query for mobile tooltip styling */
+        @media (max-width: 640px) {
+            [data-tooltip]::after {
+                /* Position at the bottom of the screen, centered */
+                position: fixed;
+                bottom: 2rem; /* 2rem from bottom */
+                left: 50%;
+                transform: translateX(-50%) translateY(10px); /* Start slightly down */
+                
+                /* Adjust appearance for mobile */
+                white-space: normal; /* Allow wrapping */
+                width: 90vw; /* Use viewport width */
+                max-width: 400px; /* But not too wide */
+                text-align: center;
+                margin-bottom: 0; /* Reset margin */
+                font-size: 0.95rem; /* Slightly larger for mobile */
+            }
+
+            [data-tooltip]::before {
+                 /* Hide the arrow on mobile, it's confusing with fixed pos */
+                display: none;
+            }
+
+            /* Mobile "show" state */
+            [data-tooltip].tooltip-show::after {
+                 transform: translateX(-50%) translateY(0); /* Animate up */
+            }
         }
 
 
@@ -1001,6 +1037,75 @@
                     }
                 }
             });
+
+            // --- NEW: Universal Tooltip Logic (Desktop + Mobile) ---
+            let activeTooltipTimer = null;
+            let currentTooltip = null;
+            const isMobile = () => window.innerWidth <= 640; // Match CSS breakpoint
+
+            const showTooltip = (element) => {
+                if (!element) return;
+                hideTooltip(); // Hide any other active tooltip
+                currentTooltip = element;
+                currentTooltip.classList.add('tooltip-show');
+
+                if (isMobile()) {
+                    // Autohide on mobile
+                    activeTooltipTimer = setTimeout(hideTooltip, 1500);
+                }
+            };
+
+            const hideTooltip = () => {
+                if (currentTooltip) {
+                    currentTooltip.classList.remove('tooltip-show');
+                    currentTooltip = null;
+                }
+                if (activeTooltipTimer) {
+                    clearTimeout(activeTooltipTimer);
+                    activeTooltipTimer = null;
+                }
+            };
+
+            // Desktop Listeners
+            document.addEventListener('mouseover', (e) => {
+                if (isMobile()) return; // Don't run on mobile
+                const tooltipElement = e.target.closest('[data-tooltip]');
+                if (tooltipElement) {
+                    showTooltip(tooltipElement);
+                }
+            });
+
+            document.addEventListener('mouseout', (e) => {
+                if (isMobile()) return; // Don't run on mobile
+                const tooltipElement = e.target.closest('[data-tooltip]');
+                if (tooltipElement && tooltipElement === currentTooltip) {
+                    hideTooltip();
+                }
+            });
+
+            // Mobile Listener
+            document.addEventListener('touchstart', (e) => {
+                if (!isMobile()) return; // Don't run on desktop
+                
+                const tooltipElement = e.target.closest('[data-tooltip]');
+
+                if (!tooltipElement) {
+                    hideTooltip(); // Tapped outside
+                    return;
+                }
+
+                // Tapped on a tooltip button
+                e.preventDefault(); // Prevent ghost click
+                if (tooltipElement === currentTooltip) {
+                    hideTooltip(); // Toggle off
+                } else {
+                    showTooltip(tooltipElement); // Show new one
+                }
+            }, { passive: false });
+
+            // Hide tooltip on scroll
+            window.addEventListener('scroll', hideTooltip, { passive: true });
+
 
             // --- DYNAMIC OBSERVERS ---
             const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
