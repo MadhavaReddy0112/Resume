@@ -1095,13 +1095,13 @@
                 }
 
                 // Tapped on a tooltip button
-                e.preventDefault(); // Prevent ghost click
+                // e.preventDefault(); // Prevent ghost click <-- THIS WAS THE PROBLEM, REMOVED IT.
                 if (tooltipElement === currentTooltip) {
                     hideTooltip(); // Toggle off
                 } else {
                     showTooltip(tooltipElement); // Show new one
                 }
-            }, { passive: false });
+            }, { passive: true }); // Set passive: true, as we are not preventing default
 
             // Hide tooltip on scroll
             window.addEventListener('scroll', hideTooltip, { passive: true });
