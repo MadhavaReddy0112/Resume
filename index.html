@@ -29,12 +29,16 @@
             --glass-bg-dark: rgba(17, 17, 17, 0.7);
             --glass-border-dark: rgba(255, 255, 255, 0.1);
             --nav-bg-dark: rgba(30, 30, 30, 0.5);
+            --tooltip-bg-dark: #1f2937;
+            --tooltip-text-dark: #e5e7eb;
 
             --bg-light: #f8f7ff;
             --text-light: #1d1d1f;
             --glass-bg-light: rgba(245, 245, 247, 0.7);
             --glass-border-light: rgba(0, 0, 0, 0.1);
             --nav-bg-light: rgba(249, 250, 251, 0.7);
+            --tooltip-bg-light: #ffffff;
+            --tooltip-text-light: #374151;
         }
 
         html {
@@ -153,6 +157,59 @@
         .case-chart { transition: opacity 0.4s ease-in-out; }
         .case-chart.hidden { display: none; opacity: 0; }
 
+        /* --- Tooltip --- */
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            background-color: var(--tooltip-bg-dark);
+            color: var(--tooltip-text-dark);
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* Tooltip Arrow */
+        [data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 2px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--tooltip-bg-dark) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 9;
+            pointer-events: none;
+        }
+        [data-tooltip]:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
         /* --- Modals, Toasts, & Buttons --- */
         .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); color: white; padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease; display: flex; align-items: center; }
         #success-toast { background-color: #22c55e; }
@@ -229,14 +286,31 @@
         .light-mode .linkedin-btn { background-color: #6b7280 !important; }
         .light-mode .linkedin-btn { color: #ffffff !important; }
         .light-mode .linkedin-btn:hover { background-color: #4b5563 !important; }
-        .light-mode #download-analysis-btn { background-color: #f59e0b !important; color: white !important; }
-        .light-mode #download-analysis-btn:hover { background-color: #d97706 !important; }
+        
+        /* Light mode for new download buttons */
+        .light-mode .download-btn { background-color: #f59e0b !important; color: white !important; }
+        .light-mode .download-btn:hover { background-color: #d97706 !important; }
+        
         .light-mode .chart-placeholder:hover { box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
         .light-mode .timeline-item h5, .light-mode .timeline-item li { color: #374151 !important; }
         .light-mode #error-toast { background-color: #e5e7eb; color: #4b5563 !important; border: 1px solid #f97316; }
         .light-mode #error-toast .fa-exclamation-circle { color: #fb923c; }
         
         .light-mode #strategic-outlook-img { opacity: 1; }
+        
+        /* Light mode for Tooltip */
+        .light-mode [data-tooltip]::after {
+            background-color: var(--tooltip-bg-light);
+            color: var(--tooltip-text-light);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .light-mode [data-tooltip]::before {
+            border-top-color: var(--tooltip-bg-light);
+            /* This is tricky, a slight border to match */
+            filter: drop-shadow(0 -1px 1px rgba(0,0,0,0.05));
+        }
+
     </style>
 </head>
 <body class="antialiased" oncontextmenu="return false;">
@@ -335,15 +409,16 @@
                 graph5: 'Graph-5.webp',
                 graph6: 'Graph-6.webp',
 
-                // --- NEW --- Downloadable File (Edit filename here)
-                projectAnalysisExcel: 'Starbucks Financial Analysis.xlsx',
+                // --- NEW --- Downloadable Files (Edit filenames here)
+                projectAnalysisPdf: 'Starbucks_Financial_Summary_Report.pdf',
+                projectAnalysisExcel: 'Starbucks_Financial_Analysis_Workbook.xlsx',
             };
 
             // --- IMAGE PRELOADING ---
             const preloadImages = (urls) => {
                 for (const key in urls) {
-                    // Preload images, but skip non-image files like the excel sheet
-                    if (urls.hasOwnProperty(key) && key !== 'projectAnalysisExcel' && !key.endsWith('Pdf')) {
+                    // Preload images, but skip non-image files
+                    if (urls.hasOwnProperty(key) && !key.endsWith('Excel') && !key.endsWith('Pdf')) {
                         const img = new Image();
                         img.src = urls[key];
                     }
@@ -685,7 +760,20 @@
                                 <div class="text-center md:text-left"><p class="text-gray-400 text-base md:text-lg leading-relaxed text-justify">Starbucks’ trajectory now hinges less on sheer store expansion and more on its ability to revive comparable sales and protect margins. The slowdown in FY24 revealed vulnerabilities in per-store productivity, while ongoing margin swings reinforced earnings sensitivity. With a new CEO at the helm, leadership’s ability to reset strategy and drive operational discipline will be tested. Whether Starbucks delivers durable growth depends on balancing scale with stronger unit economics, making the next few years decisive for shareholder value.</p></div>
                             </div>
                         </div>
-                        <div class="text-center py-12"><button id="download-analysis-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3"><i class="fas fa-file-excel"></i> Download Full Analysis</button></div>
+                        <!-- === MODIFIED BUTTON SECTION === -->
+                        <div class="text-center py-12 flex flex-col sm:flex-row justify-center items-center gap-4 px-4">
+                            <button id="download-analysis-pdf-btn" 
+                                    class="download-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center justify-center gap-3 w-full sm:w-auto"
+                                    data-tooltip="Quick overview of financial insights and dashboard visuals.">
+                                <i class="fas fa-file-pdf"></i> Download Executive Summary
+                            </button>
+                            <button id="download-analysis-btn" 
+                                    class="download-btn bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center justify-center gap-3 w-full sm:w-auto"
+                                    data-tooltip="Full dataset with formulas, assumptions, and model workings.">
+                                <i class="fas fa-file-excel"></i> Download Full Analysis
+                            </button>
+                        </div>
+                        <!-- === END MODIFIED BUTTON SECTION === -->
                     </div>
                     </section>
                 `;
@@ -697,7 +785,7 @@
                 const dayOfWeek = today.getDay();
                 const lastSunday = new Date(new Date().setDate(today.getDate() - dayOfWeek));
                 const formattedDate = lastSunday.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain" loading="lazy"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-block glow-effect">Download PDF Version</a></div></div></section>`; 
+                page.innerHTML = `<section class="py-16"><div class="container mx-auto px-6"><h3 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Resume</h3><div class="max-w-4xl mx-auto"><div class="p-2 md:p-4 rounded-lg glass-effect"><img src="${portfolioData.resume.imageUrl}" alt="Resume" class="rounded-md w-full h-full object-contain" loading="lazy"></div><p class="text-right text-sm text-gray-400 italic mt-2">Last updated on ${formattedDate}</p></div><div class="text-center mt-8"><a href="${portfolioData.resume.pdfUrl}" download class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 inline-flex items-center gap-3 glow-effect"><i class="fas fa-file-pdf"></i> Download Resume</a></div></div></section>`; 
                 mainContainer.appendChild(page); 
             };
 
@@ -890,15 +978,27 @@
                     }
                 }
 
-                // --- NEW --- Download Analysis Button
-                const downloadBtn = e.target.closest('#download-analysis-btn');
+                // --- UPDATED Download Analysis Button Logic ---
+                const downloadBtn = e.target.closest('.download-btn'); // Use common class
                 if(downloadBtn) {
-                    const link = document.createElement('a');
-                    link.href = imageUrls.projectAnalysisExcel; // Use the path from our config
-                    link.download = imageUrls.projectAnalysisExcel; // Set the filename for download
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                    let filePath, fileName;
+                    
+                    if (downloadBtn.id === 'download-analysis-pdf-btn') {
+                        filePath = imageUrls.projectAnalysisPdf;
+                        fileName = imageUrls.projectAnalysisPdf;
+                    } else if (downloadBtn.id === 'download-analysis-btn') {
+                        filePath = imageUrls.projectAnalysisExcel;
+                        fileName = imageUrls.projectAnalysisExcel;
+                    }
+
+                    if (filePath && fileName) {
+                        const link = document.createElement('a');
+                        link.href = filePath;
+                        link.download = fileName;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
                 }
             });
 
@@ -949,4 +1049,3 @@
 
 </body>
 </html>
-
