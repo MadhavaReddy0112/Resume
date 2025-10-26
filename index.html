@@ -1002,6 +1002,30 @@
                 }
             });
 
+            // --- NEW: Standalone Download Function ---
+            const triggerDownload = (downloadBtn) => {
+                if (!downloadBtn) return;
+
+                let filePath, fileName;
+                
+                if (downloadBtn.id === 'download-analysis-pdf-btn') {
+                    filePath = imageUrls.projectAnalysisPdf;
+                    fileName = imageUrls.projectAnalysisPdf;
+                } else if (downloadBtn.id === 'download-analysis-btn') {
+                    filePath = imageUrls.projectAnalysisExcel;
+                    fileName = imageUrls.projectAnalysisExcel;
+                }
+
+                if (filePath && fileName) {
+                    const link = document.createElement('a');
+                    link.href = filePath;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            };
+
             // --- EVENT DELEGATION FOR DYNAMIC CONTENT ---
             document.addEventListener('click', (e) => {
                 // View Certificate Button
@@ -1017,23 +1041,10 @@
                 // --- UPDATED Download Analysis Button Logic ---
                 const downloadBtn = e.target.closest('.download-btn'); // Use common class
                 if(downloadBtn) {
-                    let filePath, fileName;
-                    
-                    if (downloadBtn.id === 'download-analysis-pdf-btn') {
-                        filePath = imageUrls.projectAnalysisPdf;
-                        fileName = imageUrls.projectAnalysisPdf;
-                    } else if (downloadBtn.id === 'download-analysis-btn') {
-                        filePath = imageUrls.projectAnalysisExcel;
-                        fileName = imageUrls.projectAnalysisExcel;
-                    }
-
-                    if (filePath && fileName) {
-                        const link = document.createElement('a');
-                        link.href = filePath;
-                        link.download = fileName;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                    // On desktop, a click triggers the download immediately.
+                    // On mobile, this click is *prevented* by touchstart, so this won't fire.
+                    if (!isMobile()) {
+                        triggerDownload(downloadBtn);
                     }
                 }
             });
@@ -1094,14 +1105,29 @@
                     return;
                 }
 
-                // Tapped on a tooltip button
-                // e.preventDefault(); // Prevent ghost click <-- THIS WAS THE PROBLEM, REMOVED IT.
+                // If tapping the same button, just hide it and stop.
                 if (tooltipElement === currentTooltip) {
-                    hideTooltip(); // Toggle off
-                } else {
-                    showTooltip(tooltipElement); // Show new one
+                    hideTooltip();
+                    return;
                 }
-            }, { passive: true }); // Set passive: true, as we are not preventing default
+
+                // Tapped a new tooltip button
+                const isDownloadButton = tooltipElement.classList.contains('download-btn');
+
+                if (isDownloadButton) {
+                    e.preventDefault(); // MUST prevent default to delay the click
+                    showTooltip(tooltipElement); // Show tooltip (will auto-hide in 1.5s)
+                    
+                    // After 1.5s, trigger the download
+                    setTimeout(() => {
+                        triggerDownload(tooltipElement);
+                    }, 1500);
+                } else {
+                    // For any other non-download tooltips (future-proofing)
+                    showTooltip(tooltipElement);
+                }
+
+            }, { passive: false }); // Set passive: false, as we ARE preventing default
 
             // Hide tooltip on scroll
             window.addEventListener('scroll', hideTooltip, { passive: true });
